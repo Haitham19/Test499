@@ -6,3 +6,9 @@
     width: 1440px;
     height: 881px;
   }
+  .login_feild_label {
+    width: 100%;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 100;
+}
