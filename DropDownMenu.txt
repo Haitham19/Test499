@@ -1,0 +1,11 @@
+<div class="col-md-12">
+            <select id="selectId" size="1" class="menu">
+              <option value="Choose your Company" disabled selected>Choose your Company</option>
+              <option value="SABIC">SABIC </option>
+              <option value="STC">STC </option>
+              <option value="SAUDI ARAMCO">SAUDI ARAMCO </option>
+              <option value="ALRAJHI">ALRAJHI </option>
+              <option value="ALINMA">ALINMA </option>
+            </select>
+          </div>
+        </div>
