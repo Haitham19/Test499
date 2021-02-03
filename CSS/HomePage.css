@@ -1,7 +1,7 @@
 
 .logo img{
   float: Left;
-  width: 150px;
+  width: 130px;
   height: auto;
 }
 
@@ -9,9 +9,13 @@ body {
   background-image: url("../CSS/WP.jpg");
   background-position: center;
   background-size: cover;
+  background-attachment: fixed;
   height: 100%;
   width: 100%;
   background-repeat: no-repeat;
+
+  overflow: hidden; /* Hide scrollbars */
+
 }
 
 
