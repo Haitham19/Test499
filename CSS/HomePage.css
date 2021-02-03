@@ -6,21 +6,34 @@ body {
   margin: 0;
   padding: 100px;
 }
+
+.logo img{
+  float: left;
+  width: 150px;
+  height: auto;
+}
+
+h1 {
+  font-size: 30px;
+}
+
 .transparent {
   text-align: center;
   top: 50%;
   width: 250px;
   padding: 30px;
   background-color: rgba(38, 127, 36, 0.5);
-  border: 0.1px solid #fff;
-  border-radius: 8px;
+  border: 0.1px solid #000;
+  border-radius: 9px;
   color: rgb(253, 252, 252);
   font-size: 25px;
+  transition: 0.5s ease-in-out;
 }
 
-.transparent: :hover{
-  background-color: #fff;
-  color: #000;
+.transparent:hover{
+  background-color: rgba(68, 133, 67, 0.877);
+  color: #fff;
+  border: 0.1px solid #000;
 }
 
 #create {
@@ -42,3 +55,4 @@ header{
   background-size: cover;
   background-position: center;
 }
+
