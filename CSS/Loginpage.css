@@ -10,7 +10,7 @@ body {
   margin: auto;
   max-width: 1024px;
   min-height: 768px;
-  position: absolute ;
+  position: relative ;
   background: url(https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.albayan.ae%2Fvarieties%2F2021-01-19-1.4070133&psig=AOvVaw0yTVSEftku3bNysdtPDPA9&ust=1612444296998000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNCu2qHlze4CFQAAAAAdAAAAABAD)
     no-repeat center;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
