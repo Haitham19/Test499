@@ -8,13 +8,15 @@ body {
 }
 
 .logo img{
-  float: left;
-  width: 150px;
+  float: center-top;
+  width: 15000px;
   height: auto;
 }
 
 h1 {
   font-size: 30px;
+  color: #000;
+  text-shadow: #fff;
 }
 
 .transparent {
