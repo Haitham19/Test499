@@ -29,3 +29,10 @@ body {
   color: rgba(11, 34, 11, 0.5);
   font-weight: bold;
 }
+
+header{
+  background-image: url (../2.jpg);
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
