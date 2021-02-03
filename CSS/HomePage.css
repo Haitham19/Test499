@@ -8,18 +8,21 @@ body {
 }
 
 .logo img{
-  float: center-top;
-  width: 15000px;
+  float: center;
+  width: 150px;
   height: auto;
 }
 
 h1 {
+  font-family:'Times New Roman';
   font-size: 30px;
   color: #000;
   text-shadow: #fff;
 }
 
 .transparent {
+  font-family:'Times New Roman';
+  font-weight:bolder;
   text-align: center;
   top: 50%;
   width: 250px;
@@ -28,7 +31,7 @@ h1 {
   border: 0.1px solid #000;
   border-radius: 9px;
   color: rgb(253, 252, 252);
-  font-size: 25px;
+  font-size: 30px;
   transition: 0.5s ease-in-out;
 }
 
@@ -38,7 +41,7 @@ h1 {
   border: 0.1px solid #000;
 }
 
-#create {
+.create {
   background-color: rgb(206, 206, 206, 0.5);
   border-radius: 25px;
   width: 200px;
@@ -52,7 +55,7 @@ h1 {
 }
 
 header{
-  background-image: url (../2.jpg);
+  background-image: url (C:\Users\Haitham Alzahrani\Desktop\Test499\CSS\logo.PNG);
   height: 100vh;
   background-size: cover;
   background-position: center;
