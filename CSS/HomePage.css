@@ -1,17 +1,20 @@
-html,
+
 body {
-  background-image: url("D:\sath\test499\Test499\CSS\image.jpg");
+  background-image: url("CSS\image.jpg");
   background-position: center;
-  height: 100%;
+  background-size: cover;
+  height: 100px;
   margin: 0;
   padding: 100px;
 }
 
+/* 
 .logo img{
   float: center;
   width: 150px;
   height: auto;
 }
+*/
 
 h1 {
   font-family:'Times New Roman';
@@ -29,7 +32,7 @@ h1 {
   padding: 30px;
   background-color: rgba(38, 127, 36, 0.5);
   border: 0.1px solid #000;
-  border-radius: 9px;
+  border-radius: 5px;
   color: rgb(253, 252, 252);
   font-size: 30px;
   transition: 0.5s ease-in-out;
@@ -42,7 +45,8 @@ h1 {
 }
 
 .create {
-  background-color: rgb(206, 206, 206, 0.5);
+  background-color: rgba(206, 206, 206, 0.719);
+  border: solid;
   border-radius: 25px;
   width: 200px;
   height: 280px;
@@ -55,8 +59,8 @@ h1 {
 }
 
 header{
-  background-image: url (C:\Users\Haitham Alzahrani\Desktop\Test499\CSS\logo.PNG);
-  height: 100vh;
+  background-image: url("..\CSS\logo.jpg");
+  height: 100px;
   background-size: cover;
   background-position: center;
 }
