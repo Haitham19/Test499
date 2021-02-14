@@ -21,3 +21,58 @@
       </center>
      
    </form>
+
+-----------------------------------------------------
+
+
+   Sign up backup: 
+   
+         <p>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email">
+         </p>
+         <p>
+            <label for="email">Passworsd</label>
+            <input type="password" name="Pass" id="Pass">
+         </p>
+         
+         <p>
+            <label for="email">First name</label>
+            <input type="text" name="Fname" id="Fname">
+         </p>
+         <p>
+            <label for="email">Last name</label>
+            <input type="text" name="Lname" id="Lname">
+         </p
+         ><p>
+            <label for="email">age</label>
+            <input type="number" name="age" id="age">
+         </p>
+         <p>
+            <button onClick="SIS()">Student in Saudi</button>
+         </p>
+         <div id="studentin">
+            <p>
+               <label for="email">University name</label>
+               <input type="text" name="Uname" id="Uname">
+            </p>
+            <p>
+               <label for="email">Supervisor name</label>
+               <input type="text" name="Sname" id="Sname">
+            </p>
+            <p>
+               <label for="email">Supervisor email</label>
+               <input type="text" name="Semail" id="Semail">
+            </p>
+         </div>
+         <p>
+            <input type="submit" name="Submit" id="Submit" value="Submit">
+         </p>
+     
+      <script>
+         var x=document.getElementById("studentin");
+         x.style.display="none";
+         function SIS(){
+            x.style.display="block";
+         }
+      </script>
