@@ -1,15 +1,18 @@
 const express = require("express");
 const mysql = require("mysql");
+const dotenv = require("dotenv");
 
+
+dotenv.config({path: './.env'});
 
 const websystem = express();
 
 
 const db = mysql.createConnection({
-   host: 'localhost',
-   user: 'root',
-   password:'',
-   database:'crep-db'
+   host: process.env.DATABASE_HOST,
+   user: process.env.DATABASE_USER,
+   password:process.env.DATABASE_PASSWORD,
+   database:process.env.DATABASE
 });
 
 db.connect((error)=> {

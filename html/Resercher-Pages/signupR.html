@@ -12,70 +12,100 @@
    <title>Signup page</title>
    
    <body>
-      
-      <img src= "../CSS/image.png" class="logo">
+         <div id="But">
+            <button onClick="SIS()">Student Researcher</button>
+            <button onClick="SOS()" >Organization Researcher</button>
+         </div>
+         <div id="basic">
+         <p>
+            <label >Email</label>
+            <input type="text" name="email" id="email">
+         </p>
+         <p>
+            <label >Passworsd</label>
+            <input type="password" name="Pass" id="Pass">
+         </p>
+         <p>
+            <label >First name</label>
+            <input type="text" name="Fname" id="Fname">
+         </p>
+         <p>
+            <label >Last name</label>
+            <input type="text" name="Lname" id="Lname">
+         </p>
+         <p>
+            <label >Mobile number</label>
+            <input type="number" name="mobNum" id="mobNum">
+         </p>
+         <p>
+            <label >Country</label>
+            <input type="text" name="country" id="country">
+         </p>
 
-      <div class="center"> 
-         <h1>Signup Page</h1>
-         <form method="post">
-            <div class="txt_field">
-               <input type="text" required>
-               <span></span>
-               <label>Email</label>
-            </div>
-
-
-            <form method="post">
-               <div class="txt_field">
-                  <input type="text" required>
-                  <span></span>
-                  <label>FName</label>
-               </div>
-
-               <form method="post">
-                  <div class="txt_field">
-                     <input type="text" required>
-                     <span></span>
-                     <label>LName</label>
-                  </div>
-
-                  <form method="post">
-                     <div class="txt_field">
-                        <input type="number" required>
-                        <span></span>
-                        <label>Age</label>
-                     </div>
-
-                     <button onClick="SIS()">Student in Saudi</button>
-                     <div id="studentin">
-                        <p>
-                           <label for="email">University name</label>
-                           <input type="text" name="Uname" id="Uname">
-                        </p>
-                        <p>
-                           <label for="email">Supervisor name</label>
-                           <input type="text" name="Sname" id="Sname">
-                        </p>
-                        <p>
-                           <label for="email">Supervisor email</label>
-                           <input type="text" name="Semail" id="Semail">
-                        </p>
-                     </div>
-
-
-               <div class="txt_field">
-                  <input type="password" required>
-                  <span></span>
-                  <label>Password</label>
-               </div>
-   
-               <div class="txt_field">
-                  <input type="password" required>
-                  <span></span>
-                  <label>Type Password Again</label>
-               </div>
+         <div id="Uni">
+         <p>
+            <label >University name</label>
+            <input type="text" name="Uname" id="Uname">
+         </p>
+         <p>
+            <label >College</label>
+            <input type="text" name="coll" id="coll">
+         </p>
+         <p>
+            <label >Department</label>
+            <input type="text" name="dep" id="dep">
+         </p>
+         </div>
+         <p>
+            <label >Level</label>
+            <input type="text" name="lev" id="lev">
+         </p>
+         </div>
+         <div id="Org">
+            <p>
+               <label >Organization name</label>
+               <input type="text" name="OrgName" id="OrgName">
+            </p>
+         </div>
+       <!--<p id="researcher"></p>-->  
+     
+      <script>
+         /*class researcherIn{
+            constructor(){
+               this.email=document.getElementById(email).value;
+               this.pass=document.getElementById(Pass).value;
+               this.fname=document.getElementById(Fname).value;
+               this.lname=document.getElementById(Lname).value;
+               this.age=document.getElementById(age).value;
+               this.Uname=document.getElementById(Uname).value;
+               this.Sname=document.getElementById(Sname).value;
+               this.Semail=document.getElementById(Semail).value;
+            }
+            dispay() {
+               var mes=("Email: "+this.email+"<br>"+"Password: "+this.pass+"<br>"+"First name: "+this.fname+"<br>"+"Last name: "+
+               this.lname+"<br>"+"age: "+this.age+"<br>"+"‘University name: "+this.Uname+"<br>"+"Supervisor name: "+this.Sname+
+               "<br>"+"Supervisor email: "+this.Semail);
+               document.getElementById("researcher").innerHTML=(mes);  
+            }
+         } */
+         var x=document.getElementById("basic");
+         var y=document.getElementById("Org");
+         var z=document.getElementById("But");
+         var U=document.getElementById("Uni");
+         x.style.display="none";
+         y.style.display="none";
          
-            <input type="submit" value="Signup">
-
+         function SIS(){
+            x.style.display="block";
+            z.style.display="none";
+         }
+         function SOS(){
+            x.style.display="block";
+            y.style.display="block";
+            z.style.display="none";
+            U.style.display="none";
+         }
+         
+      </script>
    </body>
 </head>
