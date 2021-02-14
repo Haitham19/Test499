@@ -4,11 +4,16 @@ const mysql = require("mysql");
 const dotenv = require("dotenv");
 
 
+// I think this is for security .
+// if we need to know more serch about (detenv)
 dotenv.config({path: './.env'});
 
+
+// for use the server.
 const websystem = express();
 
 
+// we use process.env for security => detrnv .
 const db = mysql.createConnection({
    host: process.env.DATABASE_HOST,
    user: process.env.DATABASE_USER,
@@ -16,8 +21,12 @@ const db = mysql.createConnection({
    database:process.env.DATABASE
 });
 
-const publicDirectory = path.join(__dirname, './public')
 
+// need to serch about it.
+const publicDirectory = path.join(__dirname, './public')
+websystem.use(express.static(publicDirectory))
+
+// this is to use the html and css fils => views and public 
 websystem.set('view engine', 'hbs');
 
 
