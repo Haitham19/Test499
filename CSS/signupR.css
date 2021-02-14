@@ -9,7 +9,7 @@
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background: linear-gradient(rgba(0,0,0,0.5),rgba(1, 63, 5, 0.76)), url("../CSS/WP.jpg");
+    background: linear-gradient(rgba(0,0,0,0.5),rgba(1, 63, 5, 0.76)), url("..//CSS/WP.jpg");
     height: 100vh;
     overflow: hidden;
     background-repeat: no-repeat;

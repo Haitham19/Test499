@@ -57,11 +57,11 @@
                <input type="text" name="Uname" id="Uname">
             </p>
             <p>
-               <label for="email">supervisor name</label>
+               <label for="email">Supervisor name</label>
                <input type="text" name="Sname" id="Sname">
             </p>
             <p>
-               <label for="email">supervisor email</label>
+               <label for="email">Supervisor email</label>
                <input type="text" name="Semail" id="Semail">
             </p>
          </div>
