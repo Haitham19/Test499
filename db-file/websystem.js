@@ -9,7 +9,7 @@ const db = mysql.createConnection({
    host: 'localhost',
    user: 'root',
    password:'',
-   database:'researcher-login'
+   database:'crep-db'
 });
 
 db.connect((error)=> {
