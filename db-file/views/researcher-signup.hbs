@@ -5,6 +5,8 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
    <link rel="stylesheet" href="../researcher-signup.css">
    <title>Document</title>
 </head>
@@ -14,6 +16,61 @@
       <button onClick="SIS()">Student Researcher</button>
       <button onClick="SOS()">Organization Researcher</button>
    </div>
+
+   <div class="container mt-4">
+      <div class="card">
+         <div class="card-header">
+            <form>
+               <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" class="form-control" id="name" name="name">
+               </div>
+
+               <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" class="form-control" id="email" name="email">
+               </div>
+
+               <div class="form-group">
+                  <label for="college">College Name</label>
+                  <input type="text" class="form-control" id="college" name="college">
+               </div>
+
+               <div class="form-group">
+                  <label for="deptName">Department Name</label>
+                  <input type="text" class="form-control" id="deptName" name="deptName">
+               </div>
+
+
+               <div class="form-group">
+                  <label for="mobNum">Mobile Number</label>
+                  <input type="number" class="form-control" id="mobNum" name="mobNum">
+               </div>
+
+               <div class="form-group">
+                  <label for="country">Country Name</label>
+                  <input type="text" class="form-control" id="country" name="country">
+               </div>
+
+
+               <div class="form-group">
+                  <label for="level">Level</label>
+                  <input type="text" class="form-control" id="level" name="level">
+               </div>
+
+               <div class="form-group">
+                  <label for="university">University</label>
+                  <input type="text" class="form-control" id="university" name="university">
+               </div>
+
+               <button type="submit" class="btn btn-primary">Register Researcher</button>
+            </form>
+         </div>
+      </div>
+   </div>
+
+
+
 
    <script>
       function SIS() {

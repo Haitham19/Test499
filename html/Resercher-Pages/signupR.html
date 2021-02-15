@@ -1,76 +1,75 @@
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-   
     <!-- Tab Icon-->
-   <link rel="shortcut icon" href="..//CSS/favicon.ico">
+    <link rel="shortcut icon" href="..//CSS/favicon.ico" />
 
-   <link rel="stylesheet" href="..//CSS//signupR.css">
+    <link rel="stylesheet" href="..//CSS//signupR.css" />
 
-   <title>Signup page</title>
-   
-   <body>
-         <div id="But">
-            <button onClick="SIS()">Student Researcher</button>
-            <button onClick="SOS()" >Organization Researcher</button>
-         </div>
-         <div id="basic">
-         <p>
-            <label >Email</label>
-            <input type="text" name="email" id="email">
-         </p>
-         <p>
-            <label >Passworsd</label>
-            <input type="password" name="Pass" id="Pass">
-         </p>
-         <p>
-            <label >First name</label>
-            <input type="text" name="Fname" id="Fname">
-         </p>
-         <p>
-            <label >Last name</label>
-            <input type="text" name="Lname" id="Lname">
-         </p>
-         <p>
-            <label >Mobile number</label>
-            <input type="number" name="mobNum" id="mobNum">
-         </p>
-         <p>
-            <label >Country</label>
-            <input type="text" name="country" id="country">
-         </p>
+    <title>Signup page</title>
 
-         <div id="Uni">
-         <p>
-            <label >University name</label>
-            <input type="text" name="Uname" id="Uname">
-         </p>
-         <p>
-            <label >College</label>
-            <input type="text" name="coll" id="coll">
-         </p>
-         <p>
-            <label >Department</label>
-            <input type="text" name="dep" id="dep">
-         </p>
-         </div>
-         <p>
-            <label >Level</label>
-            <input type="text" name="lev" id="lev">
-         </p>
-         </div>
-         <div id="Org">
-            <p>
-               <label >Organization name</label>
-               <input type="text" name="OrgName" id="OrgName">
-            </p>
-         </div>
-       <!--<p id="researcher"></p>-->  
-     
+    <body>
+      <div id="But">
+        <button onClick="SIS()">Student Researcher</button>
+        <button onClick="SOS()">Organization Researcher</button>
+      </div>
+      <div id="basic">
+        <p>
+          <label>Email</label>
+          <input type="text" name="email" id="email" />
+        </p>
+        <p>
+          <label>Passworsd</label>
+          <input type="password" name="Pass" id="Pass" />
+        </p>
+        <p>
+          <label>First name</label>
+          <input type="text" name="Fname" id="Fname" />
+        </p>
+        <p>
+          <label>Last name</label>
+          <input type="text" name="Lname" id="Lname" />
+        </p>
+        <p>
+          <label>Mobile number</label>
+          <input type="number" name="mobNum" id="mobNum" />
+        </p>
+        <p>
+          <label>Country</label>
+          <input type="text" name="country" id="country" />
+        </p>
+
+        <div id="Uni">
+          <p>
+            <label>University name</label>
+            <input type="text" name="Uname" id="Uname" />
+          </p>
+          <p>
+            <label>College</label>
+            <input type="text" name="coll" id="coll" />
+          </p>
+          <p>
+            <label>Department</label>
+            <input type="text" name="dep" id="dep" />
+          </p>
+        </div>
+        <p>
+          <label>Level</label>
+          <input type="text" name="lev" id="lev" />
+        </p>
+      </div>
+      <div id="Org">
+        <p>
+          <label>Organization name</label>
+          <input type="text" name="OrgName" id="OrgName" />
+        </p>
+      </div>
+      <!--<p id="researcher"></p>-->
+
       <script>
-         /*class researcherIn{
+        /*class researcherIn{
             constructor(){
                this.email=document.getElementById(email).value;
                this.pass=document.getElementById(Pass).value;
@@ -88,24 +87,24 @@
                document.getElementById("researcher").innerHTML=(mes);  
             }
          } */
-         var x=document.getElementById("basic");
-         var y=document.getElementById("Org");
-         var z=document.getElementById("But");
-         var U=document.getElementById("Uni");
-         x.style.display="none";
-         y.style.display="none";
-         
-         function SIS(){
-            x.style.display="block";
-            z.style.display="none";
-         }
-         function SOS(){
-            x.style.display="block";
-            y.style.display="block";
-            z.style.display="none";
-            U.style.display="none";
-         }
-         
+        var x = document.getElementById("basic");
+        var y = document.getElementById("Org");
+        var z = document.getElementById("But");
+        var U = document.getElementById("Uni");
+        x.style.display = "none";
+        y.style.display = "none";
+
+        function SIS() {
+          x.style.display = "block";
+          z.style.display = "none";
+        }
+        function SOS() {
+          x.style.display = "block";
+          y.style.display = "block";
+          z.style.display = "none";
+          U.style.display = "none";
+        }
       </script>
-   </body>
-</head>
+    </body>
+  </head>
+</html>
