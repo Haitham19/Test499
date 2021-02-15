@@ -1,0 +1,61 @@
+.logo {
+   width: 200px;
+   position: absolute;
+   top: 2%;
+   left: 1%;
+ }
+ 
+ body {
+   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(1, 63, 5, 0.76)),
+     url("../CSS/WP.jpg");
+   background-position: center;
+   background-size: cover;
+   background-attachment: fixed;
+   height: 100vh;
+   /* width: 100%; */
+   background-repeat: no-repeat;
+ 
+   overflow: hidden; /* Hide scrollbars */
+ }
+ 
+ h1 {
+   font-family: "Kaushan Script", cursive;
+   font-size: 40px;
+   color: #000;
+ }
+ 
+ .transparent {
+   font-family: "Times New Roman";
+   font-weight: bolder;
+   text-align: center;
+   top: 50%;
+   width: 250px;
+   padding: 30px;
+   background-color: rgba(38, 127, 36, 0.5);
+   border: 0.1px solid #000;
+   border-radius: 5px;
+   color: rgb(253, 252, 252);
+   font-size: 30px;
+   transition: 0.1s ease;
+ }
+ 
+ .transparent:hover {
+   background-color: rgba(68, 133, 67, 0.877);
+   color: #fff;
+   border: 0.1px solid #000;
+ }
+ 
+ #create {
+   background-color: rgba(206, 206, 206, 0.719);
+   border: solid;
+   border-radius: 25px;
+   width: 200px;
+   height: 280px;
+   margin: auto;
+   width: 50%;
+   padding: 30px;
+   margin-top: 200px;
+   color: rgba(11, 34, 11, 0.5);
+   font-weight: bold;
+ }
+ 

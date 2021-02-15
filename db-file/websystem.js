@@ -39,10 +39,23 @@ db.connect((error)=> {
    }
 });
 
-
+// res.render => this is to git the thing that you do it in the folder .
+//
 websystem.get("/", (req, res) => {
-   res.send("<h1> Home Page </h1>")
+   //res.send("<h1> Home Page </h1>")
+   res.render("home-page")
 });
+
+websystem.get("/researcher", (req, res) => {
+   //res.send("<h1> Home Page </h1>")
+   res.render("researcher")
+});
+
+websystem.get("/researcher-signup", (req, res) => {
+   //res.send("<h1> Home Page </h1>")
+   res.render("researcher-signup")
+});
+
 
 websystem.listen(5000, () =>{
 console.log("server start on post 5000.")
