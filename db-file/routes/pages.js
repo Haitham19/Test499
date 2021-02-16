@@ -7,7 +7,7 @@ const router = express.Router();
 // res.render => this is to git the thing that you do it in the folder .
 //
 router.get('/',(req,res) =>{
-res.render('home-page')
+res.render('homePage')
 });
 
 router.get("/researcher", (req, res) => {
@@ -15,8 +15,8 @@ router.get("/researcher", (req, res) => {
    res.render("researcher")
 });
 
-router.get('/researcher-signup',(req,res) =>{
-   res.render('researcher-signup')
+router.get('/researcherSignup',(req,res) =>{
+   res.render('researcherSignup')
 });
 
 module.exports = router;
