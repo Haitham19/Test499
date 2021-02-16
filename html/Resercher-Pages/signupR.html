@@ -11,6 +11,88 @@
     <title>Signup page</title>
 
     <body>
+      <div class="container mt-4">
+        <div class="card">
+           <div class="card-header">
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+              </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+              <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+              <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+            </div>
+              <form>
+                 <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                 </div>
+  
+                 <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                 </div>
+  
+                 <div class="form-group">
+                    <label for="college">College Name</label>
+                    <input type="text" class="form-control" id="college" name="college">
+                 </div>
+  
+                 <div class="form-group">
+                    <label for="deptName">Department Name</label>
+                    <input type="text" class="form-control" id="deptName" name="deptName">
+                 </div>
+  
+  
+                 <div class="form-group">
+                    <label for="mobNum">Mobile Number</label>
+                    <input type="number" class="form-control" id="mobNum" name="mobNum">
+                 </div>
+  
+                 <div class="form-group">
+                    <label for="country">Country Name</label>
+                    <input type="text" class="form-control" id="country" name="country">
+                 </div>
+  
+  
+                 <div class="form-group">
+                    <label for="level">Level</label>
+                    <input type="text" class="form-control" id="level" name="level">
+                 </div>
+  
+                 <div class="form-group">
+                    <label for="university">University</label>
+                    <input type="text" class="form-control" id="university" name="university">
+                 </div>
+  
+                 <button type="submit" class="btn btn-primary">Register Researcher</button>
+              </form>
+           </div>
+        </div>
+     </div>
+  
+  
+  
+  <!--
+     <script>
+        function SIS() {
+           x.style.display = "block";
+           z.style.display = "none";
+        }
+        function SOS() {
+           x.style.display = "block";
+           y.style.display = "block";
+           z.style.display = "none";
+           U.style.display = "none";
+        }</script>
+      -->
+
+
+    <!-- 
       <div id="But">
         <button onClick="SIS()">Student Researcher</button>
         <button onClick="SOS()">Organization Researcher</button>
@@ -66,7 +148,7 @@
           <input type="text" name="OrgName" id="OrgName" />
         </p>
       </div>
-      <!--<p id="researcher"></p>-->
+      //<!--<p id="researcher"></p>
 
       <script>
         /*class researcherIn{
@@ -105,6 +187,7 @@
           U.style.display = "none";
         }
       </script>
+    -->
     </body>
   </head>
 </html>
