@@ -16,9 +16,9 @@ const db = mysql.createConnection({
 exports.researcherSignup = (req, res) =>{
    console.log(req.body);
 
-   const {name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm}= req.body;
+   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
 
-   db.query('SELECT email FROM studentresearcher WHERE email = ?',[email], (error, results) =>{
+   db.query('SELECT email FROM studentresearcher WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -36,8 +36,7 @@ exports.researcherSignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
+
+      res.send("Testing");
    })
-
-
-   res.send("Form Submited");
 }

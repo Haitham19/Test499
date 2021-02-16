@@ -26,6 +26,11 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname, './public');
 websystem.use(express.static(publicDirectory));
 
+//parse URL-encoded bodies (as sent by html forms)
+websystem.use(express.urlencoded({ extended: false}));
+
+//parse json bodies (as sent by API Clint)
+websystem.use(express.json());
 
 
 
