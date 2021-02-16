@@ -37,9 +37,6 @@ exports.researcherSignup = (req, res) =>{
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
 
-<<<<<<< HEAD
-      res.send("Testing");
-=======
       db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
          if(error){
             console.log(error);
@@ -51,6 +48,5 @@ exports.researcherSignup = (req, res) =>{
             });
          }
       })
->>>>>>> ba2c4af13ad8a12dbdf1a0b44c0de52b7787a6c8
    })
 }

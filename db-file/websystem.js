@@ -43,7 +43,7 @@ db.connect((error)=> {
       console.log(error)
    }
    else{
-      console.log("MYSQL IS Connected")
+      console.log("MYSQL IS Connected.");
    }
 });
 
