@@ -12,15 +12,15 @@
 </head>
 
 <body>
-      <div id="But">
-         <button onClick="SIS()">Student Researcher</button>
-         <button onClick="SOS()">Organization Researcher</button>
-      </div>
+   <div id="But">
+      <button onClick="SIS()">Student Researcher</button>
+      <button onClick="SOS()">Organization Researcher</button>
+   </div>
 
    <div class="container mt-4">
       <div class="card">
          <div class="card-header">
-            <form>
+            <form action="auth/researcher-signup" method="POST">
                <div class="form-group">
                   <label for="name">Full Name</label>
                   <input type="text" class="form-control" id="name" name="name">
