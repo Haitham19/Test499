@@ -1,4 +1,6 @@
 const mysql = require("mysql");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 
 // we use process.env for security => detrnv .
@@ -31,6 +33,11 @@ exports.researcherSignup = (req, res) =>{
             message:'password do not match'
          })
       }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      console.log(hashedPassword);
    })
+
+
    res.send("Form Submited");
 }
