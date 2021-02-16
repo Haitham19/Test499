@@ -26,6 +26,7 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname, './public')
 websystem.use(express.static(publicDirectory))
 
+
 // this is to use the html and css fils => views and public 
 websystem.set('view engine', 'hbs');
 
@@ -39,22 +40,9 @@ db.connect((error)=> {
    }
 });
 
-// res.render => this is to git the thing that you do it in the folder .
-//
-websystem.get("/", (req, res) => {
-   //res.send("<h1> Home Page </h1>")
-   res.render("home-page")
-});
 
-websystem.get("/researcher", (req, res) => {
-   //res.send("<h1> Home Page </h1>")
-   res.render("researcher")
-});
-
-websystem.get("/researcher-signup", (req, res) => {
-   //res.send("<h1> Home Page </h1>")
-   res.render("researcher-signup")
-});
+//Define Routes
+websystem.use('/', require('./routes/pages'));
 
 
 websystem.listen(5000, () =>{
