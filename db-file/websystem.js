@@ -23,8 +23,10 @@ const db = mysql.createConnection({
 
 
 // need to serch about it.
-const publicDirectory = path.join(__dirname, './public')
-websystem.use(express.static(publicDirectory))
+const publicDirectory = path.join(__dirname, './public');
+websystem.use(express.static(publicDirectory));
+
+
 
 
 // this is to use the html and css fils => views and public 
