@@ -54,5 +54,5 @@ websystem.use('/auth',require('./routes/auth'))
 
 
 websystem.listen(5000, () =>{
-console.log("server start on post 5000.")
+console.log("server start on port 5000.")
 })
