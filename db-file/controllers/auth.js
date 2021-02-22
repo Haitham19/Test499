@@ -12,19 +12,19 @@ const db = mysql.createConnection({
    database:process.env.DATABASE
 });
 
-exports.ResHomePage=async(req,res)=>{
+exports.researcherReg=async(req,res)=>{
    try{
       const {email,password}=req.body;
 
       if(!email || !password){
-         return res.status(400).render('ResHomePage',{
+         return res.status(400).render('researcherReg',{
             message: 'Please provide an email and password'
          })
       }
       db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,results)=>{
          console.log(results);
          if(!results|| !(await bcrypt.compare(password,results[0].password))){
-            res.status(401).render("/ResHomePage", {
+            res.status(401).render("/researcherReg", {
                message: 'Email or Password in incorrect'
             })
          }
