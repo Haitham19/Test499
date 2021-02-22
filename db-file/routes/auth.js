@@ -7,7 +7,8 @@ const router = express.Router();
 
 // res.render => this is to git the thing that you do it in the folder .
 //
-router.post('/researcherSignup', authController.researcherSignup)
+router.post('/researcherSignup', authController.researcherSignup);
+router.post('/ResHomePage',authController.ResHomePage);
 
 
 

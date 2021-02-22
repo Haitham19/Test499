@@ -9,10 +9,13 @@ const router = express.Router();
 router.get('/',(req,res) =>{
 res.render('homePage')
 });
+router.get('/ResHomePage',(req,res) =>{
+   res.render('ResHomePage')
+});
 
-router.get("/researcher", (req, res) => {
+router.get("/researcherReg", (req, res) => {
    //res.send("<h1> Home Page </h1>")
-   res.render("researcher")
+   res.render("researcherReg")
 });
 
 router.get('/researcherSignup',(req,res) =>{

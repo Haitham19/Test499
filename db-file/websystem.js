@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const mysql = require("mysql");
 const dotenv = require("dotenv");
-
+const cookieParser = require("cookie-parser");
 
 // I think this is for security .
 // if we need to know more serch about (detenv)
@@ -31,7 +31,7 @@ websystem.use(express.urlencoded({ extended: false}));
 
 //parse json bodies (as sent by API Clint)
 websystem.use(express.json());
-
+websystem.use(cookieParser());
 
 
 // this is to use the html and css fils => views and public 
