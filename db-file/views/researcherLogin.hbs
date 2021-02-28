@@ -1,11 +1,11 @@
-
 <html lang="en">
+
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
    <link rel="stylesheet" href="../login1.css">
-    <!-- Tab Icon-->
+   <!-- Tab Icon-->
    <link rel="shortcut icon" href="../favicon.ico">
 
    <title>login page</title>
@@ -13,35 +13,38 @@
 
 <body>
 
-   
 
-   <div class="center"> 
+
+   <div class="center">
       <h1>Login Page</h1>
-      <form action="/auth/researcherReg" method="post">
+      <form action="/auth/researcherLogin" method="post">
          <div class="txt_field">
-            <input type="text" required>
+            <input type="email" id="email" name="email">
             <span></span>
-            <label>Email</label>
+            <label for="email">Email Address</label>
          </div>
          <div class="txt_field">
-            <input type="password" required>
+            <input type="password" class="form-control" id="password" name="password">
             <span></span>
-            <label>Password</label>
+            <label for="password">Password</label>
          </div>
          <div class="pass">Forgot Password? </div>
          <input type="submit" value="Login">
-         
+
          <div class="signup_link">
             Not a member? <a href="/researcherSignup">Signup</a>
          </div>
-        <!-- <div class="signup_link"> Not a member?
+         <!-- <div class="signup_link"> Not a member?
             <button class="transparent" onclick="location.href='./Resercher-Pages/signupR.html';">
                Signup
              </button>
          </div>
       -->
-      
+
       </form>
+      {{#if message}}
+      <h4 class="alert alert-danger mt-4">{{message}}</h4>
+      {{/if}}
    </div>
 </body>
 

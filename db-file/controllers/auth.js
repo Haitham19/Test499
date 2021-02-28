@@ -12,22 +12,29 @@ const db = mysql.createConnection({
    database:process.env.DATABASE
 });
 
-exports.researcherReg=async(req,res)=>{
+exports.researcherLogin = async(req,res)=>{
    try{
       const {email,password}=req.body;
 
       if(!email || !password){
-         return res.status(400).render('researcherReg',{
+         return res.status(400).render('researcherLogin',{
             message: 'Please provide an email and password'
          })
       }
       db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,results)=>{
          console.log(results);
-         if(!results|| !(await bcrypt.compare(password,results[0].password))){
-            res.status(401).render("/researcherReg", {
-               message: 'Email or Password in incorrect'
+         if(!results|| !(await bcrypt.compare(password, results[0].password))){
+            res.status(401).render("researcherLogin", {
+               message: 'Email or Password is incorrect'
             })
          }
+      })
+   }
+   catch(error){
+      console.log(error);
+   }
+}
+/*
          else {
             const id=results[0].id;
             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
@@ -42,14 +49,10 @@ exports.researcherReg=async(req,res)=>{
             }
             res.cookie('jwt',token,cookieOption);
             res.status(200).redirect("/ResHomePage");
-         }
-      })
-   }
-   catch(error){
-      console.log(error);
-   }
-}
+         }*/
+      
 
+//this is function for  Researcher rejesterition 
 exports.researcherSignup = (req, res) =>{
    console.log(req.body);
 

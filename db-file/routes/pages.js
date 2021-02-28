@@ -13,9 +13,9 @@ router.get('/ResHomePage',(req,res) =>{
    res.render('ResHomePage')
 });
 
-router.get("/researcherReg", (req, res) => {
+router.get("/researcherLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
-   res.render("researcherReg")
+   res.render("researcherLogin")
 });
 
 router.get('/researcherSignup',(req,res) =>{
