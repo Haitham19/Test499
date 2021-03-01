@@ -2,6 +2,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
         <link rel="stylesheet" href="../CSS/HomePage.css">
         
         <!-- Tab Icon-->
@@ -11,14 +13,26 @@
         <title>HomePage</title>
      </head>
      <body> 
-         <center>
-            <h2> Home Page </h2>            
-              <br /><br />
-              <button class="transparent" onclick="location.href='';"> Reqests </button>
-              <br>              
-              <button class="transparent" onclick="location.href='';"> Contact </button>
-         </center>
-        
+        <nav> 
+            <h3>CREP</h3>
+                <ul>
+                    <li><a href="CGMhomepage.html">Home</a></li>
+                    <li><a href="/CGMRequests">Requests</a></li>
+                    <li><a href="/CGMCommunicate">Communication</a></li>
+                </ul>
+        </nav>
 
+        <div class="containter mt-4">
+            <div class="jumbotron">
+                <h1 class="display-4">Welcome,</h1>
+                <p class="lead">This is Center General Manager homepage here you can check incoming requests and approve or reject them, And also could Communicate with other system users.</p>
+                <hr class="my-4">
+                <p class="lead">
+                  <a class="btn btn-primary btn-lg" href="/CGMRequests" role="button">Check Requests</a>
+                </p>
+              </div>
+        </div>
+        
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
      </body>
 </html>
