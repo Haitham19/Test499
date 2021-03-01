@@ -23,19 +23,16 @@ exports.researcherLogin = async(req,res)=>{
       }
       db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,results)=>{
          console.log(results);
-         if(!results|| !(await bcrypt.compare(password, results[0].password))){
+         if (results.length==0) {
             res.status(401).render("researcherLogin", {
                message: 'Email or Password is incorrect'
+            }) //this is what you are missing
+          }
+         else if(!results|| !(await bcrypt.compare(password, results[0].password))){
+            res.status(401).render("researcherLogin", {
+               message: 'Email or Password  incorrect'
             })
-         }
-      })
-   }
-   catch(error){
-      console.log(error);
-   }
-}
-/*
-         else {
+         }else {
             const id=results[0].id;
             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
                expiresIn: process.env.JWT_EXPIRES_IN
@@ -43,13 +40,22 @@ exports.researcherLogin = async(req,res)=>{
             console.log("the token is: "+token);
             const cookieOption={
                expires: new Date(
-                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60
+                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
                ),
                   httpOnly:true
             }
             res.cookie('jwt',token,cookieOption);
-            res.status(200).redirect("/ResHomePage");
-         }*/
+            res.status(200).redirect("/");
+         }
+         
+      })
+   }
+   catch(error){
+      console.log(error);
+   }
+}
+/*
+         */
       
 
 //this is function for  Researcher rejesterition 
