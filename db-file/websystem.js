@@ -51,6 +51,7 @@ db.connect((error)=> {
 //Define Routes
 websystem.use('/', require('./routes/pages'));
 websystem.use('/auth',require('./routes/auth'))
+websystem.use('/auth1',require('./routes/auth1'))
 
 
 websystem.listen(5003, () =>{
