@@ -22,4 +22,8 @@ router.get('/researcherSignup',(req,res) =>{
    res.render('researcherSignup')
 });
 
+router.get('/CGMhomepage',(req,res) =>{
+   res.render('CGMhomepage')
+});
+
 module.exports = router;
