@@ -58,7 +58,8 @@ nav li a {
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
-    
+    transition: 0.1s ease-in-out;
+
 }
 
 nav li a:hover {
@@ -67,5 +68,5 @@ nav li a:hover {
     background-color:  rgb(1, 73, 73);
     padding: 5px 8px;
     border-radius: 3mm;
-    transition: 0.1s ease-in-out;
+    
 }

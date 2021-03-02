@@ -44,7 +44,7 @@ nav li a {
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
-    
+    transition: 0.1s ease-in-out;
 }
 
 nav li a:hover {
@@ -53,5 +53,29 @@ nav li a:hover {
     background-color:  rgb(1, 73, 73);
     padding: 5px 8px;
     border-radius: 3mm;
-    transition: 0.1s ease-in-out;
+}
+
+.container {
+    background-color: rgba(202, 202, 202, 0.226);
+    padding: 10px 10px 10px 10px;
+    border-radius: 2mm;
+    position:relative;
+}
+
+.button {
+    background-color:rgba(128, 128, 128, 0.137);
+    text-align: center;
+    font-size: 18px;
+    padding: 5px 10px 5px 10px;
+    width: 30mm;
+    border-color: rgb(68, 68, 68);
+    border-radius:1mm;
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+
+}
+
+.button:hover{
+    background-color: rgba(128, 128, 128, 0.363);
+   
 }
