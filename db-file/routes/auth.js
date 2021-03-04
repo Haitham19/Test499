@@ -9,7 +9,8 @@ const router = express.Router();
 //
 router.post('/researcherSignup', authController.researcherSignup);
 router.post('/researcherLogin',authController.researcherLogin);
-
+router.post('/MinistrySignup',authController.MinistrySignup);
+router.post('/MinistryLogin',authController.MinistryLogin);
 
 
 module.exports = router;

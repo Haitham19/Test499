@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <link rel="stylesheet" href="../login1.css">
+   <!-- Tab Icon-->
+   <link rel="shortcut icon" href="../favicon.ico">
+
+   <title>login page</title>
+</head>
+
+<body>
+
+
+
+   <div class="center">
+      <h1>Login Page</h1>
+      <form action="/auth/ministryLogin" method="post">
+         <div class="txt_field">
+            <input type="email" id="email" name="email">
+            <span></span>
+            <label for="email">Email Address</label>
+         </div>
+         <div class="txt_field">
+            <input type="password" class="form-control" id="password" name="password">
+            <span></span>
+            <label for="password">Password</label>
+         </div>
+         <div class="pass">Forgot Password? </div>
+         <input type="submit" value="Login">
+
+         <div class="signup_link">
+            Not a member? <a href="/adminReg">Signup</a>
+         </div>
+         <!-- <div class="signup_link"> Not a member?
+            <button class="transparent" onclick="location.href='./Resercher-Pages/signupR.html';">
+               Signup
+             </button>
+         </div>
+      -->
+
+      </form>
+      {{#if message}}
+      <h4 class="alert alert-danger mt-4">{{message}}</h4>
+      {{/if}}
+   </div>
+</body>
+
+</html>
