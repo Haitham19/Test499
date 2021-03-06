@@ -41,6 +41,9 @@ router.get('/ministryHP',(req,res) =>{
 router.get('/CGMhomepage',(req,res) =>{
    res.render('CGMhomepage')
 });
+router.get('/userSignup',(req,res) =>{
+   res.render('userSignup')
+});
 
 router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
