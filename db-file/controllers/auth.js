@@ -21,12 +21,38 @@ exports.researcherLogin = async(req,res)=>{
             message: 'Please provide an email and password'
          })
       }
+   db.query('SELECT * FROM organizationresearcher WHERE email = ?',[email],async(error,result)=>{
       db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,results)=>{
-         console.log(results);
+         console.log("organization -"+result)
+         console.log("student -"+results);
          if (results.length==0) {
+            if(result.length==0){
             res.status(401).render("researcherLogin", {
                message: 'Email does not exist'
             }) //this is what you are missing
+            }
+            else if(bcrypt.compareSync(password, result[0].password)){
+               res.status(401).render("researcherLogin", {
+                  message: 'Email or Password is incorrect'
+               }) 
+            }
+            else{
+               const id=result[0].id;
+            const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+               expiresIn: process.env.JWT_EXPIRES_IN
+            })
+            console.log("the token is: "+token);
+            const cookieOption={
+               expires: new Date(
+                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+               ),
+                  httpOnly:true
+            }
+            res.cookie('jwt',token,cookieOption);
+            res.status(200).redirect("/");//"/OrgHomePage"
+            return;
+            }
+/////////////////////////////////////////////////////////////////////////////////////////
           }
          else if(bcrypt.compareSync(password, results[0].password)){
             res.status(401).render("researcherLogin", {
@@ -49,6 +75,7 @@ exports.researcherLogin = async(req,res)=>{
          }
          
       })
+   })
    }
    catch(error){
       console.log(error);
@@ -105,8 +132,46 @@ exports.researcherSignup = (req, res) =>{
    console.log(req.body);
 
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
+   const type="student";
+   db.query('SELECT email FROM studentresearcher, organizaionresearcher, ministry WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
 
-   db.query('SELECT email FROM studentresearcher WHERE email = ?',[email], async(error, results) =>{
+      if(results.length > 0){
+         return res.render('researcherSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('researcherSignup',{
+            message:'password do not match'
+         })
+      }
+      
+      let hashedPassword = await bcrypt.hash(password, 8);
+      console.log(hashedPassword);
+
+      db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university,type:type},(error,results) =>{
+         if(error){
+            console.log(error);
+         }
+         else{
+            console.log(results)
+            return res.render('researcherSignup',{
+               message:'Researcher Register'
+            });
+         }
+      })
+   })
+}
+
+exports.OrgResSignup = (req, res) =>{
+   console.log(req.body);
+
+   const { name, email,  mobNum, organization, password, passwordConfirm }= req.body;
+
+   db.query('SELECT email FROM organizationresearcher WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -125,19 +190,21 @@ exports.researcherSignup = (req, res) =>{
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
 
-      db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
+      db.query('INSERT INTO organizationresearcher SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,organization:organization},(error,results) =>{
          if(error){
             console.log(error);
          }
          else{
             console.log(results)
             return res.render('researcherSignup',{
-               message:'Researcher Register'
+               message:'Organization Researcher Registered'
             });
          }
       })
    })
 }
+
+
 exports.MinistrySignup = (req, res) =>{
    console.log(req.body);
 
