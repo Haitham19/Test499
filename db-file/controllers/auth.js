@@ -133,7 +133,7 @@ exports.researcherSignup = (req, res) =>{
 
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
    const type="student";
-   db.query('SELECT email FROM studentresearcher, organizaionresearcher, ministry WHERE email = ?',[email], async(error, results) =>{
+   db.query('SELECT email FROM studentresearcher WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -152,7 +152,7 @@ exports.researcherSignup = (req, res) =>{
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
 
-      db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university,type:type},(error,results) =>{
+      db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
          if(error){
             console.log(error);
          }
