@@ -31,7 +31,7 @@ exports.researcherLogin = async(req,res)=>{
                message: 'Email does not exist'
             }) //this is what you are missing
             }
-            else if(bcrypt.compareSync(password, result[0].password)){
+            else if(!(await bcrypt.compare(password,result[0].password))){
                res.status(401).render("researcherLogin", {
                   message: 'Email or Password is incorrect'
                }) 
@@ -54,7 +54,7 @@ exports.researcherLogin = async(req,res)=>{
             }
 /////////////////////////////////////////////////////////////////////////////////////////
           }
-         else if(bcrypt.compareSync(password, results[0].password)){
+         else if(!(await bcrypt.compare(password,results[0].password))){
             res.status(401).render("researcherLogin", {
                message: 'Email or Password is incorrect'
             })
