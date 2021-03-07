@@ -71,7 +71,7 @@ exports.researcherLogin = async(req,res)=>{
                   httpOnly:true
             }
             res.cookie('jwt',token,cookieOption);
-            res.status(200).redirect("/ResHomePage");
+            res.status(200).redirect("/SRhomepage");
          }
          
       })

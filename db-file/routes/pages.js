@@ -23,6 +23,9 @@ router.get("/researcherLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
    res.render("researcherLogin")
 });
+router.get('/SRhomepage',(req,res) =>{
+   res.render('SRhomepage')
+});
 router.get("/userLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
    res.render("userLogin")
