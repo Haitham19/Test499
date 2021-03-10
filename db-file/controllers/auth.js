@@ -82,7 +82,7 @@ exports.researcherLogin = async(req,res)=>{
    }
 }
 
-exports.MinistryLogin = async(req,res)=>{
+exports.userLogin = async(req,res)=>{
    try{
       const {email,password}=req.body;
 
@@ -91,19 +91,44 @@ exports.MinistryLogin = async(req,res)=>{
             message: 'Please provide an email and password'
          })
       }
-      db.query('SELECT * FROM ministry WHERE email = ?', [email], async(error,results)=>{
-         console.log(results);
-         if (results.length==0) {
+      db.query('SELECT * FROM users WHERE email = ?', [email], async(error,results)=>{
+         db.query('SELECT * FROM ministry WHERE email = ?', [email], async(erro,result)=>{
+         
+         if (result.length==0) {
+
+            if(results.length==0){
             res.status(401).render("userLogin", {
                message: 'Email does not exist'
-            }) //this is what you are missing
+            })
+            }
+            else if(!(await bcrypt.compare(password,results[0].password))){
+               res.status(401).render("userLogin", {
+                  message: 'Email or Password is incorrect'
+               }) 
+            }
+            else{
+               const id=results[0].userID;
+            const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+               expiresIn: process.env.JWT_EXPIRES_IN
+            })
+            console.log("the token is: "+token);
+            const cookieOption={
+               expires: new Date(
+                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+               ),
+                  httpOnly:true
+            }
+            res.cookie('jwt',token,cookieOption);
+            res.status(200).redirect("/adminHP");//"/OrgHomePage"
+            return;
+            }
           }
-         else if(bcrypt.compareSync(password, results[0].password)){
+         else if(!(await bcrypt.compare(password,result[0].password))){
             res.status(401).render("userLogin", {
                message: 'Email or Password is incorrect'
             })
          }else {
-            const id=results[0].id;
+            const id=result[0].id;
             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
                expiresIn: process.env.JWT_EXPIRES_IN
             })
@@ -117,7 +142,7 @@ exports.MinistryLogin = async(req,res)=>{
             res.cookie('jwt',token,cookieOption);
             res.status(200).redirect("/ministryHP");
          }
-         
+      })
       })
    }
    catch(error){
@@ -150,8 +175,7 @@ exports.researcherSignup = (req, res) =>{
       }
       
       let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
-      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum,},(erro,result) =>{
+      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum,password:hashedPassword},(erro,result) =>{
          if(erro){
             return res.render('researcherSignup',{
                message:'The mobile number is already in use'
@@ -196,7 +220,7 @@ exports.OrgResSignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum},(erro,result) =>{
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
          if(erro){
             return res.render('researcherSignup',{
                message:'The mobile number is already in use'
@@ -242,7 +266,7 @@ exports.MinistrySignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum},(erro,result) =>{
+   db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
       if(erro){
          return res.render('researcherSignup',{
          message:'The mobile number is already in use'

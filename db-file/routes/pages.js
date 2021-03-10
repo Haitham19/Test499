@@ -36,6 +36,9 @@ router.get('/researcherSignup',(req,res) =>{
 router.get('/adminReg',(req,res) =>{
    res.render('adminReg')
 });
+router.get('/adminHP',(req,res) =>{
+   res.render('adminHP')
+});
 router.get('/ministryHP',(req,res) =>{
    res.render('ministryHP')
 });

@@ -11,7 +11,7 @@ router.post('/researcherSignup', authController.researcherSignup);
 router.post('/researcherLogin',authController.researcherLogin);
 router.post('/OrgResSignup', authController.OrgResSignup);
 router.post('/MinistrySignup',authController.MinistrySignup);
-router.post('/MinistryLogin',authController.MinistryLogin);
+router.post('/userLogin',authController.userLogin);
 
 
 module.exports = router;
