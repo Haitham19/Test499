@@ -10,12 +10,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/SRhomepagestyle.css">
+    {{!-- <! this is for drobdown list> --}}
+        <link rel="stylesheet" href="/SRhomepagestyle.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
-    <!-- Tab Icon-->
-    <link rel="shortcut icon" href="/favicon.ico">
+        <!-- Tab Icon-->
+        <link rel="shortcut icon" href="/favicon.ico">
 
-    <title>CREP - Homepage</title>
+        <title>CREP - Homepage</title>
 </head>
 
 <body>
@@ -28,78 +32,37 @@
             <li><a href="/CGMRequests">Log Out</a></li>
         </ul>
     </nav>
-    <div class="btn-group dropright">
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            Dropright
-        </button>
-        <div class="dropdown-menu">
-            <!-- Dropdown menu links -->
-            <a class="dropdown-item" href="#">Dropdown link</a>
-            Dropdown link2
-        </div>
-    </div>
+
 
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Dropdown
+            main menu
         </button>
         <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-            <li class="dropdown-item"><a href="#">Some action</a></li>
-            <li class="dropdown-item"><a href="#">Some other action</a></li>
-            <li class="dropdown-divider"></li>
             <li class="dropdown-submenu">
-                <a class="dropdown-item" tabindex="-1" href="#">Hover me for more options</a>
+                <a class="dropdown-item" tabindex="-1" href="#">Request</a>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a tabindex="-1" href="#">Second level</a></li>
-                    <li class="dropdown-submenu">
-                        <a class="dropdown-item" href="#">Even More..</a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item"><a href="#">3rd level</a></li>
-                            <li class="dropdown-submenu"><a class="dropdown-item" href="#">another level</a>
-                                <ul class="dropdown-menu">
-                                    <li class="dropdown-item"><a href="#">4th level</a></li>
-                                    <li class="dropdown-item"><a href="#">4th level</a></li>
-                                    <li class="dropdown-item"><a href="#">4th level</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-item"><a href="#">3rd level</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown-item"><a href="#">Second level</a></li>
-                    <li class="dropdown-item"><a href="#">Second level</a></li>
+                    <li class="dropdown-item"><a tabindex="-1" href="#">Add new request</a></li>
+                    <li class="dropdown-item"><a tabindex="-1" href="#">Request Status</a></li>
                 </ul>
             </li>
+            <li class="dropdown-item"><a href="#">View and edit personal information</a></li>
+            <li class="dropdown-item"><a href="#">Rating</a></li>
+            <li class="dropdown-item"><a href="#">Communication</a></li>
         </ul>
     </div>
 
     </div>
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <button type="button" class="btn btn-secondary">1</button>
-        <button type="button" class="btn btn-secondary">2</button>
 
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Dropdown
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">Dropdown link</a>
-                <a class="dropdown-item" href="#">Dropdown link</a>
-            </div>
-        </div>
-    </div>
     <div class="container mt-5">
         <div class="jumbotron">
             <h1 class="display-5">Welcome,</h1>
-            <p class="lead">This is Center General Manager homepage here you can check incoming requests and approve
-                or
-                reject them, And also could Communicate with other system users.</p>
-            <hr class="my-4">
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="/CGMRequests" role="button">Check Requests</a>
+            <p class="lead">This is Researcher homepage here you Add new request and chck Request Status also you can
+                rating and communication .
+
             </p>
+
         </div>
     </div>
 
