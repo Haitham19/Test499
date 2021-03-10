@@ -133,7 +133,7 @@ exports.researcherSignup = (req, res) =>{
 
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
    const type="student";
-   db.query('SELECT email FROM studentresearcher WHERE email = ?',[email], async(error, results) =>{
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -151,17 +151,24 @@ exports.researcherSignup = (req, res) =>{
       
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-
-      db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
+      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum,},(erro,result) =>{
+         if(erro){
             return res.render('researcherSignup',{
+               message:'The mobile number is already in use'
+            })
+         }
+         db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results);
+               console.log(result);
+               return res.render('researcherSignup',{
                message:'Researcher Register'
             });
-         }
+            }
+         })
       })
    })
 }
@@ -171,7 +178,7 @@ exports.OrgResSignup = (req, res) =>{
 
    const { name, email,  mobNum, organization, password, passwordConfirm }= req.body;
 
-   db.query('SELECT email FROM organizationresearcher WHERE email = ?',[email], async(error, results) =>{
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -189,17 +196,24 @@ exports.OrgResSignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-
-      db.query('INSERT INTO organizationresearcher SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,organization:organization},(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum},(erro,result) =>{
+         if(erro){
             return res.render('researcherSignup',{
-               message:'Organization Researcher Registered'
-            });
+               message:'The mobile number is already in use'
+            })
          }
+         db.query('INSERT INTO organizationresearcher SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,organization:organization},(error,results) =>{
+         
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results)
+               return res.render('researcherSignup',{
+               message:'Organization Researcher Registered'
+               });
+            }
+         })   
       })
    })
 }
@@ -210,7 +224,7 @@ exports.MinistrySignup = (req, res) =>{
 
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
 
-   db.query('SELECT email FROM studentresearcher,ministry WHERE email = ?',[email], async(error, results) =>{
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
       }
@@ -228,7 +242,12 @@ exports.MinistrySignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-
+   db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum},(erro,result) =>{
+      if(erro){
+         return res.render('researcherSignup',{
+         message:'The mobile number is already in use'
+         })
+      }
       db.query('INSERT INTO ministry SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
          if(error){
             console.log(error);
@@ -236,9 +255,10 @@ exports.MinistrySignup = (req, res) =>{
          else{
             console.log(results)
             return res.render('adminReg',{
-               message:'Ministry Register'
+            message:'Ministry Register'
             });
          }
+      })
       })
    })
 }
