@@ -11,6 +11,7 @@ router.post('/researcherSignup', authController.researcherSignup);
 router.post('/researcherLogin',authController.researcherLogin);
 router.post('/OrgResSignup', authController.OrgResSignup);
 router.post('/MinistrySignup',authController.MinistrySignup);
+router.post('/CGMSignup',authController.CGMSignup);
 router.post('/userLogin',authController.userLogin);
 
 
