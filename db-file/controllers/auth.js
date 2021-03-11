@@ -332,7 +332,7 @@ exports.CGMSignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email, obNum:mobNum, password:hashedPassword},(erro,result) =>{
+   db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
       if(erro){
          return res.render('adminReg',{
          message:'The mobile number is already in use'
@@ -346,6 +346,49 @@ exports.CGMSignup = (req, res) =>{
             console.log(results)
             return res.render('adminReg',{
             message:'Center General Manager Registered'
+            });
+         }
+      })
+   })
+   })
+}
+exports.RDSignup = (req, res) =>{
+   console.log(req.body);
+
+   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
+
+      if(results.length > 0){
+         return res.render('adminReg',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('adminReg',{
+            message:'password do not match'
+         })
+      }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      console.log(hashedPassword);
+   db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
+      if(erro){
+         return res.render('adminReg',{
+         message:'The mobile number is already in use'
+         })
+      }
+      db.query('INSERT INTO rd SET ?',{name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
+         if(error){
+            console.log(error);
+         }
+         else{
+            console.log(results)
+            return res.render('adminReg',{
+            message:'Research and Development Department User Registered'
             });
          }
       })
