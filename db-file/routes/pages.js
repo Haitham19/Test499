@@ -55,8 +55,10 @@ router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
 
-
-
+// Advisor pages.
+router.get('/advisorHP',(req,res) =>{
+   res.render('advisorHP')
+});
 
 
 module.exports = router;
