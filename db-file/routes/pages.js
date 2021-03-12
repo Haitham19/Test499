@@ -63,4 +63,12 @@ router.get('/advisorCOMM',(req,res) =>{
    res.render('advisorCOMM')
 });
 
+// College Dean pages.
+router.get('/deanHP',(req,res) =>{
+   res.render('deanHP')
+});
+router.get('/deanCOMM',(req,res) =>{
+   res.render('deanCOMM')
+});
+
 module.exports = router;
