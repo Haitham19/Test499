@@ -71,4 +71,13 @@ router.get('/deanCOMM',(req,res) =>{
    res.render('deanCOMM')
 });
 
+// Deputyship pages.
+router.get('/deputyHP',(req,res) =>{
+   res.render('deputyHP')
+});
+router.get('/deputyCOMM',(req,res) =>{
+   res.render('deputyCOMM')
+});
+
+
 module.exports = router;
