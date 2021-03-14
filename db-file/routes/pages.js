@@ -23,9 +23,14 @@ router.get("/researcherLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
    res.render("researcherLogin")
 });
+//Student Researcher pages
 router.get('/SRhomepage',(req,res) =>{
    res.render('SRhomepage')
 });
+router.get('/SRaddnewrequest',(req,res) =>{
+   res.render('SRaddnewrequest')
+});
+//--------------------------------------------//
 router.get("/userLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
    res.render("userLogin")
