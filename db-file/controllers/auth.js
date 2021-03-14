@@ -92,78 +92,198 @@ exports.userLogin = async(req,res)=>{
          })
       }
       db.query('SELECT * FROM users WHERE email = ?', [email], async(error,results)=>{
-         db.query('SELECT * FROM ministry WHERE email = ?', [email], async(error,result)=>{
-            db.query('SELECT * FROM cgm WHERE email = ?', [email], async(error,resul)=>{
-               if (result.length==0) {
-                  if(resul.length==0){
-                     if(results.length==0){
-                     res.status(401).render("userLogin", {
-                        message: 'Email does not exist'
+         db.query('SELECT * FROM ministry WHERE email = ?', [email], async(error,mini)=>{
+            db.query('SELECT * FROM cgm WHERE email = ?', [email], async(error,cgm)=>{
+               db.query('SELECT * FROM advisor WHERE email = ?', [email], async(error,adv)=>{
+                  db.query('SELECT * FROM deputy WHERE email = ?', [email], async(error,depu)=>{
+                     db.query('SELECT * FROM dean WHERE email = ?', [email], async(error,dean)=>{
+                        db.query('SELECT * FROM mission WHERE email = ?', [email], async(error,mis)=>{
+                           db.query('SELECT * FROM rd WHERE email = ?', [email], async(error,rd)=>{
+                              if (mini.length==0){
+                                 if(cgm.length==0){
+                                    if(adv.length==0){
+                                       if(depu.length==0){
+                                          if(dean.length==0){
+                                             if(mis.length==0){
+                                                if(rd.length==0){
+                                                   if(results.length==0){
+                                                   res.status(401).render("userLogin", {
+                                                      message: 'Email does not exist'
+                                                   })
+                                                   }
+                                                   else if(!(await bcrypt.compare(password,results[0].password))){
+                                                      res.status(401).render("userLogin", {
+                                                         message: 'Email or Password is incorrect'
+                                                      }) 
+                                                   }
+                                                   else{
+                                                      const id=results[0].userID;
+                                                   const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                      expiresIn: process.env.JWT_EXPIRES_IN
+                                                   })
+                                                   console.log("the token is: "+token);
+                                                   const cookieOption={
+                                                      expires: new Date(
+                                                         Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                      ),
+                                                         httpOnly:true
+                                                   }
+                                                   res.cookie('jwt',token,cookieOption);
+                                                   res.status(200).redirect("/adminHP");//
+                                                   return;
+                                                   }
+                                                }
+                                                else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                   res.status(401).render("userLogin", {
+                                                      message: 'Email or Password is incorrect'
+                                                   })
+                                                }
+                                                else{
+                                                   const id=rd[0].id;
+                                                const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                   expiresIn: process.env.JWT_EXPIRES_IN
+                                                })
+                                                console.log("the token is: "+token);
+                                                const cookieOption={
+                                                   expires: new Date(
+                                                      Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                   ),
+                                                      httpOnly:true
+                                                }
+                                                res.cookie('jwt',token,cookieOption);
+                                                res.status(200).redirect("/RDhomepage(Haitham)");
+                                                }
+                                             }
+                                             else if(!(await bcrypt.compare(password,mis[0].password))){
+                                                res.status(401).render("userLogin", {
+                                                   message: 'Email or Password is incorrect'
+                                                })
+                                             }
+                                             else{
+                                                const id=mis[0].id;
+                                             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                expiresIn: process.env.JWT_EXPIRES_IN
+                                             })
+                                             console.log("the token is: "+token);
+                                             const cookieOption={
+                                                expires: new Date(
+                                                   Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                ),
+                                                   httpOnly:true
+                                             }
+                                             res.cookie('jwt',token,cookieOption);
+                                             res.status(200).redirect("/missionHP");//missionHP
+                                             }
+                                          }
+                                          else if(!(await bcrypt.compare(password,dean[0].password))){
+                                             res.status(401).render("userLogin", {
+                                                message: 'Email or Password is incorrect'
+                                             })
+                                          }
+                                          else {
+                                             const id=dean[0].id;
+                                             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                expiresIn: process.env.JWT_EXPIRES_IN
+                                             })
+                                             console.log("the token is: "+token);
+                                             const cookieOption={
+                                                expires: new Date(
+                                                   Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                ),
+                                                   httpOnly:true
+                                             }
+                                             res.cookie('jwt',token,cookieOption);
+                                             res.status(200).redirect("/deanHP");
+                                          }
+                                       }
+                                       else if(!(await bcrypt.compare(password,depu[0].password))){
+                                          res.status(401).render("userLogin", {
+                                             message: 'Email or Password is incorrect'
+                                          })
+                                       }
+                                       else {
+                                          const id=depu[0].id;
+                                          const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                             expiresIn: process.env.JWT_EXPIRES_IN
+                                          })
+                                          console.log("the token is: "+token);
+                                          const cookieOption={
+                                             expires: new Date(
+                                                Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                             ),
+                                                httpOnly:true
+                                          }
+                                          res.cookie('jwt',token,cookieOption);
+                                          res.status(200).redirect("/deputyHP");
+                                       }
+                                    }
+                                    else if(!(await bcrypt.compare(password,adv[0].password))){
+                                          res.status(401).render("userLogin", {
+                                             message: 'Email or Password is incorrect'
+                                          })
+                                       }
+                                       else {
+                                          const id=adv[0].id;
+                                          const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                             expiresIn: process.env.JWT_EXPIRES_IN
+                                          })
+                                          console.log("the token is: "+token);
+                                          const cookieOption={
+                                             expires: new Date(
+                                                Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                             ),
+                                                httpOnly:true
+                                          }
+                                          res.cookie('jwt',token,cookieOption);
+                                          res.status(200).redirect("/advisorHP");
+                                       }
+                                    }
+                                    else if(!(await bcrypt.compare(password,cgm[0].password))){
+                                       res.status(401).render("userLogin", {
+                                          message: 'Email or Password is incorrect'
+                                       })
+                                    }
+                                    else {
+                                       const id=cgm[0].id;
+                                       const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                          expiresIn: process.env.JWT_EXPIRES_IN
+                                       })
+                                       console.log("the token is: "+token);
+                                       const cookieOption={
+                                          expires: new Date(
+                                             Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                          ),
+                                             httpOnly:true
+                                       }
+                                       res.cookie('jwt',token,cookieOption);
+                                       res.status(200).redirect("/CGMhomepage");
+                                    }
+                                 }
+                                 else if(!(await bcrypt.compare(password,mini[0].password))){
+                                    res.status(401).render("userLogin", {
+                                       message: 'Email or Password is incorrect'
+                                    })
+                                 }
+                                 else {
+                                    const id=mini[0].id;
+                                    const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                       expiresIn: process.env.JWT_EXPIRES_IN
+                                    })
+                                    console.log("the token is: "+token);
+                                    const cookieOption={
+                                       expires: new Date(
+                                          Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                       ),
+                                          httpOnly:true
+                                    }
+                                    res.cookie('jwt',token,cookieOption);
+                                    res.status(200).redirect("/ministryHP");
+                                 }
+                           })
+                        })
                      })
-                     }
-                     else if(!(await bcrypt.compare(password,results[0].password))){
-                        res.status(401).render("userLogin", {
-                           message: 'Email or Password is incorrect'
-                        }) 
-                     }
-                     else{
-                        const id=results[0].userID;
-                     const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     res.status(200).redirect("/adminHP");//
-                     return;
-                     }
-                  }
-                  else if(!(await bcrypt.compare(password,resul[0].password))){
-                     res.status(401).render("userLogin", {
-                        message: 'Email or Password is incorrect'
-                     })
-                  }
-                  else{
-                     const id=resul[0].id;
-                  const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
-                     expiresIn: process.env.JWT_EXPIRES_IN
                   })
-                  console.log("the token is: "+token);
-                  const cookieOption={
-                     expires: new Date(
-                        Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                     ),
-                        httpOnly:true
-                  }
-                  res.cookie('jwt',token,cookieOption);
-                  res.status(200).redirect("/CGMhomepage");
-                  }
-               }
-               else if(!(await bcrypt.compare(password,result[0].password))){
-                  res.status(401).render("userLogin", {
-                     message: 'Email or Password is incorrect'
-                  })
-               }
-               else {
-                  const id=result[0].id;
-                  const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
-                     expiresIn: process.env.JWT_EXPIRES_IN
-                  })
-                  console.log("the token is: "+token);
-                  const cookieOption={
-                     expires: new Date(
-                        Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                     ),
-                        httpOnly:true
-                  }
-                  res.cookie('jwt',token,cookieOption);
-                  res.status(200).redirect("/ministryHP");
-               }
+               })
             })
          })
       })
@@ -264,8 +384,166 @@ exports.OrgResSignup = (req, res) =>{
       })
    })
 }
+exports.advisorSignup=(req,res)=>{
+   const { name, email,  password,mobNum, passwordConfirm }= req.body;
 
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
 
+      if(results.length > 0){
+         return res.render('userSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('userSignup',{
+            message:'password do not match'
+         })
+      }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
+            return res.render('userSignup',{
+            message:'The mobile number is already in use'
+            })
+         }
+         db.query('INSERT INTO advisor SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results)
+               return res.render('userSignup',{
+               message:'Adviser Registered'
+               });
+            }
+         })
+         })
+      })
+}
+exports.deanSignup=(req,res)=>{
+   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
+
+      if(results.length > 0){
+         return res.render('userSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('userSignup',{
+            message:'password do not match'
+         })
+      }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
+            return res.render('userSignup',{
+            message:'The mobile number is already in use'
+            })
+         }
+         db.query('INSERT INTO dean SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results)
+               return res.render('userSignup',{
+               message:'College Dean Registered'
+               });
+            }
+         })
+         })
+      })
+}
+exports.deputySignup=(req,res)=>{
+   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
+
+      if(results.length > 0){
+         return res.render('userSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('userSignup',{
+            message:'password do not match'
+         })
+      }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
+            return res.render('userSignup',{
+            message:'The mobile number is already in use'
+            })
+         }
+         db.query('INSERT INTO deputy SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results)
+               return res.render('userSignup',{
+               message:'Deputyship user Registered'
+               });
+            }
+         })
+         })
+      })
+}
+exports.missionSignup=(req,res)=>{
+   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
+
+      if(results.length > 0){
+         return res.render('userSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('userSignup',{
+            message:'password do not match'
+         })
+      }
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
+            return res.render('userSignup',{
+            message:'The mobile number is already in use'
+            })
+         }
+         db.query('INSERT INTO mission SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(results)
+               return res.render('userSignup',{
+               message:'Cultural Mission user Registered'
+               });
+            }
+         })
+         })
+      })
+}
 exports.MinistrySignup = (req, res) =>{
    console.log(req.body);
 
@@ -291,7 +569,7 @@ exports.MinistrySignup = (req, res) =>{
       console.log(hashedPassword);
    db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
       if(erro){
-         return res.render('researcherSignup',{
+         return res.render('adminReg',{
          message:'The mobile number is already in use'
          })
       }

@@ -59,7 +59,9 @@ router.get('/userSignup',(req,res) =>{
 router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
-
+router.get('/missionHP',(req,res) =>{
+   res.render('missionHP')
+});
 // Advisor pages.
 router.get('/advisorHP',(req,res) =>{
    res.render('advisorHP')
