@@ -41,6 +41,9 @@ router.get('/researcherSignup',(req,res) =>{
 router.get('/adminReg',(req,res) =>{
    res.render('adminReg')
 });
+router.get('/adminHP',(req,res) =>{
+   res.render('adminHP')
+});
 router.get('/ministryHP',(req,res) =>{
    res.render('ministryHP')
 });
@@ -57,8 +60,29 @@ router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
 
+// Advisor pages.
+router.get('/advisorHP',(req,res) =>{
+   res.render('advisorHP')
+});
+router.get('/advisorCOMM',(req,res) =>{
+   res.render('advisorCOMM')
+});
 
+// College Dean pages.
+router.get('/deanHP',(req,res) =>{
+   res.render('deanHP')
+});
+router.get('/deanCOMM',(req,res) =>{
+   res.render('deanCOMM')
+});
 
+// Deputyship pages.
+router.get('/deputyHP',(req,res) =>{
+   res.render('deputyHP')
+});
+router.get('/deputyCOMM',(req,res) =>{
+   res.render('deputyCOMM')
+});
 
 
 module.exports = router;
