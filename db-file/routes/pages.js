@@ -59,9 +59,23 @@ router.get('/userSignup',(req,res) =>{
 router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
+
+
+// RD pages.
+router.get('/rdHP',(req,res) =>{
+   res.render('rdHP')
+});
+
+router.get('/rdCOMM',(req,res) =>{
+   res.render('rdCOMM')
+});
+
+
+// Cultural mission pages.
 router.get('/missionHP',(req,res) =>{
    res.render('missionHP')
 });
+
 // Advisor pages.
 router.get('/advisorHP',(req,res) =>{
    res.render('advisorHP')
