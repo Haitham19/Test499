@@ -60,6 +60,10 @@ router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
 
+router.get('/CGMrequests',(req,res) =>{
+   res.render('CGMrequests')
+});
+
 
 // RD pages.
 router.get('/rdHP',(req,res) =>{
@@ -68,6 +72,10 @@ router.get('/rdHP',(req,res) =>{
 
 router.get('/rdCOMM',(req,res) =>{
    res.render('rdCOMM')
+});
+
+router.get('/rdRequests',(req,res) =>{
+   res.render('rdRequests')
 });
 
 
