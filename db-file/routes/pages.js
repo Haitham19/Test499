@@ -60,6 +60,30 @@ router.get('/CGMcomm',(req,res) =>{
    res.render('CGMcomm')
 });
 
+router.get('/CGMrequests',(req,res) =>{
+   res.render('CGMrequests')
+});
+
+
+// RD pages.
+router.get('/rdHP',(req,res) =>{
+   res.render('rdHP')
+});
+
+router.get('/rdCOMM',(req,res) =>{
+   res.render('rdCOMM')
+});
+
+router.get('/rdRequests',(req,res) =>{
+   res.render('rdRequests')
+});
+
+
+// Cultural mission pages.
+router.get('/missionHP',(req,res) =>{
+   res.render('missionHP')
+});
+
 // Advisor pages.
 router.get('/advisorHP',(req,res) =>{
    res.render('advisorHP')

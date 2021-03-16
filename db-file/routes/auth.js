@@ -8,12 +8,15 @@ const router = express.Router();
 // res.render => this is to git the thing that you do it in the folder .
 //
 router.post('/researcherSignup', authController.researcherSignup);
-router.post('/researcherLogin',authController.researcherLogin);
 router.post('/OrgResSignup', authController.OrgResSignup);
 router.post('/MinistrySignup',authController.MinistrySignup);
+router.post('/deanSignup',authController.deanSignup);
+router.post('/deputySignup',authController.deputySignup);
+router.post('/advisorSignup',authController.advisorSignup);
+router.post('/missionSignup',authController.missionSignup);
 router.post('/CGMSignup',authController.CGMSignup);
 router.post('/RDSignup',authController.RDSignup);
 router.post('/userLogin',authController.userLogin);
-
+router.post('/researcherLogin',authController.researcherLogin);
 
 module.exports = router;
