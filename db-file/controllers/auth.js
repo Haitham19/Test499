@@ -679,43 +679,18 @@ exports.RDSignup = (req, res) =>{
 exports.SRaddnewrequest = (req, res) =>{
    console.log(req.body);
 
-   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+   const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
 
-   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
-      if(error){
-         console.log(error)
-      }
-
-      if(results.length > 0){
-         return res.render('adminReg',{
-            message:'The email is already in use'
-         })
-      }
-      else if (password !== passwordConfirm){
-         return res.render('adminReg',{
-            message:'password do not match'
-         })
-      }
-
-      let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
+   db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates},(erro,result) =>{
       if(erro){
-         return res.render('adminReg',{
-         message:'The mobile number is already in use'
+         return res.render('SRaddnewrequest',{
+         message:'some spaces are empty'
          })
       }
-      db.query('INSERT INTO cgm SET ?',{name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
-            return res.render('adminReg',{
-            message:'Center General Manager Registered'
-            });
-         }
-      })
+      else {
+         return res.render('SRaddnewrequest',{
+            message:'Request is submitted'
+            })
+      }
    })
-   })
-}
+   }

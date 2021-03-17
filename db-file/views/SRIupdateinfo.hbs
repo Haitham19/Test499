@@ -37,61 +37,71 @@
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
 
-               <form action="auth/SRaddnewrequest" method="POST">
+               <form action="auth/SRIupdateinfo" method="POST">
                   <div class="form-group">
-                     <label for="projectTitle">Project title</label>
-                     <input type="text" class="form-control" id="projectTitle" name="projectTitle">
+                     <label for="name">Update your Name</label>
+                     <input type="text" class="form-control" id="name" name="name">
                   </div>
 
                   <div class="form-group">
-                     <label for="researchArea">Research area: </label>
-                     <br>
-                     <select name="researchArea" id="researchArea">
-                        <option selected value="base">Please Select Research area</option>
-                        <option value="earlyChildhood">Early childhood</option>
-                        <option value="specialEducation">Special education</option>
-                        <option value="educationalLeadership">Curriculums</option>
-                     </select>
+                     <label for="email">Update your email Address</label>
+                     <input type="email" class="form-control" id="email" name="email">
                   </div>
 
                   <div class="form-group">
-                     <label for="advisorsName">Advisors name</label>
-                     <input type="text" class="form-control" id="advisorsName" name="advisorsName">
+                     <label for="college">Update your College Name</label>
+                     <input type="text" class="form-control" id="college" name="college">
                   </div>
 
                   <div class="form-group">
-                     <label for="advisorsEmail">Advisors email</label>
-                     <input type="email" class="form-control" id="advisorsEmail" name="advisorsEmail">
+                     <label for="deptName">Update your department Name</label>
+                     <input type="text" class="form-control" id="deptName" name="deptName">
                   </div>
 
 
                   <div class="form-group">
-                     <label for="url">Add a URL to the study tool</label>
-                     <input type="text" class="form-control" id="url" name="url">
+                     <label for="mobNum">Update your mobile Number</label>
+                     <input type="number" class="form-control" id="mobNum" name="mobNum">
                   </div>
 
                   <div class="form-group">
-                     <label for="targetAudience">Target audience</label>
-                     <input type="text" class="form-control" id="targetAudience" name="targetAudience">
+                     <label for="country">Update your country Name</label>
+                     <input type="text" class="form-control" id="country" name="country">
                   </div>
 
 
                   <div class="form-group">
-                     <label for="educationalDirectorates">Educational directorates</label>
-                     <input type="text" class="form-control" id="educationalDirectorates"
-                        name="educationalDirectorates">
+                     <label for="level">Update your level</label>
+                     <input type="text" class="form-control" id="level" name="level">
                   </div>
+
+                  <div class="form-group">
+                     <label for="university">Update your university</label>
+                     <input type="text" class="form-control" id="university" name="university">
+                  </div>
+
+                  <div class="form-group">
+                     <label for="password">Update your password</label>
+                     <input type="password" class="form-control" id="password" name="password">
+                  </div>
+
+                  <div class="form-group">
+                     <label for="passwordConfirm">Confirm Password</label>
+                     <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                  </div>
+
 
                   <button type="submit" class="btn btn-primary">Register Researcher</button>
                </form>
-
             </div>
 
          </div>
+
       </div>
-      {{#if message}}
-      <h4 class="alert alert-danger mt-4">{{message}}</h4>
-      {{/if}}
+   </div>
+   {{#if message}}
+   <h4 class="alert alert-danger mt-4">{{message}}</h4>
+   {{/if}}
    </div>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
