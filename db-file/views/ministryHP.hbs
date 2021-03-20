@@ -24,14 +24,14 @@
             <h2>C R E P</h2>
                 <ul>
                     <li><a href="/ministryHP">Home</a></li>
-                    <li><a href="/">Sign out</a></li>
+                    <li><a href="/auth/logout">Log Out</a></li>
                     
                 </ul>
         </nav>
 
         <div class="container mt-5">
             <div class="jumbotron">
-                <h1 class="display-5">Welcome,</h1>
+                <h1 class="display-5">Welcome {{user.name}},</h1>
                 <p class="lead">This is Ministry homepage here you can check incoming requests and approve or reject them, And also update the status of the requests.</p>
                 <hr class="my-4">
                 <p class="lead">

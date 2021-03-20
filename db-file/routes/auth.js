@@ -18,5 +18,6 @@ router.post('/CGMSignup',authController.CGMSignup);
 router.post('/RDSignup',authController.RDSignup);
 router.post('/userLogin',authController.userLogin);
 router.post('/researcherLogin',authController.researcherLogin);
+router.get('/logout',authController.logout);
 
 module.exports = router;
