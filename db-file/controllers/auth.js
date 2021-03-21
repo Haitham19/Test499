@@ -702,10 +702,10 @@ exports.SRaddnewrequest = (req, res) =>{
             })
       }
    })
-<<<<<<< HEAD
+
    }
-=======
-}
+//=======
+
 exports.isLoggedIn= async (req,res,next)=>{
    if(req.cookies.jwt){
       try {
@@ -810,4 +810,4 @@ exports.logout=async(req,res)=>{
    });
    res.status(200).redirect('/');
 }
->>>>>>> ff1a1ff18e02860790f7bf2ab9260a3a1296899f
+
