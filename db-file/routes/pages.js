@@ -1,6 +1,6 @@
 const { request } = require("express");
 const express = require("express");
-
+const authController = require('../controllers/auth');
 const router = express.Router();
 
 
@@ -15,8 +15,14 @@ res.render('homePage')
 
 
 // Researcehr pages.
-router.get('/ResHomePage',(req,res) =>{
-   res.render('ResHomePage')
+router.get('/ResHomePage', authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('ResHomePage',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/researcherLogin');
+    }
 });
 
 router.get("/researcherLogin", (req, res) => {
@@ -24,11 +30,24 @@ router.get("/researcherLogin", (req, res) => {
    res.render("researcherLogin")
 });
 //Student Researcher pages
-router.get('/SRhomepage',(req,res) =>{
-   res.render('SRhomepage')
+router.get('/SRhomepage',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('SRhomepage',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/researcherLogin');
+    }
 });
-router.get('/SRaddnewrequest',(req,res) =>{
-   res.render('SRaddnewrequest')
+router.get('/SRaddnewrequest',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('SRaddnewrequest',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/researcherLogin');
+    }
+   
 });
 //--------------------------------------------//
 router.get("/userLogin", (req, res) => {
@@ -38,74 +57,186 @@ router.get("/userLogin", (req, res) => {
 router.get('/researcherSignup',(req,res) =>{
    res.render('researcherSignup')
 });
-router.get('/adminReg',(req,res) =>{
-   res.render('adminReg')
+router.get('/adminReg', authController.isLoggedIn,(req,res) =>{
+  if(req.user){
+   res.render('adminReg',{
+      user:req.user
+   })
+   }else{
+     res.redirect('/userLogin');
+   }
+   
 });
-router.get('/adminHP',(req,res) =>{
-   res.render('adminHP')
+router.get('/adminHP', authController.isLoggedIn, (req,res) =>{
+   if(req.user){
+      res.render('adminHP',{
+         user:req.user
+      });
+      }else{
+        res.redirect('/userLogin');
+      }
+   
 });
-router.get('/ministryHP',(req,res) =>{
-   res.render('ministryHP')
+router.get('/adminD', authController.isLoggedIn, (req,res) =>{
+   if(req.user){
+      res.render('adminD',{
+         user:req.user
+      })
+      }else{
+        res.redirect('/userLogin');
+      }
+   
+});
+router.get('/ministryHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('ministryHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 // Center General Manager pages.
-router.get('/CGMhomepage',(req,res) =>{
-   res.render('CGMhomepage')
+router.get('/CGMhomepage',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('CGMhomepage',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+  
 });
 router.get('/userSignup',(req,res) =>{
    res.render('userSignup')
 });
 
-router.get('/CGMcomm',(req,res) =>{
-   res.render('CGMcomm')
+router.get('/CGMcomm',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('CGMcomm',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+  
 });
 
-router.get('/CGMrequests',(req,res) =>{
-   res.render('CGMrequests')
+router.get('/CGMrequests',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('CGMrequests',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+   
 });
 
 
 // RD pages.
-router.get('/rdHP',(req,res) =>{
-   res.render('rdHP')
+router.get('/rdHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('rdHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+   
 });
 
-router.get('/rdCOMM',(req,res) =>{
-   res.render('rdCOMM')
+router.get('/rdCOMM',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('rdCOMM',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
-router.get('/rdRequests',(req,res) =>{
-   res.render('rdRequests')
+router.get('/rdRequests',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('rdRequests',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 
 // Cultural mission pages.
-router.get('/missionHP',(req,res) =>{
-   res.render('missionHP')
+router.get('/missionHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('missionHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 // Advisor pages.
-router.get('/advisorHP',(req,res) =>{
-   res.render('advisorHP')
+router.get('/advisorHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('advisorHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
-router.get('/advisorCOMM',(req,res) =>{
-   res.render('advisorCOMM')
+router.get('/advisorCOMM',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('advisorCOMM',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 // College Dean pages.
-router.get('/deanHP',(req,res) =>{
-   res.render('deanHP')
+router.get('/deanHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deanHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
-router.get('/deanCOMM',(req,res) =>{
-   res.render('deanCOMM')
+router.get('/deanCOMM',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deanCOMM',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 // Deputyship pages.
-router.get('/deputyHP',(req,res) =>{
-   res.render('deputyHP')
+router.get('/deputyHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deputyHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
-router.get('/deputyCOMM',(req,res) =>{
-   res.render('deputyCOMM')
+router.get('/deputyCOMM',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deputyCOMM',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
 });
 
 

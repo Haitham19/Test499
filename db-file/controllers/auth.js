@@ -1,7 +1,7 @@
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-
+const {promisify} =require("util");
 
 // we use process.env for security => detrnv .
 //we can creat file with coonection and importit whene we whant.
@@ -38,7 +38,8 @@ exports.researcherLogin = async(req,res)=>{
             }
             else{
                const id=result[0].id;
-            const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+               const email=result[0].email;
+            const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                expiresIn: process.env.JWT_EXPIRES_IN
             })
             console.log("the token is: "+token);
@@ -60,7 +61,8 @@ exports.researcherLogin = async(req,res)=>{
             })
          }else {
             const id=results[0].id;
-            const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+            const email=results[0].email;
+            const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                expiresIn: process.env.JWT_EXPIRES_IN
             })
             console.log("the token is: "+token);
@@ -118,7 +120,8 @@ exports.userLogin = async(req,res)=>{
                                                    }
                                                    else{
                                                       const id=results[0].userID;
-                                                   const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                      const email=results[0].email;
+                                                   const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                       expiresIn: process.env.JWT_EXPIRES_IN
                                                    })
                                                    console.log("the token is: "+token);
@@ -140,7 +143,8 @@ exports.userLogin = async(req,res)=>{
                                                 }
                                                 else{
                                                    const id=rd[0].id;
-                                                const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                   const email=rd[0].email;
+                                                const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                    expiresIn: process.env.JWT_EXPIRES_IN
                                                 })
                                                 console.log("the token is: "+token);
@@ -151,7 +155,7 @@ exports.userLogin = async(req,res)=>{
                                                       httpOnly:true
                                                 }
                                                 res.cookie('jwt',token,cookieOption);
-                                                res.status(200).redirect("/RDhomepage(Haitham)");
+                                                res.status(200).redirect("/rdHP");
                                                 }
                                              }
                                              else if(!(await bcrypt.compare(password,mis[0].password))){
@@ -161,7 +165,8 @@ exports.userLogin = async(req,res)=>{
                                              }
                                              else{
                                                 const id=mis[0].id;
-                                             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                                const email=mis[0].email;
+                                             const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                 expiresIn: process.env.JWT_EXPIRES_IN
                                              })
                                              console.log("the token is: "+token);
@@ -182,7 +187,8 @@ exports.userLogin = async(req,res)=>{
                                           }
                                           else {
                                              const id=dean[0].id;
-                                             const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                             const email=dean[0].email;
+                                             const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                 expiresIn: process.env.JWT_EXPIRES_IN
                                              })
                                              console.log("the token is: "+token);
@@ -203,7 +209,8 @@ exports.userLogin = async(req,res)=>{
                                        }
                                        else {
                                           const id=depu[0].id;
-                                          const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                          const email=depu[0].email;
+                                          const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                              expiresIn: process.env.JWT_EXPIRES_IN
                                           })
                                           console.log("the token is: "+token);
@@ -224,7 +231,8 @@ exports.userLogin = async(req,res)=>{
                                        }
                                        else {
                                           const id=adv[0].id;
-                                          const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                          const email=adv[0].email;
+                                          const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                              expiresIn: process.env.JWT_EXPIRES_IN
                                           })
                                           console.log("the token is: "+token);
@@ -245,7 +253,8 @@ exports.userLogin = async(req,res)=>{
                                     }
                                     else {
                                        const id=cgm[0].id;
-                                       const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                       const email=cgm[0].email;
+                                       const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                           expiresIn: process.env.JWT_EXPIRES_IN
                                        })
                                        console.log("the token is: "+token);
@@ -266,7 +275,8 @@ exports.userLogin = async(req,res)=>{
                                  }
                                  else {
                                     const id=mini[0].id;
-                                    const token= jwt.sign({id:id}, process.env.JWT_SECRET,{
+                                    const email=mini[0].email;
+                                    const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                        expiresIn: process.env.JWT_EXPIRES_IN
                                     })
                                     console.log("the token is: "+token);
@@ -300,7 +310,6 @@ exports.researcherSignup = (req, res) =>{
    console.log(req.body);
 
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
-   const type="student";
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
@@ -693,4 +702,112 @@ exports.SRaddnewrequest = (req, res) =>{
             })
       }
    })
+<<<<<<< HEAD
    }
+=======
+}
+exports.isLoggedIn= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         //verify token
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         console.log(decoded);
+         // check if the user exist
+         db.query('SELECT * FROM studentresearcher WHERE email=?',[decoded.email],(error,SR)=>{
+            db.query('SELECT * FROM organizationresearcher WHERE email=?',[decoded.email],(error,org)=>{
+               db.query('SELECT * FROM advisor WHERE email=?',[decoded.email],(error,adv)=>{
+                  db.query('SELECT * FROM dean WHERE email=?',[decoded.email],(error,dean)=>{
+                     db.query('SELECT * FROM deputy WHERE email=?',[decoded.email],(error,deputy)=>{
+                        db.query('SELECT * FROM mission WHERE email=?',[decoded.email],(error,miss)=>{
+                           db.query('SELECT * FROM rd WHERE email=?',[decoded.email],(error,rd)=>{
+                              db.query('SELECT * FROM cgm WHERE email=?',[decoded.email],(error,cgm)=>{
+                                 db.query('SELECT * FROM ministry WHERE email=?',[decoded.email],(error,mini)=>{
+                                    db.query('SELECT * FROM users WHERE email=?',[decoded.email],(error,result)=>{
+                                       if(SR.length==0){                                          
+                                          if(org.length==0){
+                                             if(adv.length==0){
+                                                if(dean.length==0){
+                                                   if(deputy.length==0){
+                                                      if(miss.length==0){
+                                                         if(rd.length==0){
+                                                            if(cgm.length==0){
+                                                               if(mini.length==0){
+                                                                  if(result.length==0){                                                                     
+                                                                     return next();
+                                                                  }
+                                                                  else{                                                                     
+                                                                  req.user= result[0];//sending user data                                                                  
+                                                                  return next();
+                                                                  }
+                                                               }
+                                                               else{
+                                                                  req.user= mini[0];//sending user data
+                                                                  return next();
+                                                               }
+                                                            }
+                                                            else{
+                                                               req.user= cgm[0];//sending user data
+                                                               return next();
+                                                            }
+                                                         }
+                                                         else{
+                                                            req.user= rd[0];//sending user data
+                                                            return next();
+                                                         }
+                                                      }
+                                                      else{
+                                                         req.user= miss[0];//sending user data
+                                                         return next();
+                                                      }
+                                                   }
+                                                   else{
+                                                      req.user= deputy[0];//sending user data
+                                                      return next();
+                                                   }
+                                                }
+                                                else{
+                                                   req.user= dean[0];//sending user data
+                                                   return next();
+                                                }
+                                             }
+                                             else{
+                                                req.user= advisor[0];//sending user data
+                                                return next();
+                                             }
+                                          }
+                                          else{
+                                             req.user= org[0];//sending user data
+                                             return next();
+                                          }
+                                       }
+                                       else{
+                                          req.user= SR[0];//sending user data
+                                          return next();
+                                       }
+                                    });
+                                 });
+                              });
+                           });
+                        });
+                     });
+                  });
+               });
+            });
+         });
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
+exports.logout=async(req,res)=>{
+   res.cookie('jwt','logout',{
+      expires: new Date(Date.now()+2*1000),
+      httpOnly: true
+   });
+   res.status(200).redirect('/');
+}
+>>>>>>> ff1a1ff18e02860790f7bf2ab9260a3a1296899f

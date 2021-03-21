@@ -19,5 +19,6 @@ router.post('/RDSignup',authController.RDSignup);
 router.post('/userLogin',authController.userLogin);
 router.post('/researcherLogin',authController.researcherLogin);
 router.post('/SRaddnewrequest', authController.SRaddnewrequest);
+router.get('/logout',authController.logout);
 
 module.exports = router;
