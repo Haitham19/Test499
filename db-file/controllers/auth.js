@@ -685,12 +685,15 @@ exports.RDSignup = (req, res) =>{
 
 
 // add SRrequest 
-exports.SRaddnewrequest = (req, res) =>{
+exports.SRaddnewrequest = async (req, res) =>{
    console.log(req.body);
 
    const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
+   
+   
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
 
-   db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates},(erro,result) =>{
+   db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
       if(erro){
          return res.render('SRaddnewrequest',{
          message:'some spaces are empty'
