@@ -334,7 +334,8 @@ exports.researcherSignup = (req, res) =>{
                message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,results) =>{
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+         db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university ,userID:resul[0].userID},(error,results) =>{
             if(error){
                console.log(error);
             }
@@ -345,6 +346,7 @@ exports.researcherSignup = (req, res) =>{
                message:'Student Researcher Registered'
             });
             }
+         })
          })
       })
    })
@@ -372,15 +374,14 @@ exports.OrgResSignup = (req, res) =>{
       }
 
       let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
       db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
          if(erro){
             return res.render('researcherSignup',{
                message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO organizationresearcher SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,organization:organization},(error,results) =>{
-         
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+         db.query('INSERT INTO organizationresearcher SET ?',{userID:resul.userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,organization:organization},(error,results) =>{
             if(error){
                console.log(error);
             }
@@ -390,7 +391,8 @@ exports.OrgResSignup = (req, res) =>{
                message:'Organization Researcher Registered'
                });
             }
-         })   
+         })
+      })   
       })
    })
 }
@@ -420,16 +422,18 @@ exports.advisorSignup=(req,res)=>{
             message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO advisor SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(results)
-               return res.render('userSignup',{
-               message:'Adviser Registered'
-               });
-            }
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO advisor SET ?',{userID:resul[0].uesrID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('userSignup',{
+                  message:'Adviser Registered'
+                  });
+               }
+            })
          })
          })
       })
@@ -460,19 +464,21 @@ exports.deanSignup=(req,res)=>{
             message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO dean SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(results)
-               return res.render('userSignup',{
-               message:'College Dean Registered'
-               });
-            }
-         })
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO dean SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('userSignup',{
+                  message:'College Dean Registered'
+                  });
+               }
+            })
          })
       })
+   })
 }
 exports.deputySignup=(req,res)=>{
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
@@ -500,19 +506,21 @@ exports.deputySignup=(req,res)=>{
             message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO deputy SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(results)
-               return res.render('userSignup',{
-               message:'Deputyship user Registered'
-               });
-            }
-         })
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO deputy SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('userSignup',{
+                  message:'Deputyship user Registered'
+                  });
+               }
+            })
          })
       })
+   })
 }
 exports.missionSignup=(req,res)=>{
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
@@ -540,23 +548,23 @@ exports.missionSignup=(req,res)=>{
             message:'The mobile number is already in use'
             })
          }
-         db.query('INSERT INTO mission SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(results)
-               return res.render('userSignup',{
-               message:'Cultural Mission user Registered'
-               });
-            }
-         })
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO mission SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('userSignup',{
+                  message:'Cultural Mission user Registered'
+                  });
+               }
+            })
          })
       })
+   })
 }
 exports.MinistrySignup = (req, res) =>{
-   console.log(req.body);
-
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
@@ -575,31 +583,30 @@ exports.MinistrySignup = (req, res) =>{
          })
       }
 
-      let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
-      if(erro){
-         return res.render('adminReg',{
-         message:'The mobile number is already in use'
-         })
-      }
-      db.query('INSERT INTO ministry SET ?',{name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
+      let hashedPassword = await bcrypt.hash(password, 8);      
+      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
             return res.render('adminReg',{
-            message:'Ministry Registered'
-            });
+            message:'The mobile number is already in use'
+            })
          }
-      })
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO ministry SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('adminReg',{
+                  message:'Ministry Registered'
+                  });
+               }
+            })
+         })
       })
    })
 }
 exports.CGMSignup = (req, res) =>{
-   console.log(req.body);
-
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
@@ -619,30 +626,29 @@ exports.CGMSignup = (req, res) =>{
       }
 
       let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
-      if(erro){
-         return res.render('adminReg',{
-         message:'The mobile number is already in use'
-         })
-      }
-      db.query('INSERT INTO cgm SET ?',{name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
+      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
+         if(erro){
             return res.render('adminReg',{
-            message:'Center General Manager Registered'
-            });
+            message:'The mobile number is already in use'
+            })
          }
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO cgm SET ?',{userID:resul[0].userID,name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('adminReg',{
+                  message:'Center General Manager Registered'
+                  });
+               }
+            })
+         })
       })
-   })
    })
 }
 exports.RDSignup = (req, res) =>{
-   console.log(req.body);
-
    const { name, email,  password,mobNum, passwordConfirm }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
@@ -663,24 +669,26 @@ exports.RDSignup = (req, res) =>{
 
       let hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
-   db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
-      if(erro){
-         return res.render('adminReg',{
-         message:'The mobile number is already in use'
-         })
-      }
-      db.query('INSERT INTO rd SET ?',{name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
-         if(error){
-            console.log(error);
-         }
-         else{
-            console.log(results)
+      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
+         if(erro){
             return res.render('adminReg',{
-            message:'Research and Development Department User Registered'
-            });
+            message:'The mobile number is already in use'
+            })
          }
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+            db.query('INSERT INTO rd SET ?',{userID:resul[0].userID,name:name, email:email, mobNum:mobNum, password:hashedPassword, },(error,results) =>{
+               if(error){
+                  console.log(error);
+               }
+               else{
+                  console.log(results)
+                  return res.render('adminReg',{
+                  message:'Research and Development Department User Registered'
+                  });
+               }
+            })
+         })
       })
-   })
    })
 }
 
