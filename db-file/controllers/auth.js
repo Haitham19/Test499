@@ -734,6 +734,23 @@ exports.SRaddnewrequest = async (req, res) =>{
          else{
             return next();
          }
+         console.log(req.body);
+
+         const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
+         
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE sriaddrequest SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,result) =>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log(result);
+               return res.render('researcherSignup',{
+               message:'Student Researcher Registered'
+            });
+            }
+         })
+      
       }
       
       //in pages file you have to rename it agian to use the user object
