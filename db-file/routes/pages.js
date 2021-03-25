@@ -29,6 +29,8 @@ router.get("/researcherLogin", (req, res) => {
    //res.send("<h1> Home Page </h1>")
    res.render("researcherLogin")
 });
+
+
 //Student Researcher pages
 router.get('/SRhomepage',authController.isLoggedIn,(req,res) =>{
    if(req.user){
@@ -42,6 +44,16 @@ router.get('/SRhomepage',authController.isLoggedIn,(req,res) =>{
 router.get('/SRaddnewrequest',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('SRaddnewrequest',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/researcherLogin');
+    }
+   
+});
+router.get('/SRIupdateinfo',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('SRIupdateinfo',{
        user:req.user
     })
     }else{

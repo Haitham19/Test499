@@ -310,6 +310,7 @@ exports.researcherSignup = (req, res) =>{
    console.log(req.body);
 
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
+   
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
          console.log(error)
@@ -707,6 +708,59 @@ exports.SRaddnewrequest = async (req, res) =>{
    })
 
    }
+   
+   exports.SRIupdateinfo=async(req,res,next)=>{
+      //all return next() you don't need to think about them just put them
+      //maybe there is problem with the {} 
+         if(req.cookies.jwt){//this for check if user is ligged in
+            try {
+               const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable for cookie to find user
+               db.query('SELECT * FROM studentresearcher WHERE id=?',[decoded.id],(error,result)=>{//this query will return object of the user 
+                  if(result.length==0){    //this for isLoggedIn                                                                  
+                     return next();
+                  }         
+                  else {
+                  req.user= result[0];//create variable to use it in the page 
+                   //you can name it anything right now is /req.user/                                                                
+                  return next();
+                   }                                                               
+                  
+               })
+            }catch(error) {
+               console.log(error);
+               return next();
+            }
+         }
+         else{
+            return next();
+         }
+      }
+      
+      //in pages file you have to rename it agian to use the user object
+      
+
+   /*exports.SRIupdateinfo = async (req, res) =>{
+      console.log(req.body);
+   
+      const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
+      
+      
+      const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   
+      db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
+         if(erro){
+            return res.render('SRaddnewrequest',{
+            message:'some spaces are empty'
+            })
+         }
+         else {
+            return res.render('SRaddnewrequest',{
+               message:'Request is submitted'
+               })
+         }
+      })
+   
+      }*/
 //=======
 
 exports.isLoggedIn= async (req,res,next)=>{
