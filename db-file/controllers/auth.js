@@ -2,6 +2,8 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const {promisify} =require("util");
+const { error } = require("console");
+const e = require("express");
 
 // we use process.env for security => detrnv .
 //we can creat file with coonection and importit whene we whant.
@@ -403,7 +405,7 @@ exports.OrgResSignup = (req, res) =>{
    })
 }
 exports.advisorSignup=(req,res)=>{
-   const { name, email,  password,mobNum, passwordConfirm, de }= req.body;
+   const { name, email,  password,mobNum, passwordConfirm,de }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
@@ -420,39 +422,39 @@ exports.advisorSignup=(req,res)=>{
             message:'password do not match'
          })
       }
-
       let hashedPassword = await bcrypt.hash(password, 8);
-      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
-         if(erro){
-            return res.render('userSignup',{
-            message:'The mobile number is already in use'
-            })
-         }
-         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-            db.query('SELECT * FROM dean WHERE email=?',[de],(error,resu)=>{
-               if(error){
-                  console.log(error);
-               }
-               if(resu.length==0){
+         db.query('SELECT * FROM dean WHERE email=?',[de],(error,resu)=>{
+           
+            if(error){
+               console.log(error);
+            }
+            if(resu.length==0){
+               return res.render('userSignup',{
+                  message:'College Dean email does not exist'
+               })
+            }
+            else{
+            db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+               if(erro){
                   return res.render('userSignup',{
-                     message:'Dean email does not exist'
+                  message:'The mobile number is already in use'
                   })
                }
-               else{
-               db.query('INSERT INTO advisor SET ?',{deanEmail:de,userID:resul[0].uesrID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-                  if(error){
-                     console.log(error);
-                  }
-                  else{
-                     return res.render('userSignup',{
-                     message:'Adviser Registered'
-                     });
-                  }
+               db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+                  db.query('INSERT INTO advisor SET ?',{deanEmail:de,userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+                     if(error){
+                        console.log(error);
+                     }
+                     else{
+                        return res.render('userSignup',{
+                        message:'Advisor Registered'
+                        });
+                     }
+                  })               
                })
-               }
             })
-         })
-      })
+            }
+         })      
    })
 }
 exports.deanSignup=(req,res)=>{
@@ -693,7 +695,6 @@ exports.RDSignup = (req, res) =>{
       }
 
       let hashedPassword = await bcrypt.hash(password, 8);
-      console.log(hashedPassword);
       db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum, password:hashedPassword},(erro,result) =>{
          if(erro){
             return res.render('adminReg',{
@@ -926,6 +927,33 @@ exports.Duser=async(req, res)=>{
       else{
          return res.render('adminD',{
             massage:"user deleted"
+         })
+      }
+   })
+}
+exports.Uuser=(req,res)=>{
+   const {email,Nemail,password}=req.body;
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      if(!result){
+         return res.render('adminU',{
+            massage: 'user does not exist'
+         })
+      }
+      else{
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET email=? , password=? WHERE email=?',[Nemail,hashedPassword,email],(error,resu)=>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               console.log("yesssssssssss!!!!!!!!!!!!!!")
+               return res.render('adminU',{
+                  massage: 'user updated'
+               })
+            }
          })
       }
    })

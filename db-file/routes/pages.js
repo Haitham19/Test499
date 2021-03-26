@@ -99,6 +99,16 @@ router.get('/adminD', authController.isLoggedIn, (req,res) =>{
       }
    
 });
+router.get('/adminU', authController.isLoggedIn, (req,res) =>{
+   if(req.user){
+      res.render('adminU',{
+         user:req.user
+      })
+      }else{
+        res.redirect('/userLogin');
+      }
+   
+});
 router.get('/ministryHP',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('ministryHP',{
