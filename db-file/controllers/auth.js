@@ -307,9 +307,7 @@ exports.userLogin = async(req,res)=>{
       
 //this section is for Sign up 
 exports.researcherSignup = (req, res) =>{
-   console.log(req.body);
-
-   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
+   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm, adv }= req.body;
    
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
@@ -335,23 +333,32 @@ exports.researcherSignup = (req, res) =>{
             })
          }
          db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-         db.query('INSERT INTO studentresearcher SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university ,userID:resul[0].userID},(error,results) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(results);
-               console.log(result);
-               return res.render('researcherSignup',{
-               message:'Student Researcher Registered'
-            });
-            }
-         })
+            db.query('SELECT * FROM advisor WHERE email=?',[adv],(error,resu)=>{
+               if(error){
+                  console.log(error);
+               }
+               if(resu.length==0){
+                  return res.render('researcherSignup',{
+                     message:'Advisor email does not exist'
+                  })
+               }
+               else{
+                  db.query('INSERT INTO studentresearcher SET ?',{advisorEmail:adv,userID:resul[0].userID,name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university },(error,results) =>{
+                     if(error){
+                        console.log(error);
+                     }
+                     else{
+                        return res.render('researcherSignup',{
+                        message:'Student Researcher Registered'
+                     });
+                     }
+                  })
+               }
+            })
          })
       })
    })
 }
-
 exports.OrgResSignup = (req, res) =>{
    console.log(req.body);
 
@@ -386,7 +393,6 @@ exports.OrgResSignup = (req, res) =>{
                console.log(error);
             }
             else{
-               console.log(results)
                return res.render('researcherSignup',{
                message:'Organization Researcher Registered'
                });
@@ -397,7 +403,7 @@ exports.OrgResSignup = (req, res) =>{
    })
 }
 exports.advisorSignup=(req,res)=>{
-   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+   const { name, email,  password,mobNum, passwordConfirm, de }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
@@ -423,23 +429,34 @@ exports.advisorSignup=(req,res)=>{
             })
          }
          db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-            db.query('INSERT INTO advisor SET ?',{userID:resul[0].uesrID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+            db.query('SELECT * FROM dean WHERE email=?',[de],(error,resu)=>{
                if(error){
                   console.log(error);
                }
-               else{
-                  console.log(results)
+               if(resu.length==0){
                   return res.render('userSignup',{
-                  message:'Adviser Registered'
-                  });
+                     message:'Dean email does not exist'
+                  })
+               }
+               else{
+               db.query('INSERT INTO advisor SET ?',{deanEmail:de,userID:resul[0].uesrID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+                  if(error){
+                     console.log(error);
+                  }
+                  else{
+                     return res.render('userSignup',{
+                     message:'Adviser Registered'
+                     });
+                  }
+               })
                }
             })
          })
-         })
       })
+   })
 }
 exports.deanSignup=(req,res)=>{
-   const { name, email,  password,mobNum, passwordConfirm }= req.body;
+   const { name, email,  password,mobNum, passwordConfirm,de }= req.body;
 
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
@@ -456,28 +473,40 @@ exports.deanSignup=(req,res)=>{
             message:'password do not match'
          })
       }
-
       let hashedPassword = await bcrypt.hash(password, 8);
-      db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
-         if(erro){
-            return res.render('userSignup',{
-            message:'The mobile number is already in use'
-            })
-         }
-         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-            db.query('INSERT INTO dean SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
-               if(error){
-                  console.log(error);
-               }
-               else{
-                  console.log(results)
+         db.query('SELECT * FROM deputy WHERE email=?',[de],(error,resu)=>{
+           
+            if(error){
+               console.log(error);
+            }
+            if(resu.length==0){
+               return res.render('userSignup',{
+                  message:'Deputy email does not exist'
+               })
+            }
+            else{
+            db.query('INSERT INTO users SET ?',{email:email,  mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+               if(erro){
                   return res.render('userSignup',{
-                  message:'College Dean Registered'
-                  });
+                  message:'The mobile number is already in use'
+                  })
                }
+               db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+                  db.query('INSERT INTO dean SET ?',{deputyEmail:de,userID:resul[0].userID,name:name, email:email, password:hashedPassword, mobNum:mobNum,},(error,results) =>{
+                     if(error){
+                        console.log(error);
+                     }
+                     else{
+                        return res.render('userSignup',{
+                        message:'College Dean Registered'
+                        });
+                     }
+                  })               
+               })
             })
+            }
          })
-      })
+      
    })
 }
 exports.deputySignup=(req,res)=>{
@@ -512,7 +541,6 @@ exports.deputySignup=(req,res)=>{
                   console.log(error);
                }
                else{
-                  console.log(results)
                   return res.render('userSignup',{
                   message:'Deputyship user Registered'
                   });
@@ -554,7 +582,6 @@ exports.missionSignup=(req,res)=>{
                   console.log(error);
                }
                else{
-                  console.log(results)
                   return res.render('userSignup',{
                   message:'Cultural Mission user Registered'
                   });
@@ -596,7 +623,6 @@ exports.MinistrySignup = (req, res) =>{
                   console.log(error);
                }
                else{
-                  console.log(results)
                   return res.render('adminReg',{
                   message:'Ministry Registered'
                   });
@@ -638,7 +664,6 @@ exports.CGMSignup = (req, res) =>{
                   console.log(error);
                }
                else{
-                  console.log(results)
                   return res.render('adminReg',{
                   message:'Center General Manager Registered'
                   });
@@ -681,7 +706,6 @@ exports.RDSignup = (req, res) =>{
                   console.log(error);
                }
                else{
-                  console.log(results)
                   return res.render('adminReg',{
                   message:'Research and Development Department User Registered'
                   });
@@ -892,4 +916,17 @@ exports.logout=async(req,res)=>{
    });
    res.status(200).redirect('/');
 }
-
+exports.Duser=async(req, res)=>{
+   const email=req.body.email;
+   db.query('DELETE FROM users WHERE email=?',[email],(error,result)=>{
+      console.log(result);
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('adminD',{
+            massage:"user deleted"
+         })
+      }
+   })
+}

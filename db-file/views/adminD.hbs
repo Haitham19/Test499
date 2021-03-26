@@ -29,20 +29,19 @@
         </nav>
 
        <div class="container mt-5">
-
+           <form action="auth/Duser" method="POST">
             <div class="mb-3">
                 <label for="email" class="form-label">email address:</label>
-                <input type="email" class="form-control" id="email" placeholder="name@example.com">
-            </div>
-
-            
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+            </div>            
             <center> 
-
-            <button class="button" type="submit" name="submit">find</button>  
-            
+            <button class="button" type="submit" name="submit">delete</button>              
             </center>
+            </form>
             
        </div>
-
+            {{#if message}}
+                <h4 class="alert alert-danger mt-4">{{message}}</h4>
+            {{/if}}
      </body>
 </html>
