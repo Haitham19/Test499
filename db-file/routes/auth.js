@@ -23,6 +23,7 @@ router.post('/SRIupdateinfo', authController.SRIupdateinfo);
 router.get('/logout',authController.logout);
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
+router.post('/advisorUP', authController.advisorUP);
 
 
 module.exports = router;

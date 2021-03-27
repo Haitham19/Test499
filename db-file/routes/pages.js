@@ -213,6 +213,15 @@ router.get('/advisorHP',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/advisorU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('advisorU',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+});
 router.get('/advisorCOMM',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('advisorCOMM',{

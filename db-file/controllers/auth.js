@@ -878,7 +878,7 @@ exports.isLoggedIn= async (req,res,next)=>{
                                                 }
                                              }
                                              else{
-                                                req.user= advisor[0];//sending user data
+                                                req.user= adv[0];//sending user data
                                                 return next();
                                              }
                                           }
@@ -949,9 +949,69 @@ exports.Uuser=(req,res)=>{
                console.log(error);
             }
             else{
-               console.log("yesssssssssss!!!!!!!!!!!!!!")
                return res.render('adminU',{
                   massage: 'user updated'
+               })
+            }
+         })
+      }
+   })
+}
+exports.advisorUP=async(req,res)=>{
+   const {email,Demail,password,mobNum,name}=req.body;
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(result.length>0){
+         return res.render('advisorU',{
+            message:'The email is already in use'
+         })
+      }
+      else{
+         db.query('SELECT * FROM dean WHERE email=?',[Demail],async(error,resul)=>{
+            if(error){
+               console.log(error);
+            }
+            else if(resul.length==0){
+               console.log(resul);
+               return res.render('advisorU',{
+                  message:'The email does not exist'
+               })
+            }
+            else{
+               const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+               let hashedPassword = await bcrypt.hash(password, 8);
+               db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+                  if(err){
+                     console.log('here1')
+                     return res.render('advisorU',{
+                        message:'The mobile number is already in use'
+                     })
+                  }
+                  else{
+                     db.query('UPDATE advisor SET ? WHERE id=?',[{name:name, deanEmail:Demail},decoded.id],(err,rese)=>{
+                        if(error){
+                        console.log(error)
+                        }
+                        else{//update the cookie
+                           const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                              expiresIn: process.env.JWT_EXPIRES_IN
+                           })
+                           console.log("the token is: "+token);
+                           const cookieOption={
+                              expires: new Date(
+                                 Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                              ),
+                                 httpOnly:true
+                           }
+                           res.cookie('jwt',token,cookieOption);
+                           return res.render('advisorU',{
+                              message:'user information updated'
+                           })
+                        }
+                     })
+                  }
+               
                })
             }
          })
