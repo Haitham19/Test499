@@ -56,7 +56,9 @@ router.get('/SRIupdateinfo',authController.isLoggedIn,(req,res) =>{
     res.render('SRIupdateinfo',{
        user:req.user
     })
-    }else{
+    console.log(req.user)
+    }
+    else{
       res.redirect('/researcherLogin');
     }
    
