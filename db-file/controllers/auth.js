@@ -744,6 +744,7 @@ exports.SRaddnewrequest = async (req, res) =>{
    
    exports.SRIupdateinfo=async(req,res)=>{
 
+
       const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable 
       console.log(req.body);
 
@@ -764,6 +765,9 @@ exports.SRaddnewrequest = async (req, res) =>{
       })
    
    }
+
+         
+
       //in pages file you have to rename it agian to use the user object
       
 
