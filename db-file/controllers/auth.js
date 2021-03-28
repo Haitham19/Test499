@@ -267,7 +267,7 @@ exports.userLogin = async(req,res)=>{
                                              httpOnly:true
                                        }
                                        res.cookie('jwt',token,cookieOption);
-                                       res.status(200).redirect("/CGMhomepage");
+                                       res.status(200).redirect("/cgmHP");
                                     }
                                  }
                                  else if(!(await bcrypt.compare(password,mini[0].password))){
@@ -742,50 +742,28 @@ exports.SRaddnewrequest = async (req, res) =>{
 
    }
    
-   exports.SRIupdateinfo=async(req,res,next)=>{
-      //all return next() you don't need to think about them just put them
-      //maybe there is problem with the {} 
-         if(req.cookies.jwt){//this for check if user is ligged in
-            try {
-               const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable for cookie to find user
-               db.query('SELECT * FROM studentresearcher WHERE id=?',[decoded.id],(error,result)=>{//this query will return object of the user 
-                  if(result.length==0){    //this for isLoggedIn                                                                  
-                     return next();
-                  }         
-                  else {
-                  req.user= result[0];//create variable to use it in the page 
-                   //you can name it anything right now is /req.user/                                                                
-                  return next();
-                   }                                                               
-                  
-               })
-            }catch(error) {
-               console.log(error);
-               return next();
-            }
+   exports.SRIupdateinfo=async(req,res)=>{
+
+      const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable 
+      console.log(req.body);
+
+      const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
+
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(error,result) =>{
+         if(error){
+            console.log(error);
          }
          else{
-            return next();
+            console.log(result);
+            return res.render('researcherSignup',{
+            message:'Student Researcher Registered'
+            
+         });
          }
-         console.log(req.body);
-
-         const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
-         
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE sriaddrequest SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,result) =>{
-            if(error){
-               console.log(error);
-            }
-            else{
-               console.log(result);
-               return res.render('researcherSignup',{
-               message:'Student Researcher Registered'
-            });
-            }
-         })
-      
-      }
-      
+      })
+   
+   }
       //in pages file you have to rename it agian to use the user object
       
 
@@ -926,7 +904,7 @@ exports.Duser=async(req, res)=>{
       }
       else{
          return res.render('adminD',{
-            massage:"user deleted"
+            message:"user deleted"
          })
       }
    })
@@ -939,7 +917,7 @@ exports.Uuser=(req,res)=>{
       }
       if(!result){
          return res.render('adminU',{
-            massage: 'user does not exist'
+            message: 'user does not exist'
          })
       }
       else{
@@ -950,7 +928,7 @@ exports.Uuser=(req,res)=>{
             }
             else{
                return res.render('adminU',{
-                  massage: 'user updated'
+                  message: 'user updated'
                })
             }
          })
@@ -959,13 +937,16 @@ exports.Uuser=(req,res)=>{
 }
 exports.advisorUP=async(req,res)=>{
    const {email,Demail,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
    db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
       if(error){
          console.log(error);
-      }else if(result.length>0){
-         return res.render('advisorU',{
-            message:'The email is already in use'
-         })
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('advisorU',{
+               message:'The email is already in use'
+            })
+         }
       }
       else{
          db.query('SELECT * FROM dean WHERE email=?',[Demail],async(error,resul)=>{
@@ -979,7 +960,6 @@ exports.advisorUP=async(req,res)=>{
                })
             }
             else{
-               const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
                let hashedPassword = await bcrypt.hash(password, 8);
                db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
                   if(err){
@@ -1012,6 +992,314 @@ exports.advisorUP=async(req,res)=>{
                      })
                   }
                
+               })
+            }
+         })
+      }
+   })
+}
+exports.deanUP=async(req,res)=>{
+   const {email,Demail,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('deanU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{
+         db.query('SELECT * FROM deputy WHERE email=?',[Demail],async(error,resul)=>{
+            if(error){
+               console.log(error);
+            }
+            else if(resul.length==0){
+               console.log(resul);
+               return res.render('deanU',{
+                  message:'The Deputy email does not exist'
+               })
+            }
+            else{
+               let hashedPassword = await bcrypt.hash(password, 8);
+               db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+                  if(err){
+                     console.log('here1')
+                     return res.render('deanU',{
+                        message:'The mobile number is already in use'
+                     })
+                  }
+                  else{
+                     db.query('UPDATE dean SET ? WHERE id=?',[{name:name, deputyEmail:Demail},decoded.id],(err,rese)=>{
+                        if(error){
+                        console.log(error)
+                        }
+                        else{//update the cookie
+                           const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                              expiresIn: process.env.JWT_EXPIRES_IN
+                           })
+                           console.log("the token is: "+token);
+                           const cookieOption={
+                              expires: new Date(
+                                 Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                              ),
+                                 httpOnly:true
+                           }
+                           res.cookie('jwt',token,cookieOption);
+                           return res.render('deanU',{
+                              message:'user information updated'
+                           })
+                        }
+                     })
+                  }
+               
+               })
+            }
+         })
+      }
+   })
+}
+exports.deputyUP=async(req,res)=>{
+   const {email,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('deputyU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{ 
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+            if(err){
+               console.log('here1')
+               return res.render('deputyU',{
+                  message:'The mobile number is already in use'
+               })
+            }
+            else{
+               db.query('UPDATE deputy SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
+                  if(error){
+                  console.log(error)
+                  }
+                  else{//update the cookie
+                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                        expiresIn: process.env.JWT_EXPIRES_IN
+                     })
+                     console.log("the token is: "+token);
+                     const cookieOption={
+                        expires: new Date(
+                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                        ),
+                           httpOnly:true
+                     }
+                     res.cookie('jwt',token,cookieOption);
+                     return res.render('deputyU',{
+                        message:'user information updated'
+                     })
+                  }
+               })
+            }
+         })
+      }
+   })
+}
+exports.ministryUP=async(req,res)=>{
+   const {email,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('ministryU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{ 
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+            if(err){
+               console.log('here1')
+               return res.render('ministryU',{
+                  message:'The mobile number is already in use'
+               })
+            }
+            else{
+               db.query('UPDATE ministry SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
+                  if(error){
+                  console.log(error)
+                  }
+                  else{//update the cookie
+                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                        expiresIn: process.env.JWT_EXPIRES_IN
+                     })
+                     console.log("the token is: "+token);
+                     const cookieOption={
+                        expires: new Date(
+                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                        ),
+                           httpOnly:true
+                     }
+                     res.cookie('jwt',token,cookieOption);
+                     return res.render('ministryU',{
+                        message:'user information updated'
+                     })
+                  }
+               })
+            }
+         })
+      }
+   })
+}
+exports.missionUP=async(req,res)=>{
+   const {email,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('missionU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{ 
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+            if(err){
+               console.log('here1')
+               return res.render('missionU',{
+                  message:'The mobile number is already in use'
+               })
+            }
+            else{
+               db.query('UPDATE mission SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
+                  if(error){
+                  console.log(error)
+                  }
+                  else{//update the cookie
+                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                        expiresIn: process.env.JWT_EXPIRES_IN
+                     })
+                     console.log("the token is: "+token);
+                     const cookieOption={
+                        expires: new Date(
+                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                        ),
+                           httpOnly:true
+                     }
+                     res.cookie('jwt',token,cookieOption);
+                     return res.render('missionU',{
+                        message:'user information updated'
+                     })
+                  }
+               })
+            }
+         })
+      }
+   })
+}
+exports.rdUP=async(req,res)=>{
+   const {email,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('rdU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{ 
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+            if(err){
+               console.log('here1')
+               return res.render('rdU',{
+                  message:'The mobile number is already in use'
+               })
+            }
+            else{
+               db.query('UPDATE rd SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
+                  if(error){
+                  console.log(error)
+                  }
+                  else{//update the cookie
+                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                        expiresIn: process.env.JWT_EXPIRES_IN
+                     })
+                     console.log("the token is: "+token);
+                     const cookieOption={
+                        expires: new Date(
+                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                        ),
+                           httpOnly:true
+                     }
+                     res.cookie('jwt',token,cookieOption);
+                     return res.render('rdU',{
+                        message:'user information updated'
+                     })
+                  }
+               })
+            }
+         })
+      }
+   })
+}
+exports.cgmUP=async(req,res)=>{
+   const {email,password,mobNum,name}=req.body;
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+      if(error){
+         console.log(error);
+      }else if(decoded.email!=email){
+         if(result.length>0){
+            return res.render('cgmU',{
+               message:'The email is already in use'
+            })
+         }
+      }
+      else{ 
+         let hashedPassword = await bcrypt.hash(password, 8);
+         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+            if(err){
+               console.log('here1')
+               return res.render('cgmU',{
+                  message:'The mobile number is already in use'
+               })
+            }
+            else{
+               db.query('UPDATE cgm SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
+                  if(error){
+                  console.log(error)
+                  }
+                  else{//update the cookie
+                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                        expiresIn: process.env.JWT_EXPIRES_IN
+                     })
+                     console.log("the token is: "+token);
+                     const cookieOption={
+                        expires: new Date(
+                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                        ),
+                           httpOnly:true
+                     }
+                     res.cookie('jwt',token,cookieOption);
+                     return res.render('cgmU',{
+                        message:'user information updated'
+                     })
+                  }
                })
             }
          })

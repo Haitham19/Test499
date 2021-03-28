@@ -24,6 +24,11 @@ router.get('/logout',authController.logout);
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
 router.post('/advisorUP', authController.advisorUP);
+router.post('/deanUP', authController.deanUP);
+router.post('/deputyUP', authController.deputyUP);
+router.post('/ministryUP', authController.ministryUP);
+router.post('/rdUP', authController.rdUP);
+router.post('/cgmUP', authController.cgmUP);
 
 
 module.exports = router;

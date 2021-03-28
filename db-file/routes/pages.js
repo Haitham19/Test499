@@ -120,11 +120,20 @@ router.get('/ministryHP',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/ministryU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('ministryU',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+});
 
 // Center General Manager pages.
-router.get('/CGMhomepage',authController.isLoggedIn,(req,res) =>{
+router.get('/cgmHP',authController.isLoggedIn,(req,res) =>{
    if(req.user){
-    res.render('CGMhomepage',{
+    res.render('cgmHP',{
        user:req.user
     })
     }else{
@@ -136,9 +145,9 @@ router.get('/userSignup',(req,res) =>{
    res.render('userSignup')
 });
 
-router.get('/CGMcomm',authController.isLoggedIn,(req,res) =>{
+router.get('/cgmCOMM',authController.isLoggedIn,(req,res) =>{
    if(req.user){
-    res.render('CGMcomm',{
+    res.render('cgmCOMM',{
        user:req.user
     })
     }else{
@@ -147,9 +156,19 @@ router.get('/CGMcomm',authController.isLoggedIn,(req,res) =>{
   
 });
 
-router.get('/CGMrequests',authController.isLoggedIn,(req,res) =>{
+router.get('/cgmReq',authController.isLoggedIn,(req,res) =>{
    if(req.user){
-    res.render('CGMrequests',{
+    res.render('cgmReq',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+   
+});
+router.get('/cgmU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('cgmU',{
        user:req.user
     })
     }else{
@@ -158,11 +177,20 @@ router.get('/CGMrequests',authController.isLoggedIn,(req,res) =>{
    
 });
 
-
 // RD pages.
 router.get('/rdHP',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('rdHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+   
+});
+router.get('/rdU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('rdU',{
        user:req.user
     })
     }else{
@@ -242,6 +270,15 @@ router.get('/deanHP',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/deanU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deanU',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+});
 router.get('/deanCOMM',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('deanCOMM',{
@@ -256,6 +293,15 @@ router.get('/deanCOMM',authController.isLoggedIn,(req,res) =>{
 router.get('/deputyHP',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('deputyHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/userLogin');
+    }
+});
+router.get('/deputyU',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('deputyU',{
        user:req.user
     })
     }else{
