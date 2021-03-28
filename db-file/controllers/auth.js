@@ -742,44 +742,22 @@ exports.SRaddnewrequest = async (req, res) =>{
 
    }
    
-   exports.SRIupdateinfo=async(req,res,next)=>{
-      //all return next() you don't need to think about them just put them
-      //maybe there is problem with the {} 
-         if(req.cookies.jwt){//this for check if user is ligged in
-            try {
-               const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable for cookie to find user
-               db.query('SELECT * FROM studentresearcher WHERE id=?',[decoded.id],(error,result)=>{//this query will return object of the user 
-                  if(result.length==0){    //this for isLoggedIn                                                                  
-                     return next();
-                  }         
-                  else {
-                  req.user= result[0];//create variable to use it in the page 
-                   //you can name it anything right now is /req.user/                                                                
-                  return next();
-                   }                                                               
-                  
-               })
-            }catch(error) {
-               console.log(error);
-               return next();
-            }
-         }
-         else{
-            return next();
-         }
+   exports.SRIupdateinfo=async(req,res)=>{
+
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable 
          console.log(req.body);
 
          const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
          
          let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE sriaddrequest SET ?',{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},(error,result) =>{
+         db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(error,result) =>{
             if(error){
                console.log(error);
             }
             else{
                console.log(result);
-               return res.render('researcherSignup',{
-               message:'Student Researcher Registered'
+               return res.render('SRhomepage',{
+               message:'Student Researcher is updated'
             });
             }
          })
