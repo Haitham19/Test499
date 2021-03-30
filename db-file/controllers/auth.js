@@ -335,16 +335,6 @@ exports.researcherSignup = (req, res) =>{
             })
          }
          db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-            db.query('SELECT * FROM advisor WHERE email=?',[adv],(error,resu)=>{
-               if(error){
-                  console.log(error);
-               }
-               if(resu.length==0){
-                  return res.render('researcherSignup',{
-                     message:'Advisor email does not exist'
-                  })
-               }
-               else{
                   db.query('INSERT INTO studentresearcher SET ?',{advisorEmail:adv,userID:resul[0].userID,name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university },(error,results) =>{
                      if(error){
                         console.log(error);
@@ -354,9 +344,8 @@ exports.researcherSignup = (req, res) =>{
                         message:'Student Researcher Registered'
                      });
                      }
-                  })
-               }
-            })
+                  }) 
+            
          })
       })
    })
@@ -401,6 +390,48 @@ exports.OrgResSignup = (req, res) =>{
             }
          })
       })   
+      })
+   })
+}
+exports.researcherOutSideSignup= (req,res)=>{
+   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
+   
+   db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
+      if(error){
+         console.log(error)
+      }
+
+      if(results.length > 0){
+         return res.render('researcherSignup',{
+            message:'The email is already in use'
+         })
+      }
+      else if (password !== passwordConfirm){
+         return res.render('researcherSignup',{
+            message:'password do not match'
+         })
+      }
+      
+      let hashedPassword = await bcrypt.hash(password, 8);
+      db.query('INSERT INTO users SET ?',{email:email, mobNum:mobNum,password:hashedPassword},(erro,result) =>{
+         if(erro){
+            return res.render('researcherSignup',{
+               message:'The mobile number is already in use'
+            })
+         }
+         db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
+                  db.query('INSERT INTO studentresearcher SET ?',{advisorEmail:adv,userID:resul[0].userID,name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university },(error,results) =>{
+                     if(error){
+                        console.log(error);
+                     }
+                     else{
+                        return res.render('researcherSignup',{
+                        message:'Student Researcher Registered'
+                     });
+                     }
+                  }) 
+            
+         })
       })
    })
 }

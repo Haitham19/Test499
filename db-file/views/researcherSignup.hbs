@@ -26,120 +26,188 @@
             <nav>
                <div class="nav nav-tabs" id="nav-tab" role="tablist">
                   <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-                     type="button" role="tab" aria-controls="nav-home" aria-selected="true" onclick="location.href='/researcherLogin';">Home</button>
+                     type="button" role="tab" aria-controls="nav-home" aria-selected="true"
+                     onclick="location.href='/researcherLogin';">Home</button>
                   <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                     type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Student Researcher</button>
+                     type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Student Researcher
+                     Inside Saudi</button>
                   <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
-                     type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Organization Researcher</button>
+                     type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Organization
+                     Researcher</button>
+
+                  <button class="nav-link" id="nav-c-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+                     type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Student Researcher
+                     Outside Saudi</button>
                </div>
-            </nav>
+         </div>
+         </nav>
 
 
 
-            <div class="tab-content" id="nav-tabContent">
-               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
-               </div>
-               <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                  <form action="auth/researcherSignup" method="POST">
-                     <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                     </div>
+         <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+               <form action="auth/researcherSignup" method="POST">
+                  <div class="form-group">
+                     <label for="name">Full Name</label>
+                     <input type="text" class="form-control" id="name" name="name">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                     </div>
+                  <div class="form-group">
+                     <label for="email">Email Address</label>
+                     <input type="email" class="form-control" id="email" name="email">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="college">College Name</label>
-                        <input type="text" class="form-control" id="college" name="college">
-                     </div>
+                  <div class="form-group">
+                     <label for="college">College Name</label>
+                     <input type="text" class="form-control" id="college" name="college">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="deptName">Department Name</label>
-                        <input type="text" class="form-control" id="deptName" name="deptName">
-                     </div>
-
-
-                     <div class="form-group">
-                        <label for="mobNum">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobNum" name="mobNum">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="country">Country Name</label>
-                        <input type="text" class="form-control" id="country" name="country">
-                     </div>
+                  <div class="form-group">
+                     <label for="deptName">Department Name</label>
+                     <input type="text" class="form-control" id="deptName" name="deptName">
+                  </div>
 
 
-                     <div class="form-group">
-                        <label for="level">Level</label>
-                        <input type="text" class="form-control" id="level" name="level">
-                     </div>
+                  <div class="form-group">
+                     <label for="mobNum">Mobile Number</label>
+                     <input type="number" class="form-control" id="mobNum" name="mobNum">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="university">University</label>
-                        <input type="text" class="form-control" id="university" name="university">
-                     </div>
-
-                    
-                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="passwordConfirm">Confirm Password</label>
-                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
-                     </div>
+                  <div class="form-group">
+                     <label for="country">Country Name</label>
+                     <input type="text" class="form-control" id="country" name="country">
+                  </div>
 
 
-                     <button type="submit" class="btn btn-primary">Register Researcher</button>
-                  </form>
-               </div>
+                  <div class="form-group">
+                     <label for="level">Level</label>
+                     <input type="text" class="form-control" id="level" name="level">
+                  </div>
 
-               
-               <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                  <form action="auth/OrgResSignup" method="POST">
-                     <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                     </div>
+                  <div class="form-group">
+                     <label for="university">University</label>
+                     <input type="text" class="form-control" id="university" name="university">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                     </div>
 
-                     <div class="form-group">
-                        <label for="organization">Organization Name</label>
-                        <input type="text" class="form-control" id="organization" name="organization">
-                     </div>
-                     <div class="form-group">
-                        <label for="mobNum">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobNum" name="mobNum">
-                     </div>
-                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                     </div>
+                  <div class="form-group">
+                     <label for="password">Password</label>
+                     <input type="password" class="form-control" id="password" name="password">
+                  </div>
 
-                     <div class="form-group">
-                        <label for="passwordConfirm">Confirm Password</label>
-                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
-                     </div>
+                  <div class="form-group">
+                     <label for="passwordConfirm">Confirm Password</label>
+                     <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                  </div>
 
-                     <button type="submit" class="btn btn-primary">Register Researcher</button>
-                  </form>
-               </div>
+
+                  <button type="submit" class="btn btn-primary">Register Researcher</button>
+               </form>
             </div>
 
+
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+               <form action="auth/OrgResSignup" method="POST">
+                  <div class="form-group">
+                     <label for="name">Full Name</label>
+                     <input type="text" class="form-control" id="name" name="name">
+                  </div>
+
+                  <div class="form-group">
+                     <label for="email">Email Address</label>
+                     <input type="email" class="form-control" id="email" name="email">
+                  </div>
+
+                  <div class="form-group">
+                     <label for="organization">Organization Name</label>
+                     <input type="text" class="form-control" id="organization" name="organization">
+                  </div>
+                  <div class="form-group">
+                     <label for="mobNum">Mobile Number</label>
+                     <input type="number" class="form-control" id="mobNum" name="mobNum">
+                  </div>
+                  <div class="form-group">
+                     <label for="password">Password</label>
+                     <input type="password" class="form-control" id="password" name="password">
+                  </div>
+
+                  <div class="form-group">
+                     <label for="passwordConfirm">Confirm Password</label>
+                     <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Register Researcher</button>
+               </form>
+            </div>
          </div>
+
+         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-c-tab">
+            <form action="auth/researcherOutSideSignup" method="POST">
+               <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" class="form-control" id="name" name="name">
+               </div>
+
+               <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" class="form-control" id="email" name="email">
+               </div>
+
+               <div class="form-group">
+                  <label for="college">College Name</label>
+                  <input type="text" class="form-control" id="college" name="college">
+               </div>
+
+               <div class="form-group">
+                  <label for="deptName">Department Name</label>
+                  <input type="text" class="form-control" id="deptName" name="deptName">
+               </div>
+
+
+               <div class="form-group">
+                  <label for="mobNum">Mobile Number</label>
+                  <input type="number" class="form-control" id="mobNum" name="mobNum">
+               </div>
+
+               <div class="form-group">
+                  <label for="country">Country Name</label>
+                  <input type="text" class="form-control" id="country" name="country">
+               </div>
+
+
+               <div class="form-group">
+                  <label for="level">Level</label>
+                  <input type="text" class="form-control" id="level" name="level">
+               </div>
+
+               <div class="form-group">
+                  <label for="university">University</label>
+                  <input type="text" class="form-control" id="university" name="university">
+               </div>
+
+
+               <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password">
+               </div>
+
+               <div class="form-group">
+                  <label for="passwordConfirm">Confirm Password</label>
+                  <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+               </div>
+
+
+               <button type="submit" class="btn btn-primary">Register Researcher</button>
+            </form>
+         </div>
+
       </div>
-      {{#if message}}
-      <h4 class="alert alert-danger mt-4">{{message}}</h4>
-      {{/if}}
+   </div>
+   {{#if message}}
+   <h4 class="alert alert-danger mt-4">{{message}}</h4>
+   {{/if}}
    </div>
 </body>
 
