@@ -335,7 +335,7 @@ exports.researcherSignup = (req, res) =>{
             })
          }
          db.query('SELECT * FROM users WHERE email=?',[email],(error,resul)=>{
-            db.query('INSERT INTO studentresearcher SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university },(error,results) =>{
+            db.query('INSERT INTO studentresearcher SET ?',{userID:resul[0].userID,name:name, email:email, password:hashedPassword, college:college, deptName:deptName, mobNum:mobNum, country:country, level:level, university:university },(error,results) =>{
                if(error){
                   console.log(error);
                }
@@ -425,7 +425,7 @@ exports.researcherOutSideSignup= (req,res)=>{
                         console.log(error);
                      }
                      else{
-                        return res.render('researcherSignup',{
+                        return res.render('researcherLogin',{
                         message:'Student Researcher Registered'
                      });
                      }
@@ -809,7 +809,7 @@ exports.SRIupdateinfo=async(req,res)=>{
                })
             }
             else{
-               db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(err,rese)=>{
+               db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, deptName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(err,rese)=>{
                   if(error){
                   console.log(error)
                   }
