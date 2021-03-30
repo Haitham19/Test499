@@ -17,7 +17,6 @@ router.post('/missionSignup',authController.missionSignup);
 router.post('/CGMSignup',authController.CGMSignup);
 router.post('/RDSignup',authController.RDSignup);
 router.post('/userLogin',authController.userLogin);
-router.post('/researcherLogin',authController.researcherLogin);
 router.post('/SRaddnewrequest', authController.SRaddnewrequest);
 router.post('/SRIupdateinfo', authController.SRIupdateinfo);
 router.get('/logout',authController.logout);

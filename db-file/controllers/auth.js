@@ -14,77 +14,6 @@ const db = mysql.createConnection({
    database:process.env.DATABASE
 });
 
-exports.researcherLogin = async(req,res)=>{
-   try{
-      const {email,password}=req.body;
-
-      if(!email || !password){
-         return res.status(400).render('researcherLogin',{
-            message: 'Please provide an email and password'
-         })
-      }
-   db.query('SELECT * FROM organizationresearcher WHERE email = ?',[email],async(error,result)=>{
-      db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,results)=>{
-         console.log("organization -"+result)
-         console.log("student -"+results);
-         if (results.length==0) {
-            if(result.length==0){
-            res.status(401).render("researcherLogin", {
-               message: 'Email does not exist'
-            }) //this is what you are missing
-            }
-            else if(!(await bcrypt.compare(password,result[0].password))){
-               res.status(401).render("researcherLogin", {
-                  message: 'Email or Password is incorrect'
-               }) 
-            }
-            else{
-               const id=result[0].id;
-               const email=result[0].email;
-            const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
-               expiresIn: process.env.JWT_EXPIRES_IN
-            })
-            console.log("the token is: "+token);
-            const cookieOption={
-               expires: new Date(
-                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-               ),
-                  httpOnly:true
-            }
-            res.cookie('jwt',token,cookieOption);
-            res.status(200).redirect("/");//"/OrgHomePage"
-            return;
-            }
-/////////////////////////////////////////////////////////////////////////////////////////
-          }
-         else if(!(await bcrypt.compare(password,results[0].password))){
-            res.status(401).render("researcherLogin", {
-               message: 'Email or Password is incorrect'
-            })
-         }else {
-            const id=results[0].id;
-            const email=results[0].email;
-            const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
-               expiresIn: process.env.JWT_EXPIRES_IN
-            })
-            console.log("the token is: "+token);
-            const cookieOption={
-               expires: new Date(
-                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-               ),
-                  httpOnly:true
-            }
-            res.cookie('jwt',token,cookieOption);
-            res.status(200).redirect("/SRhomepage");
-         }
-         
-      })
-   })
-   }
-   catch(error){
-      console.log(error);
-   }
-}
 
 exports.userLogin = async(req,res)=>{
    try{
@@ -103,26 +32,119 @@ exports.userLogin = async(req,res)=>{
                      db.query('SELECT * FROM dean WHERE email = ?', [email], async(error,dean)=>{
                         db.query('SELECT * FROM mission WHERE email = ?', [email], async(error,mis)=>{
                            db.query('SELECT * FROM rd WHERE email = ?', [email], async(error,rd)=>{
-                              if (mini.length==0){
-                                 if(cgm.length==0){
-                                    if(adv.length==0){
-                                       if(depu.length==0){
-                                          if(dean.length==0){
-                                             if(mis.length==0){
-                                                if(rd.length==0){
-                                                   if(results.length==0){
-                                                   res.status(401).render("userLogin", {
-                                                      message: 'Email does not exist'
-                                                   })
+                              db.query('SELECT * FROM organizationresearcher WHERE email = ?',[email],async(error,org)=>{
+                                 db.query('SELECT * FROM studentresearcher WHERE email = ?', [email], async(error,sr)=>{
+                                    if (mini.length==0){
+                                       if(cgm.length==0){
+                                          if(adv.length==0){
+                                             if(depu.length==0){
+                                                if(dean.length==0){
+                                                   if(mis.length==0){
+                                                      if(rd.length==0){
+                                                         if(sr.length==0){
+                                                            if(org.length==0){
+                                                               if(results.length==0){
+                                                               res.status(401).render("userLogin", {
+                                                                  message: 'Email does not exist'
+                                                               })
+                                                               }
+                                                               else if(!(await bcrypt.compare(password,results[0].password))){
+                                                                  res.status(401).render("userLogin", {
+                                                                     message: 'Email or Password is incorrect'
+                                                                  }) 
+                                                               }
+                                                               else{
+                                                                  const id=results[0].userID;
+                                                                  const email=results[0].email;
+                                                               const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
+                                                                  expiresIn: process.env.JWT_EXPIRES_IN
+                                                               })
+                                                               console.log("the token is: "+token);
+                                                               const cookieOption={
+                                                                  expires: new Date(
+                                                                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                                  ),
+                                                                     httpOnly:true
+                                                               }
+                                                               res.cookie('jwt',token,cookieOption);
+                                                               res.status(200).redirect("/adminHP");//
+                                                               return;
+                                                               }
+                                                            }
+                                                            else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                               res.status(401).render("userLogin", {
+                                                                  message: 'Email or Password is incorrect'
+                                                               })
+                                                            }
+                                                            else{
+                                                               const id=org[0].id;
+                                                               const email=org[0].email;
+                                                            const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
+                                                               expiresIn: process.env.JWT_EXPIRES_IN
+                                                            })
+                                                            console.log("the token is: "+token);
+                                                            const cookieOption={
+                                                               expires: new Date(
+                                                                  Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                               ),
+                                                                  httpOnly:true
+                                                            }
+                                                            res.cookie('jwt',token,cookieOption);
+                                                            res.status(200).redirect("/orgHP");
+                                                            }
+                                                         }
+                                                         else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                            res.status(401).render("userLogin", {
+                                                               message: 'Email or Password is incorrect'
+                                                            })
+                                                         }
+                                                         else{
+                                                            const id=sr[0].id;
+                                                            const email=sr[0].email;
+                                                         const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
+                                                            expiresIn: process.env.JWT_EXPIRES_IN
+                                                         })
+                                                         console.log("the token is: "+token);
+                                                         const cookieOption={
+                                                            expires: new Date(
+                                                               Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                            ),
+                                                               httpOnly:true
+                                                         }
+                                                         res.cookie('jwt',token,cookieOption);
+                                                         res.status(200).redirect("/SRhomepage");
+                                                         }
+                                                      }
+                                                      else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                         res.status(401).render("userLogin", {
+                                                            message: 'Email or Password is incorrect'
+                                                         })
+                                                      }
+                                                      else{
+                                                         const id=rd[0].id;
+                                                         const email=rd[0].email;
+                                                      const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
+                                                         expiresIn: process.env.JWT_EXPIRES_IN
+                                                      })
+                                                      console.log("the token is: "+token);
+                                                      const cookieOption={
+                                                         expires: new Date(
+                                                            Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                         ),
+                                                            httpOnly:true
+                                                      }
+                                                      res.cookie('jwt',token,cookieOption);
+                                                      res.status(200).redirect("/rdHP");
+                                                      }
                                                    }
-                                                   else if(!(await bcrypt.compare(password,results[0].password))){
+                                                   else if(!(await bcrypt.compare(password,mis[0].password))){
                                                       res.status(401).render("userLogin", {
                                                          message: 'Email or Password is incorrect'
-                                                      }) 
+                                                      })
                                                    }
                                                    else{
-                                                      const id=results[0].userID;
-                                                      const email=results[0].email;
+                                                      const id=mis[0].id;
+                                                      const email=mis[0].email;
                                                    const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                       expiresIn: process.env.JWT_EXPIRES_IN
                                                    })
@@ -134,18 +156,39 @@ exports.userLogin = async(req,res)=>{
                                                          httpOnly:true
                                                    }
                                                    res.cookie('jwt',token,cookieOption);
-                                                   res.status(200).redirect("/adminHP");//
-                                                   return;
+                                                   res.status(200).redirect("/missionHP");//missionHP
                                                    }
                                                 }
-                                                else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                else if(!(await bcrypt.compare(password,dean[0].password))){
                                                    res.status(401).render("userLogin", {
                                                       message: 'Email or Password is incorrect'
                                                    })
                                                 }
-                                                else{
-                                                   const id=rd[0].id;
-                                                   const email=rd[0].email;
+                                                else {
+                                                   const id=dean[0].id;
+                                                   const email=dean[0].email;
+                                                   const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
+                                                      expiresIn: process.env.JWT_EXPIRES_IN
+                                                   })
+                                                   console.log("the token is: "+token);
+                                                   const cookieOption={
+                                                      expires: new Date(
+                                                         Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                                                      ),
+                                                         httpOnly:true
+                                                   }
+                                                   res.cookie('jwt',token,cookieOption);
+                                                   res.status(200).redirect("/deanHP");
+                                                }
+                                             }
+                                             else if(!(await bcrypt.compare(password,depu[0].password))){
+                                                res.status(401).render("userLogin", {
+                                                   message: 'Email or Password is incorrect'
+                                                })
+                                             }
+                                             else {
+                                                const id=depu[0].id;
+                                                const email=depu[0].email;
                                                 const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                    expiresIn: process.env.JWT_EXPIRES_IN
                                                 })
@@ -157,39 +200,17 @@ exports.userLogin = async(req,res)=>{
                                                       httpOnly:true
                                                 }
                                                 res.cookie('jwt',token,cookieOption);
-                                                res.status(200).redirect("/rdHP");
-                                                }
+                                                res.status(200).redirect("/deputyHP");
                                              }
-                                             else if(!(await bcrypt.compare(password,mis[0].password))){
+                                          }
+                                          else if(!(await bcrypt.compare(password,adv[0].password))){
                                                 res.status(401).render("userLogin", {
                                                    message: 'Email or Password is incorrect'
                                                 })
                                              }
-                                             else{
-                                                const id=mis[0].id;
-                                                const email=mis[0].email;
-                                             const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
-                                                expiresIn: process.env.JWT_EXPIRES_IN
-                                             })
-                                             console.log("the token is: "+token);
-                                             const cookieOption={
-                                                expires: new Date(
-                                                   Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                                                ),
-                                                   httpOnly:true
-                                             }
-                                             res.cookie('jwt',token,cookieOption);
-                                             res.status(200).redirect("/missionHP");//missionHP
-                                             }
-                                          }
-                                          else if(!(await bcrypt.compare(password,dean[0].password))){
-                                             res.status(401).render("userLogin", {
-                                                message: 'Email or Password is incorrect'
-                                             })
-                                          }
                                           else {
-                                             const id=dean[0].id;
-                                             const email=dean[0].email;
+                                             const id=adv[0].id;
+                                             const email=adv[0].email;
                                              const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                                 expiresIn: process.env.JWT_EXPIRES_IN
                                              })
@@ -201,17 +222,17 @@ exports.userLogin = async(req,res)=>{
                                                    httpOnly:true
                                              }
                                              res.cookie('jwt',token,cookieOption);
-                                             res.status(200).redirect("/deanHP");
+                                             res.status(200).redirect("/advisorHP");
                                           }
                                        }
-                                       else if(!(await bcrypt.compare(password,depu[0].password))){
+                                       else if(!(await bcrypt.compare(password,cgm[0].password))){
                                           res.status(401).render("userLogin", {
                                              message: 'Email or Password is incorrect'
                                           })
                                        }
                                        else {
-                                          const id=depu[0].id;
-                                          const email=depu[0].email;
+                                          const id=cgm[0].id;
+                                          const email=cgm[0].email;
                                           const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                              expiresIn: process.env.JWT_EXPIRES_IN
                                           })
@@ -223,39 +244,17 @@ exports.userLogin = async(req,res)=>{
                                                 httpOnly:true
                                           }
                                           res.cookie('jwt',token,cookieOption);
-                                          res.status(200).redirect("/deputyHP");
+                                          res.status(200).redirect("/cgmHP");
                                        }
                                     }
-                                    else if(!(await bcrypt.compare(password,adv[0].password))){
-                                          res.status(401).render("userLogin", {
-                                             message: 'Email or Password is incorrect'
-                                          })
-                                       }
-                                       else {
-                                          const id=adv[0].id;
-                                          const email=adv[0].email;
-                                          const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
-                                             expiresIn: process.env.JWT_EXPIRES_IN
-                                          })
-                                          console.log("the token is: "+token);
-                                          const cookieOption={
-                                             expires: new Date(
-                                                Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                                             ),
-                                                httpOnly:true
-                                          }
-                                          res.cookie('jwt',token,cookieOption);
-                                          res.status(200).redirect("/advisorHP");
-                                       }
-                                    }
-                                    else if(!(await bcrypt.compare(password,cgm[0].password))){
+                                    else if(!(await bcrypt.compare(password,mini[0].password))){
                                        res.status(401).render("userLogin", {
                                           message: 'Email or Password is incorrect'
                                        })
                                     }
                                     else {
-                                       const id=cgm[0].id;
-                                       const email=cgm[0].email;
+                                       const id=mini[0].id;
+                                       const email=mini[0].email;
                                        const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
                                           expiresIn: process.env.JWT_EXPIRES_IN
                                        })
@@ -267,30 +266,10 @@ exports.userLogin = async(req,res)=>{
                                              httpOnly:true
                                        }
                                        res.cookie('jwt',token,cookieOption);
-                                       res.status(200).redirect("/cgmHP");
+                                       res.status(200).redirect("/ministryHP");
                                     }
-                                 }
-                                 else if(!(await bcrypt.compare(password,mini[0].password))){
-                                    res.status(401).render("userLogin", {
-                                       message: 'Email or Password is incorrect'
-                                    })
-                                 }
-                                 else {
-                                    const id=mini[0].id;
-                                    const email=mini[0].email;
-                                    const token= jwt.sign({id:id,email:email}, process.env.JWT_SECRET,{
-                                       expiresIn: process.env.JWT_EXPIRES_IN
-                                    })
-                                    console.log("the token is: "+token);
-                                    const cookieOption={
-                                       expires: new Date(
-                                          Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                                       ),
-                                          httpOnly:true
-                                    }
-                                    res.cookie('jwt',token,cookieOption);
-                                    res.status(200).redirect("/ministryHP");
-                                 }
+                                 })
+                              })
                            })
                         })
                      })
@@ -794,6 +773,7 @@ exports.SRIupdateinfo=async(req,res)=>{
          console.log(error);
       }else if(decoded.email!=email){
          if(result.length>0){
+            console.log(result);
             return res.render('SRhomepage',{
                message:'The email is already in use'
             })
@@ -998,7 +978,6 @@ exports.advisorUP=async(req,res)=>{
          let hashedPassword = await bcrypt.hash(password, 8);
          db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
             if(err){
-               console.log('here1')
                return res.render('advisorU',{
                   message:'The mobile number is already in use'
                })
