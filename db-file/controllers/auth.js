@@ -309,7 +309,7 @@ exports.userLogin = async(req,res)=>{
       
 //this section is for Sign up 
 exports.researcherSignup = (req, res) =>{
-   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm, adv }= req.body;
+   const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm }= req.body;
    
    db.query('SELECT email FROM users WHERE email = ?',[email], async(error, results) =>{
       if(error){
@@ -727,74 +727,85 @@ exports.SRaddnewrequest = async (req, res) =>{
    
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
 
-   db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
-      if(erro){
-         return res.render('SRaddnewrequest',{
-         message:'some spaces are empty'
-         })
-      }
-      else {
-         return res.render('SRaddnewrequest',{
-            message:'Request is submitted'
+      db.query('SELECT * FROM advisor WHERE email=?',[advisorsEmail],(error,resu)=>{
+         if(error){
+            console.log(error);
+         }
+         if(resu.length==0){
+            return res.render('SRhomepage',{
+               message:'Advisor email does not exist'
             })
-      }
-   })
-
-   }
-   
+         }
+         else{
+            db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
+               if(erro){
+                  return res.render('SRhomepage',{
+                  message:'some spaces are empty'
+                  })
+               }
+               else {
+                  return res.render('SRhomepage',{
+                     message:'Request is submitted'
+                     })
+               }
+            })
+         }
+      })
+   } 
    exports.SRIupdateinfo=async(req,res)=>{
-
-
       const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable 
       console.log(req.body);
 
       const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
 
-      let hashedPassword = await bcrypt.hash(password, 8);
-      db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(error,result) =>{
+      db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
          if(error){
             console.log(error);
+         }else if(decoded.email!=email){
+            if(result.length>0){
+               return res.render('SRhomepage',{
+                  message:'The email is already in use'
+               })
+            }
          }
          else{
-            console.log(result);
-            return res.render('researcherSignup',{
-            message:'Student Researcher Registered'
+            let hashedPassword = await bcrypt.hash(password, 8);
+            db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+               if(err){
+                  console.log('here1')
+                  return res.render('SRhomepage',{
+                     message:'The mobile number is already in use'
+                  })
+               }
+               else{
+                  db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, debtName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(err,rese)=>{
+                     if(error){
+                     console.log(error)
+                     }
+                     else{//update the cookie
+                        const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                           expiresIn: process.env.JWT_EXPIRES_IN
+                        })
+                        console.log("the token is: "+token);
+                        const cookieOption={
+                           expires: new Date(
+                              Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                           ),
+                              httpOnly:true
+                        }
+                        res.cookie('jwt',token,cookieOption);
+                        return res.render('SRhomepage',{
+                           message:'user information updated'
+                        })
+                     }
+                  })
+               }
             
-         });
-         }
-      })
-   
-   }
-
-         
-
-      //in pages file you have to rename it agian to use the user object
-      
-
-   /*exports.SRIupdateinfo = async (req, res) =>{
-      console.log(req.body);
-   
-      const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
-      
-      
-      const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   
-      db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
-         if(erro){
-            return res.render('SRaddnewrequest',{
-            message:'some spaces are empty'
             })
          }
-         else {
-            return res.render('SRaddnewrequest',{
-               message:'Request is submitted'
-               })
-         }
-      })
+      }) 
+   }
    
-      }*/
-//=======
-
 exports.isLoggedIn= async (req,res,next)=>{
    if(req.cookies.jwt){
       try {
