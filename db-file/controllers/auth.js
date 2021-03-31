@@ -763,58 +763,39 @@ exports.SRaddnewrequest = async (req, res) =>{
    })
 } 
 exports.SRIupdateinfo=async(req,res)=>{
-   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);//create variable 
-   console.log(req.body);
-
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
    const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
-
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
-      if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            console.log(result);
-            return res.render('SRhomepage',{
-               message:'The email is already in use'
-            })
-         }
-      }
-      else{
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
-            if(err){
-               console.log('here1')
-               return res.render('SRhomepage',{
-                  message:'The mobile number is already in use'
-               })
-            }
-            else{
-               db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, email:email, password:hashedPassword, college:college, deptName:deptName, mobNum:mobNum, country:country, level:level, university:university},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('SRhomepage',{
-                        message:'user information updated'
-                     })
-                  }
-               })
-            }
-         
+   let hashedPassword = await bcrypt.hash(password, 8);
+   db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      if(err){
+         return res.render('SRhomepage',{
+            message:'The mobile number is already in use or mobile number is used'
          })
       }
-   }) 
+      else{
+         db.query('UPDATE studentresearcher SET ? WHERE id=?',[{name:name, college:college, deptName:deptName,  country:country, level:level, university:university},decoded.id],(err,rese)=>{
+            if(error){
+            console.log(error)
+            }
+            else{//update the cookie
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('SRhomepage',{
+                  message:'user information updated'
+               })
+            }
+         })
+      }
+   })    
 }
    
 exports.isLoggedIn= async (req,res,next)=>{
@@ -963,343 +944,246 @@ exports.Uuser=(req,res)=>{
 }
 exports.advisorUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('advisorU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('advisorHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE advisor SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               return res.render('advisorU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE advisor SET ? WHERE id=?',[{name:name,},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('advisorHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('advisorHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.deanUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('deanU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('deanHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE dean SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('deanU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE dean SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('deanHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('deanHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.deputyUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('deputyU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('deputyHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{ 
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE deputy SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('deputyU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE deputy SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('deputyHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('deputyHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.ministryUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('ministryU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('ministryHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{ 
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE ministry SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('ministryU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE ministry SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('ministryHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('ministryHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.missionUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('missionU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('missionHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{ 
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE mission SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('missionU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE mission SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('missionHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('missionHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.rdUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('rdU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('rdHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{ 
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE rd SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('rdU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE rd SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('rdHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('rdHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
 exports.cgmUP=async(req,res)=>{
    const {email,password,mobNum,name}=req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query('SELECT * FROM users WHERE email=?',[email],async(error,result)=>{
+   db.query("UPDATE users SET ? WHERE email=?",[{email:email,mobNum:mobNum,password:hashedPassword},decoded.email],(error,result)=>{
       if(error){
-         console.log(error);
-      }else if(decoded.email!=email){
-         if(result.length>0){
-            return res.render('cgmU',{
-               message:'The email is already in use'
-            })
-         }
+         return res.render('cgmHP',{
+            message:'The email is already in use or mobile number is used'
+         })
       }
-      else{ 
-         let hashedPassword = await bcrypt.hash(password, 8);
-         db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      else(
+         db.query('UPDATE cgm SET name=? WHERE id=?',[name,decoded.id],(err,resul)=>{
             if(err){
-               console.log('here1')
-               return res.render('cgmU',{
-                  message:'The mobile number is already in use'
-               })
+               console.log(err);
             }
             else{
-               db.query('UPDATE cgm SET ? WHERE id=?',[{name:name},decoded.id],(err,rese)=>{
-                  if(error){
-                  console.log(error)
-                  }
-                  else{//update the cookie
-                     const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRES_IN
-                     })
-                     console.log("the token is: "+token);
-                     const cookieOption={
-                        expires: new Date(
-                           Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                        ),
-                           httpOnly:true
-                     }
-                     res.cookie('jwt',token,cookieOption);
-                     return res.render('cgmHP',{
-                        message:'user information updated'
-                     })
-                  }
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('cgmHP',{
+                  message:'user information updated'
                })
             }
          })
-      }
+      )
    })
 }
