@@ -2,8 +2,6 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const {promisify} =require("util");
-const { error } = require("console");
-const e = require("express");
 
 // we use process.env for security => detrnv .
 //we can creat file with coonection and importit whene we whant.
@@ -730,13 +728,13 @@ exports.RDSignup = (req, res) =>{
 
 // add request 
 exports.SRaddnewrequest = async (req, res) =>{
-   console.log(req.body);
-
    const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
-   
-   
+   if(researchArea=="base"){
+      return res.render('SRhomepage',{
+         message:'research area is not selected'
+      })
+   }
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-
    db.query('SELECT * FROM advisor WHERE email=?',[advisorsEmail],(error,resu)=>{
       if(error){
          console.log(error);
@@ -747,10 +745,10 @@ exports.SRaddnewrequest = async (req, res) =>{
          })
       }
       else{
-         db.query('INSERT INTO sriaddrequest SET ?',{projectTitle:projectTitle, researchArea:researchArea, advisorsName:advisorsName, advisorsEmail:advisorsEmail, url:url, targetAudience:targetAudience, educationalDirectorates:educationalDirectorates, SRI_ID: decoded.id},(erro,result) =>{
+         db.query('INSERT INTO sr_request SET ?',{projectTitle:projectTitle, area:researchArea, advName:advisorsName, advEmail:advisorsEmail, url:url, target:targetAudience, educ_dir:educationalDirectorates, SRI_ID: decoded.id,status:0},(erro,result) =>{
             if(erro){
                return res.render('SRhomepage',{
-               message:'some spaces are empty'
+               message:'something went wrong'
                })
             }
             else {
