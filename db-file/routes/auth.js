@@ -18,6 +18,7 @@ router.post('/CGMSignup',authController.CGMSignup);
 router.post('/RDSignup',authController.RDSignup);
 router.post('/userLogin',authController.userLogin);
 router.post('/SRaddnewrequest', authController.SRaddnewrequest);
+router.post('/orgANR', authController.orgANR);
 router.post('/SRIupdateinfo', authController.SRIupdateinfo);
 router.get('/logout',authController.logout);
 router.post('/Duser', authController.Duser);

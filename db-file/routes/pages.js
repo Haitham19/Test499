@@ -51,6 +51,16 @@ router.get('/SRhomepage',authController.isLoggedIn,(req,res) =>{
       res.redirect('/researcherLogin');
     }
 });
+router.get('/orgANR',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('orgANR',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/orgANR');
+    }
+   
+});
 router.get('/SRaddnewrequest',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('SRaddnewrequest',{
