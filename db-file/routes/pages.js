@@ -261,6 +261,23 @@ router.get('/advisorHP',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/advisorReq',authController.advRequsets,(req,res) =>{
+   if(req.request){
+    res.render('advisorReq',{
+       request:req.request
+    })
+    }else{
+       if(req.user){
+          res.render("advisorHP",{
+             message:"there is no request to chick",
+             user:req.user
+          })
+       }
+       else{
+         res.redirect('/userLogin');
+       }
+    }
+});
 router.get('/advisorU',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('advisorU',{

@@ -761,36 +761,13 @@ exports.SRaddnewrequest = async (req, res) =>{
    })
 } 
 exports.orgANR = async (req, res) =>{
-  console.log(req.body);
-
-  const {
-    projectTitle,
-    researchArea,
-    url,
-    targetAudience,
-    educationalDirectorates,
-  } = req.body;
-
-  const decoded = await promisify(jwt.verify)(
-    req.cookies.jwt,
-    process.env.JWT_SECRET
-  );
-
-  db.query(
-    "INSERT INTO orgRequest SET ?",
-    {
-      projectTitle: projectTitle,
-      researchArea: researchArea,
-      url: url,
-      targetAudience: targetAudience,
-      educationalDirectorates: educationalDirectorates,
-      orgID: decoded.id,
-      status:0,
-    },
+  const {projectTitle,researchArea,url,targetAudience,educationalDirectorates,} = req.body;
+  const decoded = await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+  db.query("INSERT INTO orgRequest SET ?",{projectTitle: projectTitle,researchArea: researchArea,url: url,targetAudience: targetAudience,educationalDirectorates: educationalDirectorates,orgID: decoded.id,status:0,},
     (erro, result) => {
       if (erro) {
-        return res.render("SRhomepage", {
-          message: "some spaces are empty",
+        return res.render("orgHP", {
+          message: "something went wrong",
         });
       } else {
         return res.render("SRhomepage", {
@@ -837,7 +814,39 @@ exports.SRIupdateinfo=async(req,res)=>{
       }
    })    
 }
-   
+
+exports.advRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM advisor WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE status=0 AND advEmail=?",[decoded.email],(err,resul)=>{
+                  if(err){
+                     console.log(err);
+                  }else if(resul.length==0){
+                     req.user=result[0];
+                     return next();
+                  }
+                  else{
+                  req.request=resul;
+                  return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
 exports.isLoggedIn= async (req,res,next)=>{
    if(req.cookies.jwt){
       try {
@@ -942,6 +951,21 @@ exports.logout=async(req,res)=>{
    });
    res.status(200).redirect('/');
 }
+exports.advApp=async(req,res)=>{
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("UPDATE sr_request SET status=1 WHERE advEmail=?",[decoded.email],(error,result)=>{
+      if(error){
+         return res.render("/advisorHP",{
+            message:"something went wrong"
+         })
+      }
+      else{
+         return res.render("/advisorHP",{
+            message:"request approved"
+         })
+      }
+   })
+}  
 exports.Duser=async(req, res)=>{
    const email=req.body.email;
    db.query('DELETE FROM users WHERE email=?',[email],(error,result)=>{

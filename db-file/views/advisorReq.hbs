@@ -28,7 +28,7 @@
    <nav>
       <h2>C R E P</h2>
       <ul>
-         <li><a href="/orgHP">Home</a></li>
+         <li><a href="/SRhomepage">Home</a></li>
          <li><a href="/">Log Out</a></li>
       </ul>
    </nav>
@@ -37,46 +37,54 @@
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
 
-               <form action="auth/orgANR" method="POST">
                   <div class="form-group">
-                     <label for="projectTitle">Project title</label>
-                     <input type="text" class="form-control" id="projectTitle" name="projectTitle" required>
+                     <label >ٍStudent name: {{request.[0].name}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Project title: {{request.[0].projectTitle}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Project area: {{request.[0].area}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Target audience: {{request.[0].target}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Educational Directorates: {{request.[0].educ_dir}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Research tool: {{request.[0].url}}</label>
                   </div>
 
+                 <a href="/auth/advApp">Approve</a>
+                  <button type="button"  onclick="auth/advReg">Reject</button>
+            </div>
+         </div>
+      </div>
+      <br>
+      <div class="card">
+         <div class="card-header">
+            <div class="tab-content" id="nav-tabContent">
                   <div class="form-group">
-                     <label for="researchArea">Research area: </label>
-                     <br>
-                     <select name="researchArea" id="researchArea">
-                        <option selected value="base">Please Select Research area</option>
-                        <option value="earlyChildhood">Early childhood</option>
-                        <option value="specialEducation">Special education</option>
-                        <option value="educationalLeadership">Curriculums</option>
-                     </select>
+                     <label >ٍStudent name: {{request.[1].name}}</label>
                   </div>
-
-
                   <div class="form-group">
-                     <label for="url">Add a URL to the study tool</label>
-                     <input type="text" class="form-control" id="url" name="url" required>
+                     <label >Project title: {{request.[1].projectTitle}}</label>
                   </div>
-
                   <div class="form-group">
-                     <label for="targetAudience">Target audience</label>
-                     <input type="text" class="form-control" id="targetAudience" name="targetAudience" required>
+                     <label >Project area: {{request.[1].area}}</label>
                   </div>
-
-
                   <div class="form-group">
-                     <label for="educationalDirectorates">Educational directorates</label>
-                     <input type="text" class="form-control" id="educationalDirectorates"
-                        name="educationalDirectorates" required>
+                     <label >Target audience: {{request.[1].target}}</label>
                   </div>
-
-                  <button type="submit" class="btn btn-primary">Submitt</button>
-               </form>
+                  <div class="form-group">
+                     <label >Educational Directorates: {{request.[1].educ_dir}}</label>
+                  </div>
+                  <div class="form-group">
+                     <label >Research tool: {{request.[1].url}}</label>
+                  </div>
 
             </div>
-
          </div>
       </div>
       {{#if message}}
