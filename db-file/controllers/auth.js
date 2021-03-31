@@ -728,7 +728,7 @@ exports.RDSignup = (req, res) =>{
 }
 
 
-// add SRrequest 
+// add request 
 exports.SRaddnewrequest = async (req, res) =>{
    console.log(req.body);
 
@@ -762,6 +762,47 @@ exports.SRaddnewrequest = async (req, res) =>{
       }
    })
 } 
+exports.orgANR = async (req, res) =>{
+  console.log(req.body);
+
+  const {
+    projectTitle,
+    researchArea,
+    url,
+    targetAudience,
+    educationalDirectorates,
+  } = req.body;
+
+  const decoded = await promisify(jwt.verify)(
+    req.cookies.jwt,
+    process.env.JWT_SECRET
+  );
+
+  db.query(
+    "INSERT INTO orgRequest SET ?",
+    {
+      projectTitle: projectTitle,
+      researchArea: researchArea,
+      url: url,
+      targetAudience: targetAudience,
+      educationalDirectorates: educationalDirectorates,
+      orgID: decoded.id,
+    },
+    (erro, result) => {
+      if (erro) {
+        return res.render("SRhomepage", {
+          message: "some spaces are empty",
+        });
+      } else {
+        return res.render("SRhomepage", {
+          message: "Request is submitted",
+        });
+      }
+    }
+  );
+} 
+
+//update info
 exports.SRIupdateinfo=async(req,res)=>{
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
    const { name, email, college, deptName, mobNum, country, level, university, password}= req.body;
