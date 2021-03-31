@@ -71,7 +71,7 @@ exports.userLogin = async(req,res)=>{
                                                                return;
                                                                }
                                                             }
-                                                            else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                            else if(!(await bcrypt.compare(password,org[0].password))){
                                                                res.status(401).render("userLogin", {
                                                                   message: 'Email or Password is incorrect'
                                                                })
@@ -93,7 +93,7 @@ exports.userLogin = async(req,res)=>{
                                                             res.status(200).redirect("/orgHP");
                                                             }
                                                          }
-                                                         else if(!(await bcrypt.compare(password,rd[0].password))){
+                                                         else if(!(await bcrypt.compare(password,sr[0].password))){
                                                             res.status(401).render("userLogin", {
                                                                message: 'Email or Password is incorrect'
                                                             })

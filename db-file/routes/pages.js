@@ -31,6 +31,16 @@ router.get("/researcherLogin", (req, res) => {
 });
 
 
+router.get('/orgHP',authController.isLoggedIn,(req,res) =>{
+   if(req.user){
+    res.render('orgHP',{
+       user:req.user
+    })
+    }else{
+      res.redirect('/researcherLogin');
+    }
+});
+
 //Student Researcher pages
 router.get('/SRhomepage',authController.isLoggedIn,(req,res) =>{
    if(req.user){
