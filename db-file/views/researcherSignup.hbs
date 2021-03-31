@@ -13,28 +13,39 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-   <link rel="shortcut icon" href="..//CSS/favicon.ico" />
+   <link rel="shortcut icon" href="../favicon.ico">
    <link rel="stylesheet" href="../researcherSignup.css">
-   <title>Document</title>
+   <title>CREP - Register Page</title>
 </head>
 
 <body>
-   <div class="container mt-4">
+
+   <img src= "/image.png" class="logo">
+
+        <nav class='nav1'> 
+            <h2>C R E P</h2>
+                <ul>
+                    <li><a href="/userLogin">Back to Login</a></li>
+        </nav>
+
+
+   <div class="container">
       <div class="card">
          <div class="card-header">
             <nav>
                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                <!--   <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                      type="button" role="tab" aria-controls="nav-home" aria-selected="true"
-                     onclick="location.href='/userLogin';">Home</button>
+                     onclick="location.href='/userLogin';">Home</button> -->
+
                   <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
                      type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Student Researcher
                      Inside Saudi</button>
                   <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
                      type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Organization
                      Researcher</button>
-
                   <button class="nav-link" id="nav-c-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
                      type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Student Researcher
                      Outside Saudi</button>
@@ -45,7 +56,8 @@
 
 
          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <center> <h1> Choose which type of Researcher</h1></center>
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                <form action="auth/researcherSignup" method="POST">
