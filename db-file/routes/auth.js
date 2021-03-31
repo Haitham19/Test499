@@ -21,6 +21,7 @@ router.post('/SRaddnewrequest', authController.SRaddnewrequest);
 router.post('/orgANR', authController.orgANR);
 router.post('/SRIupdateinfo', authController.SRIupdateinfo);
 router.get('/logout',authController.logout);
+router.get('/advApp',authController.advApp);
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
 router.post('/advisorUP', authController.advisorUP);
