@@ -785,6 +785,7 @@ exports.orgANR = async (req, res) =>{
       targetAudience: targetAudience,
       educationalDirectorates: educationalDirectorates,
       orgID: decoded.id,
+      status:0,
     },
     (erro, result) => {
       if (erro) {
