@@ -728,7 +728,7 @@ exports.RDSignup = (req, res) =>{
 
 // add request 
 exports.SRaddnewrequest = async (req, res) =>{
-   const { projectTitle, researchArea,  advisorsName,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
+   const { projectTitle, researchArea,advisorsEmail, url, targetAudience, educationalDirectorates }= req.body;
    if(researchArea=="base"){
       return res.render('SRhomepage',{
          message:'research area is not selected'
@@ -745,7 +745,7 @@ exports.SRaddnewrequest = async (req, res) =>{
          })
       }
       else{
-         db.query('INSERT INTO sr_request SET ?',{projectTitle:projectTitle, area:researchArea, advName:advisorsName, advEmail:advisorsEmail, url:url, target:targetAudience, educ_dir:educationalDirectorates, SRI_ID: decoded.id,status:0},(erro,result) =>{
+         db.query('INSERT INTO sr_request SET ?',{projectTitle:projectTitle, area:researchArea, next:advisorsEmail, url:url, target:targetAudience, educ_dir:educationalDirectorates, SRI_ID: decoded.id,status:0},(erro,result) =>{
             if(erro){
                return res.render('SRhomepage',{
                message:'something went wrong'
@@ -824,7 +824,103 @@ exports.advRequsets= async (req,res,next)=>{
                return next();
             }
             else {
-               db.query("SELECT * FROM sr_request WHERE status=0 AND advEmail=?",[decoded.email],(err,resul)=>{
+               db.query("SELECT * FROM sr_request WHERE status=0 AND next=?",[decoded.email],(err,resul)=>{
+                  if(err){
+                     console.log(err);
+                  }else if(resul.length==0){
+                     req.user=result[0];
+                     return next();
+                  }
+                  else{
+                  req.request=resul;
+                  return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
+exports.deanRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM dean WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE status=1 AND next=?",[decoded.email],(err,resul)=>{
+                  if(err){
+                     console.log(err);
+                  }else if(resul.length==0){
+                     req.user=result[0];
+                     return next();
+                  }
+                  else{
+                  req.request=resul;
+                  return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
+exports.deputyRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM deputy WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE status=2 AND next=?",[decoded.email],(err,resul)=>{
+                  if(err){
+                     console.log(err);
+                  }else if(resul.length==0){
+                     req.user=result[0];
+                     return next();
+                  }
+                  else{
+                  req.request=resul;
+                  return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
+exports.cgmRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM cgm WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE status=3 AND next=?",[decoded.email],(err,resul)=>{
                   if(err){
                      console.log(err);
                   }else if(resul.length==0){
@@ -953,19 +1049,80 @@ exports.logout=async(req,res)=>{
 }
 exports.advApp=async(req,res)=>{
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   db.query("UPDATE sr_request SET status=1 WHERE advEmail=?",[decoded.email],(error,result)=>{
-      if(error){
-         return res.render("/advisorHP",{
-            message:"something went wrong"
+   db.query("SELECT * FROM advisor WHERE email=?",[decoded.email],(err,resul)=>{
+      db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+         db.query("UPDATE sr_request SET status=1, next=? WHERE next=? AND reqID=?",[resul[0].deanEmail,decoded.email,resu[0].reqID],(error,result)=>{
+            if(error){
+               return res.render("advisorHP",{
+                  message:"something went wrong"
+               })
+            }
+            else{
+               return res.render("advisorHP",{
+                  message:"request approved"
+               })
+            }
          })
-      }
-      else{
-         return res.render("/advisorHP",{
-            message:"request approved"
-         })
-      }
+      })
    })
 }  
+exports.deanApp=async(req,res)=>{
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM dean WHERE email=?",[decoded.email],(err,resul)=>{
+      db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+         db.query("UPDATE sr_request SET status=2, next=? WHERE next=? AND reqID=?",[resul[0].deputyEmail,decoded.email,resu[0].reqID],(error,result)=>{
+            if(error){
+               return res.render("deanHP",{
+                  message:"something went wrong"
+               })
+            }
+            else{
+               return res.render("deanHP",{
+                  message:"request approved"
+               })
+            }
+         })
+      })
+   })
+}
+exports.deputyApp=async(req,res)=>{
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM cgm ",(err,resul)=>{
+      db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+         db.query("UPDATE sr_request SET status=3, next=? WHERE next=? AND reqID=?",[resul[0].email,decoded.email,resu[0].reqID],(error,result)=>{
+            if(error){
+               return res.render("deputyHP",{
+                  message:"something went wrong"
+               })
+            }
+            else{
+               return res.render("deputyHP",{
+                  message:"request approved"
+               })
+            }
+         })
+      })
+   })
+}
+exports.cgmApp=async(req,res)=>{
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM ministry ",(err,resul)=>{
+      db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+         db.query("UPDATE sr_request SET status=4, next=? WHERE next=? AND reqID=?",[resul[0].email,decoded.email,resu[0].reqID],(error,result)=>{
+            if(error){
+               return res.render("cgmHP",{
+                  message:"something went wrong"
+               })
+            }
+            else{
+               return res.render("cgmHP",{
+                  message:"request approved"
+               })
+            }
+         })
+      })
+   })
+}
 exports.Duser=async(req, res)=>{
    const email=req.body.email;
    db.query('DELETE FROM users WHERE email=?',[email],(error,result)=>{
