@@ -25,6 +25,7 @@ router.get('/advApp',authController.advApp);
 router.get('/deanApp',authController.deanApp);
 router.get('/deputyApp',authController.deputyApp);
 router.get('/cgmApp',authController.cgmApp);
+router.get('/miniApp',authController.miniApp);
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
 router.post('/advisorUP', authController.advisorUP);
