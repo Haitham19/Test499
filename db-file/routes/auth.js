@@ -19,6 +19,7 @@ router.post('/userLogin',authController.userLogin);
 router.post('/SRaddnewrequest', authController.SRaddnewrequest);
 router.post('/orgANR', authController.orgANR);
 router.post('/SRIupdateinfo', authController.SRIupdateinfo);
+router.post('/orgUpdateinfo', authController.orgUpdateinfo);
 router.get('/logout',authController.logout);
 router.get('/advApp',authController.advApp);
 router.get('/deanApp',authController.deanApp);

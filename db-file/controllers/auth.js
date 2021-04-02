@@ -815,6 +815,43 @@ exports.SRIupdateinfo=async(req,res)=>{
    })    
 }
 
+exports.orgUpdateinfo=async(req,res)=>{
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   const { name, email, mobNum, organization, password } = req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
+   db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
+      if(err){
+         return res.render("orgUpdateinfo", {
+           message:
+             "The mobile number is already in use or mobile number is used",
+         });
+      }
+      else{
+         db.query('UPDATE organizationresearcher SET ? WHERE id=?',[{name:name, organization:organization},decoded.id],(err,rese)=>{
+            if(error){
+            console.log(error)
+            }
+            else{//update the cookie
+               const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: "+token);
+               const cookieOption={
+                  expires: new Date(
+                     Date.now()+ process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                     httpOnly:true
+               }
+               res.cookie('jwt',token,cookieOption);
+               return res.render('orgHP',{
+                  message:'user information updated'
+               })
+            }
+         })
+      }
+   })    
+}
+
 exports.advRequsets= async (req,res,next)=>{
    if(req.cookies.jwt){
       try {
