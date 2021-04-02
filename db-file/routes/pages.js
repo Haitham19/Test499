@@ -179,7 +179,7 @@ router.get("/cgmReq", authController.cgmRequsets, (req, res) => {
   } else {
     if (req.user) {
       res.render("cgmHP", {
-        message: "there is no request to chick",
+        message: "there are no requests to check",
         user: req.user,
       });
     } else {
@@ -266,7 +266,7 @@ router.get("/advisorReq", authController.advRequsets, (req, res) => {
   } else {
     if (req.user) {
       res.render("advisorHP", {
-        message: "there is no request to chick",
+        message: "there are no requests to check",
         user: req.user,
       });
     } else {
@@ -329,7 +329,7 @@ router.get("/deanReq", authController.deanRequsets, (req, res) => {
   } else {
     if (req.user) {
       res.render("deanHP", {
-        message: "there is no request to chick",
+        message: "there are no requests to check",
         user: req.user,
       });
     } else {
@@ -374,7 +374,7 @@ router.get("/deputyReq", authController.deputyRequsets, (req, res) => {
   } else {
     if (req.user) {
       res.render("deputyHP", {
-        message: "there is no request to chick",
+        message: "there are no requests to check",
         user: req.user,
       });
     } else {

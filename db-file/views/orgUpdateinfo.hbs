@@ -31,7 +31,7 @@
       <h2>C R E P</h2>
       <ul>
          <li><a href="/orgHP">Home</a></li>
-         <li><a href="/">Log Out</a></li>
+         <li><a href="/auth/logout">Log Out</a></li>
       </ul>
    </nav>
    <div class="container mt-4">
@@ -49,9 +49,7 @@
                      <label for="email">Update your email Address</label>
                      <input type="email" class="form-control" id="email" name="email" value={{user.email}}>
                   </div>
-
-                
-
+                  
                   <div class="form-group">
                      <label for="mobNum">Update your mobile Number</label>
                      <input type="number" class="form-control" id="mobNum" name="mobNum" value={{user.mobNum}}>
@@ -62,22 +60,15 @@
                      <input type="text" class="form-control" id="organization" name="organization" value={{user.organization}}>
                   </div>
 
-
-
                   <div class="form-group">
                      <label for="password">Update your password</label>
                      <input type="password" class="form-control" id="password" name="password">
                   </div>
-
-
-
-
                   <button type="submit" class="btn btn-primary">Update your information</button>
                </form>
+
             </div>
-
          </div>
-
       </div>
    </div>
    {{#if message}}

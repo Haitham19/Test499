@@ -819,8 +819,8 @@ exports.orgUpdateinfo=async(req,res)=>{
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
    const { name, email, mobNum, organization, password } = req.body;
    let hashedPassword = await bcrypt.hash(password, 8);
-   db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(err,resu)=>{
-      if(err){
+   db.query('UPDATE users SET ? WHERE email=?',[{email:email,password:hashedPassword, mobNum:mobNum},decoded.email],async(erro,resu)=>{
+      if(erro){
          return res.render("orgUpdateinfo", {
            message:
              "The mobile number is already in use or mobile number is used",
@@ -828,8 +828,8 @@ exports.orgUpdateinfo=async(req,res)=>{
       }
       else{
          db.query('UPDATE organizationresearcher SET ? WHERE id=?',[{name:name, organization:organization},decoded.id],(err,rese)=>{
-            if(error){
-            console.log(error)
+            if(err){
+            console.log(err)
             }
             else{//update the cookie
                const token= jwt.sign({id:decoded.id,email:email}, process.env.JWT_SECRET,{
