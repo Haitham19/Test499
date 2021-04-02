@@ -6,30 +6,6 @@ const router = express.Router();
 
 // res.render => this is to git the thing that you do it in the folder .
 //
-<<<<<<< HEAD
-router.post("/researcherSignup", authController.researcherSignup);
-router.post("/OrgResSignup", authController.OrgResSignup);
-router.post("/MinistrySignup", authController.MinistrySignup);
-router.post("/deanSignup", authController.deanSignup);
-router.post("/deputySignup", authController.deputySignup);
-router.post("/advisorSignup", authController.advisorSignup);
-router.post("/missionSignup", authController.missionSignup);
-router.post("/CGMSignup", authController.CGMSignup);
-router.post("/RDSignup", authController.RDSignup);
-router.post("/userLogin", authController.userLogin);
-router.post("/SRaddnewrequest", authController.SRaddnewrequest);
-router.post("/orgANR", authController.orgANR);
-router.post("/SRIupdateinfo", authController.SRIupdateinfo);
-router.get("/logout", authController.logout);
-router.post("/Duser", authController.Duser);
-router.post("/Uuser", authController.Uuser);
-router.post("/advisorUP", authController.advisorUP);
-router.post("/deanUP", authController.deanUP);
-router.post("/deputyUP", authController.deputyUP);
-router.post("/ministryUP", authController.ministryUP);
-router.post("/rdUP", authController.rdUP);
-router.post("/cgmUP", authController.cgmUP);
-=======
 router.post('/researcherSignup', authController.researcherSignup);
 router.post('/OrgResSignup', authController.OrgResSignup);
 router.post('/MinistrySignup',authController.MinistrySignup);
@@ -57,6 +33,5 @@ router.post('/ministryUP', authController.ministryUP);
 router.post('/rdUP', authController.rdUP);
 router.post('/cgmUP', authController.cgmUP);
 
->>>>>>> d63fe9c9693dad8c6ba822867f510a85e94cd4c6
 
 module.exports = router;
