@@ -176,15 +176,22 @@ router.get('/cgmCOMM',authController.isLoggedIn,(req,res) =>{
   
 });
 
-router.get('/cgmReq',authController.isLoggedIn,(req,res) =>{
-   if(req.user){
-    res.render('cgmReq',{
-       user:req.user
+router.get('/cgmReq',authController.cgmRequsets,(req,res) =>{
+   if(req.request){
+    res.render('deputyReq',{
+       request:req.request
     })
     }else{
-      res.redirect('/userLogin');
+       if(req.user){
+          res.render("cgmHP",{
+             message:"there is no request to chick",
+             user:req.user
+          })
+       }
+       else{
+         res.redirect('/userLogin');
+       }
     }
-   
 });
 router.get('/cgmU',authController.isLoggedIn,(req,res) =>{
    if(req.user){
@@ -261,6 +268,23 @@ router.get('/advisorHP',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/advisorReq',authController.advRequsets,(req,res) =>{
+   if(req.request){
+    res.render('advisorReq',{
+       request:req.request
+    })
+    }else{
+       if(req.user){
+          res.render("advisorHP",{
+             message:"there is no request to chick",
+             user:req.user
+          })
+       }
+       else{
+         res.redirect('/userLogin');
+       }
+    }
+});
 router.get('/advisorU',authController.isLoggedIn,(req,res) =>{
    if(req.user){
     res.render('advisorU',{
@@ -308,6 +332,23 @@ router.get('/deanCOMM',authController.isLoggedIn,(req,res) =>{
       res.redirect('/userLogin');
     }
 });
+router.get('/deanReq',authController.deanRequsets,(req,res) =>{
+   if(req.request){
+    res.render('deanReq',{
+       request:req.request
+    })
+    }else{
+       if(req.user){
+          res.render("deanHP",{
+             message:"there is no request to chick",
+             user:req.user
+          })
+       }
+       else{
+         res.redirect('/userLogin');
+       }
+    }
+});
 
 // Deputyship pages.
 router.get('/deputyHP',authController.isLoggedIn,(req,res) =>{
@@ -335,6 +376,23 @@ router.get('/deputyCOMM',authController.isLoggedIn,(req,res) =>{
     })
     }else{
       res.redirect('/userLogin');
+    }
+});
+router.get('/deputyReq',authController.deputyRequsets,(req,res) =>{
+   if(req.request){
+    res.render('deputyReq',{
+       request:req.request
+    })
+    }else{
+       if(req.user){
+          res.render("deputyHP",{
+             message:"there is no request to chick",
+             user:req.user
+          })
+       }
+       else{
+         res.redirect('/userLogin');
+       }
     }
 });
 

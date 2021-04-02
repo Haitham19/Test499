@@ -5,33 +5,34 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="../homePage.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="/homePage.css">
+        
+        <!-- Tab Icon-->
+        <link rel="shortcut icon" href="/favicon.ico">
 
-   <!-- Tab Icon-->
-   {{!--
-   <link rel="shortcut icon" href="..//CSS/favicon.ico"> --}}
-
-
-   <title>HomePage</title>
+   <title>CREP - Homepage</title>
 </head>
 
 <body>
-   <header>
 
-      <section id="create">
+   <img src= "/image.png" class="logo">
+        <nav> 
+            <h2>C R E P</h2>
+                <ul>
+                    <li><a href="/userLogin">Login/Register</a></li>
+        </nav>
 
-         <img src="../image.png" class="logo">
+        <div class="container mt-5">
+            <div class="jumbotron">
+                <h1 class="display-5">Welcome to CREP,</h1>
+                <p class="lead"> Center for Research on Educational Policy (CREP) is a website to help graduates in the Colleges of Education across the KSA to submit their research facilitation requests. </p>
+                <p class="lead1">"If you are a student and it's your first time here you must register to continue further, otherewise login."</p>
+              </div>
+        </div>
 
-         <center>
-            <h1>Welcome To CREP</h1>
-            <br /><br />
-            <button class="transparent" onclick="location.href='/userLogin';">
-               User
-            </button>
-         </center>
-      </section>
-
-   </header>
+  
 </body>
 
 </html>
