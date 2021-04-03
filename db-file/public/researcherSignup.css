@@ -3,7 +3,6 @@ body {
     padding: 0;
     background: white;
     height: 100vh;
-    overflow: hidden;
     background-position: center;
     background-size: cover;
 }
