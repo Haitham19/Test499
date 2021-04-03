@@ -25,6 +25,7 @@ router.get('/advApp',authController.advApp);
 router.get('/deanApp',authController.deanApp);
 router.get('/deputyApp',authController.deputyApp);
 router.get('/cgmApp',authController.cgmApp);
+router.get('/miniApp',authController.miniApp);
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
 router.post('/advisorUP', authController.advisorUP);
@@ -33,6 +34,10 @@ router.post('/deputyUP', authController.deputyUP);
 router.post('/ministryUP', authController.ministryUP);
 router.post('/rdUP', authController.rdUP);
 router.post('/cgmUP', authController.cgmUP);
-
+router.post('/advRej',authController.advRej);
+router.post('/deanRej',authController.deanRej);
+router.post('/deputyRej',authController.deputyRej);
+router.post('/cgmRej',authController.cgmRej);
+router.post('/miniRej',authController.miniRej);
 
 module.exports = router;

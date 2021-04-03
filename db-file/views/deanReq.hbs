@@ -36,7 +36,9 @@
       <div class="card">
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
-
+                   <div class="form-group">
+                     <label >Student Name: {{request.[0].SRname}}</label>
+                  </div>
                   <div class="form-group">
                      <label >Project title: {{request.[0].projectTitle}}</label>
                   </div>
@@ -53,12 +55,24 @@
                      <label >Research tool: {{request.[0].url}}</label>
                   </div>
 
-                 <a href="/auth/deanApp">Approve</a>
-                  <button type="button" >Reject</button>
+                 <form action="auth/deanApp">
+                  <button type="submit" class="btn btn-primary">Approve</button>
+               </form>
+               <br>
+                  
                   <div class="form-group">
                      <label >Number of request waiting for respond: {{request.length}}</label>
                   </div>
+                  <br>
             </div>
+            <form action="auth/deanRej" method="POST">
+                  <div class="form-group">
+                     <label for="reason">Rejection reason : </label>
+                     <input type="text" class="form-control" id="reason" name="reason" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Rejection</button>
+
+            </form>
          </div>
       </div>
       

@@ -74,6 +74,22 @@ router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
     res.redirect("/researcherLogin");
   }
 });
+router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
+  if (req.request) {
+    res.render("SRI_Req", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("SRhomepage", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
+  }
+});
 router.get("/SRIupdateinfo", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("SRIupdateinfo", {
@@ -146,7 +162,22 @@ router.get("/ministryU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
+router.get("/ministryReq", authController.ministryRequsets, (req, res) => {
+  if (req.request) {
+    res.render("ministryReq", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("ministryHP", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
+  }
+});
 // Center General Manager pages.
 router.get("/cgmHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
@@ -173,7 +204,7 @@ router.get("/cgmCOMM", authController.isLoggedIn, (req, res) => {
 
 router.get("/cgmReq", authController.cgmRequsets, (req, res) => {
   if (req.request) {
-    res.render("deputyReq", {
+    res.render("cgmReq", {
       request: req.request,
     });
   } else {
