@@ -74,6 +74,22 @@ router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
     res.redirect("/researcherLogin");
   }
 });
+router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
+  if (req.request) {
+    res.render("SRI_Req", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("SRhomepage", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
+  }
+});
 router.get("/SRIupdateinfo", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("SRIupdateinfo", {

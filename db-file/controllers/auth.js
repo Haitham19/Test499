@@ -886,6 +886,38 @@ exports.advRequsets= async (req,res,next)=>{
       next();
    }
 }
+exports.SRIRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
+      try {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM studentresearcher WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE SRI_ID=?",[decoded.id],(err,resul)=>{
+                  if(err){
+                     console.log(err);
+                  }else if(resul.length==0){
+                     req.user=result[0];
+                     return next();
+                  }
+                  else{
+                  req.request=resul;
+                  return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else{
+      next();
+   }
+}
 exports.deanRequsets= async (req,res,next)=>{
    if(req.cookies.jwt){
       try {
@@ -1221,17 +1253,99 @@ exports.miniApp=async(req,res)=>{
 //to here
 //reject request
 exports.advRej=async(req,res)=>{
-   const reason=req.body;
+   const reason=req.body.reason;
+   console.log(reason);
    const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
    db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
-      db.query("UPDATE sr.request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},resu[0].reqID],(error,result)=>{
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},decoded.email,resu[0].reqID],(error,result)=>{
          if(error){
+            console.log(error);
             return res.render("advisorHP",{
                message:"something went wrong"
             })
          }
          else{
             return res.render("advisorHP",{
+               message:"request rejected"
+            })
+         }
+      })
+   })
+}
+exports.deanRej=async(req,res)=>{
+   const reason=req.body.reason;
+   console.log(reason);
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},decoded.email,resu[0].reqID],(error,result)=>{
+         if(error){
+            console.log(error);
+            return res.render("deanHP",{
+               message:"something went wrong"
+            })
+         }
+         else{
+            return res.render("deanHP",{
+               message:"request rejected"
+            })
+         }
+      })
+   })
+}
+exports.deputyRej=async(req,res)=>{
+   const reason=req.body.reason;
+   console.log(reason);
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},decoded.email,resu[0].reqID],(error,result)=>{
+         if(error){
+            console.log(error);
+            return res.render("deputyHP",{
+               message:"something went wrong"
+            })
+         }
+         else{
+            return res.render("deputyHP",{
+               message:"request rejected"
+            })
+         }
+      })
+   })
+}
+exports.cgmRej=async(req,res)=>{
+   const reason=req.body.reason;
+   console.log(reason);
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},decoded.email,resu[0].reqID],(error,result)=>{
+         if(error){
+            console.log(error);
+            return res.render("cgmHP",{
+               message:"something went wrong"
+            })
+         }
+         else{
+            return res.render("cgmHP",{
+               message:"request rejected"
+            })
+         }
+      })
+   })
+}
+exports.miniRej=async(req,res)=>{
+   const reason=req.body.reason;
+   console.log(reason);
+   const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+   db.query("SELECT * FROM sr_request WHERE next=?",[decoded.email],(erro,resu)=>{
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?",[{status:-1,reason:reason},decoded.email,resu[0].reqID],(error,result)=>{
+         if(error){
+            console.log(error);
+            return res.render("ministryHP",{
+               message:"something went wrong"
+            })
+         }
+         else{
+            return res.render("ministryHP",{
                message:"request rejected"
             })
          }
