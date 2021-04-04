@@ -14,13 +14,20 @@
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>
 
-    <!-- Tab Icon-->
+   <!-- Tab Icon-->
    <link rel="shortcut icon" href="../favicon.ico">
    <link rel="stylesheet" href="/SRhomepagestyle.css">
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
+   <script>
+      var checkList = document.getElementById('list1');
+      checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
+         if (checkList.classList.contains('visible'))
+            checkList.classList.remove('visible');
+         else
+            checkList.classList.add('visible');
+      }</script>
    <title>CREP - New Request</title>
 </head>
 
@@ -48,7 +55,7 @@
                   <div class="form-group">
                      <label for="researchArea">Research area: </label>
                      <br>
-                     <select name="researchArea" id="researchArea" >
+                     <select name="researchArea" id="researchArea">
                         <option selected value="base">Please Select Research area</option>
                         <option value="earlyChildhood">Early childhood</option>
                         <option value="specialEducation">Special education</option>
@@ -80,8 +87,21 @@
 
                   <div class="form-group">
                      <label for="educationalDirectorates">Educational directorates</label>
-                     <input type="text" class="form-control" id="educationalDirectorates"
-                        name="educationalDirectorates" required>
+                     <input type="text" class="form-control" id="educationalDirectorates" name="educationalDirectorates"
+                        required>
+                  </div>
+                  
+                  <div id="list1" class="dropdown-check-list" tabindex="100">
+                     <span class="anchor">Select Fruits</span>
+                     <ul class="items">
+                        <li><input type="checkbox" />Apple </li>
+                        <li><input type="checkbox" />Orange</li>
+                        <li><input type="checkbox" />Grapes </li>
+                        <li><input type="checkbox" />Berry </li>
+                        <li><input type="checkbox" />Mango </li>
+                        <li><input type="checkbox" />Banana </li>
+                        <li><input type="checkbox" />Tomato</li>
+                     </ul>
                   </div>
 
                   <button type="submit" class="btn btn-primary">Submitt</button>
@@ -98,6 +118,7 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>
+
 </body>
 
 </html>
