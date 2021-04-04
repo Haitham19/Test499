@@ -75,14 +75,20 @@ router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
   }
 });
 router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
-  if (req.request) {
+  if (req.reqJ) {
     res.render("SRI_Req", {
-      request: req.request,
+      reqJ: req.reqJ,
     });
-  } else {
+  } 
+  else if(req.reqW){
+    res.render("SRI_Req", {
+      reqW: req.reqW,
+    });
+  }
+  else {
     if (req.user) {
       res.render("SRhomepage", {
-        message: "there are no requests to check",
+        message: "you don't have any requests",
         user: req.user,
       });
     } else {
