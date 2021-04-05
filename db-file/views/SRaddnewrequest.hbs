@@ -28,7 +28,7 @@
             checkboxes[i].checked = source.checked;
          }
       }
-      var expanded = false;
+     // var expanded = false;
 
       /* function showCheckboxes() {
           var checkboxes = document.getElementById("checkboxes");
@@ -101,25 +101,31 @@
                   </div>
 
 
-                  <div class="form-group">
+                  {{!-- <div class="form-group">
                      <label for="educationalDirectorates">Educational directorates</label>
                      <input type="text" class="form-control" id="educationalDirectorates" name="educationalDirectorates"
                         required>
-                  </div>
+                  </div> --}}
+
 
                   <div class="form-group">
-                     <span class="anchor">Select Fruits</span><br>
+                     <span class="anchor">Educational directorates</span><br>
                      <ul class="items">
                         <input type="checkbox" onClick="toggle(this)" /> Toggle All<br />
-                        <input type="checkbox" name="foo" value="bar1"> Bar 1<br />
-                        <input type="checkbox" name="foo" value="bar2"> Bar 2<br />
-                        <input type="checkbox" name="foo" value="bar3"> Bar 3<br />
-                        <input type="checkbox" name="foo" value="bar4"> Bar 4<br />
+                        <input type="checkbox" name="foo" id="educationalDirectorates"
+                           value="GM-Office@riyadhedu.gov.sa">
+                        Education Dept. Al-Riyadh<br />
+                        <input type="checkbox" name="foo" id="educationalDirectorates" value="jouf-edugm@moe.gov.sa">
+                        Education
+                        Dept. Al-Jouf<br />
+                        <input type="checkbox" name="foo" id="educationalDirectorates" value="othman424@gmail.com">
+                        Education
+                        Dept. Alhudud Ash Shamaliyah<br />
+
                      </ul>
-                     
                   </div>
                   <br><br>
-                  {{!-- 
+                  {{!--
                   <div id="list1" class="dropdown-check-list" tabindex="100">
                      <form action="">
                         <span class="anchor">Select Fruits</span>
@@ -134,7 +140,7 @@
                         </ul>
                      </form>
                   </div> --}}
-                  
+
                   {{!-- <form>
                      <div class="multiselect">
                         <div class="selectBox" onclick="showCheckboxes()">

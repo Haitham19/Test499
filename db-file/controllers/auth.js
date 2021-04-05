@@ -728,7 +728,8 @@ exports.RDSignup = (req, res) => {
 
 // add request 
 exports.SRaddnewrequest = async (req, res) => {
-   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, educationalDirectorates } = req.body;
+   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, foo } = req.body;
+   console.log(req.body.foo);
    if (researchArea == "base") {
       return res.render('SRhomepage', {
          message: 'research area is not selected'
@@ -746,8 +747,9 @@ exports.SRaddnewrequest = async (req, res) => {
       }
       else {
          db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
-            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, educ_dir: educationalDirectorates, SRI_ID: decoded.id, status: 0 }, (erro, result) => {
+            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, educ_dir: [foo], SRI_ID: decoded.id, status: 0 }, (erro, result) => {
                if (erro) {
+                  console.log(erro)
                   return res.render('SRhomepage', {
                      message: 'something went wrong'
                   })
@@ -886,35 +888,35 @@ exports.advRequsets = async (req, res, next) => {
       next();
    }
 }
-exports.SRIRequsets= async (req,res,next)=>{
-   if(req.cookies.jwt){
+exports.SRIRequsets = async (req, res, next) => {
+   if (req.cookies.jwt) {
       try {
-         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-         db.query("SELECT * FROM studentresearcher WHERE email=?",[decoded.email],(error,result)=>{
-            if(result.length==0){
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM studentresearcher WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
                return next();
             }
             else {
-               db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status=-1",[decoded.id],(err,resul)=>{
-                  if(err){
+               db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status=-1", [decoded.id], (err, resul) => {
+                  if (err) {
                      console.log(err);
-                  }else if(resul.length==0){
-                     db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status>=0",[decoded.id],(err,resu)=>{
-                        if(err){
+                  } else if (resul.length == 0) {
+                     db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status>=0", [decoded.id], (err, resu) => {
+                        if (err) {
                            console.log(err);
-                        }else if(resu.length==0){
-                           req.user=result[0];
+                        } else if (resu.length == 0) {
+                           req.user = result[0];
                            return next();
                         }
-                        else{
-                           req.reqW=resu;
+                        else {
+                           req.reqW = resu;
                            return next();
                         }
                      })
                   }
-                  else{
-                  req.reqJ=resul;
-                  return next();
+                  else {
+                     req.reqJ = resul;
+                     return next();
                   }
                })
             }
@@ -924,7 +926,7 @@ exports.SRIRequsets= async (req,res,next)=>{
          return next();
       }
    }
-   else{
+   else {
       next();
    }
 }
@@ -1650,15 +1652,16 @@ exports.cgmUP = async (req, res) => {
    })
 }
 //to here
-exports.Dreq=async(req,res)=>{
+exports.Dreq = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM sr_request WHERE SRI_ID=?",[decoded.id],(error,result)=>{
-      if(error){
+   db.query("DELETE FROM sr_request WHERE SRI_ID=?", [decoded.id], (error, result) => {
+      if (error) {
          console.log(error);
       }
-      else{
-         return res.render('SRhomepage',{
-         message: "request deleted"})
+      else {
+         return res.render('SRhomepage', {
+            message: "request deleted"
+         })
       }
    })
 }
