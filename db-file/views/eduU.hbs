@@ -20,17 +20,16 @@
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-   <title>CREP - Update Info</title>
+   <title>Document</title>
 </head>
 
 <body>
 
    <img src="/image.png" class="logo">
    <nav>
-      <h2>C R E P</h2>
+      <h2>CREP - Update Info</h2>
       <ul>
-         <li><a href="/ministryHP">Home</a></li>
+         <li><a href="/eduHP">Home</a></li>
          <li><a href="/auth/logout">Log Out</a></li>
       </ul>
    </nav>
@@ -39,15 +38,10 @@
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
 
-               <form action="auth/ministryUP" method="POST">
+               <form action="auth/eduUP" method="POST">
                   <div class="form-group">
                      <label for="name">Update your Name</label>
                      <input type="text" class="form-control" id="name" name="name" value={{user.name}}>
-                  </div>
-
-                  <div class="form-group">
-                     <label for="email">Update your email Address</label>
-                     <input type="email" class="form-control" id="email" name="email" value={{user.email}}>
                   </div>
 
                   <div class="form-group">

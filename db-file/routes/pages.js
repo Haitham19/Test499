@@ -10,21 +10,6 @@ router.get("/", (req, res) => {
   res.render("homePage");
 });
 
-// Researcehr pages.
-router.get("/ResHomePage", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("ResHomePage", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/researcherLogin");
-  }
-});
-
-router.get("/researcherLogin", (req, res) => {
-  //res.send("<h1> Home Page </h1>")
-  res.render("researcherLogin");
-});
 
 router.get("/orgHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
@@ -36,16 +21,7 @@ router.get("/orgHP", authController.isLoggedIn, (req, res) => {
   }
 });
 
-//Student Researcher pages
-router.get("/SRhomepage", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("SRhomepage", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/researcherLogin");
-  }
-});
+
 router.get("/orgANR", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("orgANR", {
@@ -65,13 +41,23 @@ router.get("/orgUpdateinfo", authController.isLoggedIn, (req, res) => {
     res.redirect("/orgUpdateinfo");
   }
 });
+//-----------------------STUDENT=--------------------//
+router.get("/SRhomepage", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("SRhomepage", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("SRaddnewrequest", {
       user: req.user,
     });
   } else {
-    res.redirect("/researcherLogin");
+    res.redirect("/userLogin");
   }
 });
 router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
@@ -103,7 +89,7 @@ router.get("/SRIupdateinfo", authController.isLoggedIn, (req, res) => {
     });
     console.log(req.user);
   } else {
-    res.redirect("/researcherLogin");
+    res.redirect("/userLogin");
   }
 });
 //--------------------------------------------//
@@ -114,6 +100,7 @@ router.get("/userLogin", (req, res) => {
 router.get("/researcherSignup", (req, res) => {
   res.render("researcherSignup");
 });
+//--------------ADMIN--------------------
 router.get("/adminReg", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("adminReg", {
@@ -150,41 +137,9 @@ router.get("/adminU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/ministryHP", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("ministryHP", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/userLogin");
-  }
-});
-router.get("/ministryU", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("ministryU", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/userLogin");
-  }
-});
-router.get("/ministryReq", authController.ministryRequsets, (req, res) => {
-  if (req.request) {
-    res.render("ministryReq", {
-      request: req.request,
-    });
-  } else {
-    if (req.user) {
-      res.render("ministryHP", {
-        message: "there are no requests to check",
-        user: req.user,
-      });
-    } else {
-      res.redirect("/userLogin");
-    }
-  }
-});
-// Center General Manager pages.
+
+
+// -------------------------Center General Manager pages---------------------------------
 router.get("/cgmHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("cgmHP", {
@@ -234,7 +189,7 @@ router.get("/cgmU", authController.isLoggedIn, (req, res) => {
   }
 });
 
-// RD pages.
+// -------------------RD pages-----------------------------//.
 router.get("/rdHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("rdHP", {
@@ -274,7 +229,7 @@ router.get("/rdRequests", authController.isLoggedIn, (req, res) => {
   }
 });
 
-// Cultural mission pages.
+// ---------------------Cultural mission pages------------------//
 router.get("/missionHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("missionHP", {
@@ -285,7 +240,7 @@ router.get("/missionHP", authController.isLoggedIn, (req, res) => {
   }
 });
 
-// Advisor pages.
+// ------------------------Advisor pages----------------------------//
 router.get("/advisorHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("advisorHP", {
@@ -330,7 +285,7 @@ router.get("/advisorCOMM", authController.isLoggedIn, (req, res) => {
   }
 });
 
-// College Dean pages.
+// --------------------------College Dean pages----------------//
 router.get("/deanHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("deanHP", {
@@ -375,7 +330,7 @@ router.get("/deanReq", authController.deanRequsets, (req, res) => {
   }
 });
 
-// Deputyship pages.
+// ----------------------Deputyship pages--------------------------//
 router.get("/deputyHP", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("deputyHP", {
@@ -419,5 +374,43 @@ router.get("/deputyReq", authController.deputyRequsets, (req, res) => {
     }
   }
 });
+//----------------------General----------------//
+router.get("/genHP", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("genHP", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
+router.get("/genU", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("genU", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 
+//-----------------------Education-----------------//
+router.get("/eduHP", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("eduHP", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
+router.get("/eduU", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("eduU", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 module.exports = router;
