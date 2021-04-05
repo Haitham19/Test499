@@ -40,4 +40,5 @@ router.post('/deputyRej',authController.deputyRej);
 router.post('/cgmRej',authController.cgmRej);
 router.post('/miniRej',authController.miniRej);
 
+router.get('/Dreq',authController.Dreq);
 module.exports = router;

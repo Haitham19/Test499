@@ -421,12 +421,12 @@ exports.advisorSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -437,14 +437,14 @@ exports.advisorSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'College Dean email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -454,7 +454,7 @@ exports.advisorSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('userSignup', {
+                        return res.render('adminReg   ', {
                            message: 'Advisor Registered'
                         });
                      }
@@ -474,12 +474,12 @@ exports.deanSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -490,14 +490,14 @@ exports.deanSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'Deputy email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -507,7 +507,7 @@ exports.deanSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('userSignup', {
+                        return res.render('adminReg', {
                            message: 'College Dean Registered'
                         });
                      }
@@ -569,12 +569,12 @@ exports.missionSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -582,7 +582,7 @@ exports.missionSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'The mobile number is already in use'
             })
          }
@@ -592,7 +592,7 @@ exports.missionSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'Cultural Mission user Registered'
                   });
                }
@@ -786,8 +786,8 @@ exports.SRIupdateinfo = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    const { name, email, college, deptName, mobNum, country, level, university, password } = req.body;
    let hashedPassword = await bcrypt.hash(password, 8);
-   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (err, resu) => {
-      if (err) {
+   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
+      if (erro) {
          return res.render('SRhomepage', {
             message: 'The mobile number is already in use or mobile number is used'
          })
@@ -886,25 +886,35 @@ exports.advRequsets = async (req, res, next) => {
       next();
    }
 }
-exports.SRIRequsets = async (req, res, next) => {
-   if (req.cookies.jwt) {
+exports.SRIRequsets= async (req,res,next)=>{
+   if(req.cookies.jwt){
       try {
-         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-         db.query("SELECT * FROM studentresearcher WHERE email=?", [decoded.email], (error, result) => {
-            if (result.length == 0) {
+         const decoded=await promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+         db.query("SELECT * FROM studentresearcher WHERE email=?",[decoded.email],(error,result)=>{
+            if(result.length==0){
                return next();
             }
             else {
-               db.query("SELECT * FROM sr_request WHERE SRI_ID=?", [decoded.id], (err, resul) => {
-                  if (err) {
+               db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status=-1",[decoded.id],(err,resul)=>{
+                  if(err){
                      console.log(err);
-                  } else if (resul.length == 0) {
-                     req.user = result[0];
-                     return next();
+                  }else if(resul.length==0){
+                     db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status>=0",[decoded.id],(err,resu)=>{
+                        if(err){
+                           console.log(err);
+                        }else if(resu.length==0){
+                           req.user=result[0];
+                           return next();
+                        }
+                        else{
+                           req.reqW=resu;
+                           return next();
+                        }
+                     })
                   }
-                  else {
-                     req.request = resul;
-                     return next();
+                  else{
+                  req.reqJ=resul;
+                  return next();
                   }
                })
             }
@@ -914,7 +924,7 @@ exports.SRIRequsets = async (req, res, next) => {
          return next();
       }
    }
-   else {
+   else{
       next();
    }
 }
@@ -1640,3 +1650,15 @@ exports.cgmUP = async (req, res) => {
    })
 }
 //to here
+exports.Dreq=async(req,res)=>{
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM sr_request WHERE SRI_ID=?",[decoded.id],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('SRhomepage',{
+         message: "request deleted"})
+      }
+   })
+}
