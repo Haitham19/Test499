@@ -421,12 +421,12 @@ exports.advisorSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -437,14 +437,14 @@ exports.advisorSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'College Dean email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -454,7 +454,7 @@ exports.advisorSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('userSignup', {
+                        return res.render('adminReg   ', {
                            message: 'Advisor Registered'
                         });
                      }
@@ -474,12 +474,12 @@ exports.deanSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -490,14 +490,14 @@ exports.deanSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'Deputy email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -507,7 +507,7 @@ exports.deanSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('userSignup', {
+                        return res.render('adminReg', {
                            message: 'College Dean Registered'
                         });
                      }
@@ -569,12 +569,12 @@ exports.missionSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminReg', {
             message: 'password do not match'
          })
       }
@@ -582,7 +582,7 @@ exports.missionSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('userSignup', {
+            return res.render('adminReg', {
                message: 'The mobile number is already in use'
             })
          }
@@ -592,7 +592,7 @@ exports.missionSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'Cultural Mission user Registered'
                   });
                }
