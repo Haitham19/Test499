@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="/CGMcommstyle.css">
+        
+        <!-- Tab Icon-->
+        <link rel="shortcut icon" href="/favicon.ico">
+        
+        <title>CREP - Inbox</title>
+     </head>
+
+     <body> 
+
+        <img src= "/image.png" class="logo">
+        <nav> 
+            <h2>C R E P</h2>
+                <ul>
+                    <li><a href="/rdHP">Home</a></li>
+                    <li><a href="/auth/logout">Log Out</a></li>
+                </ul>
+        </nav>
+
+   <div class="container mt-4">
+      <div class="card">
+         <div class="card-header">
+            <div class="tab-content" id="nav-tabContent">
+                  
+                <!-- if there is no messages the page should be empty like (no requests, messages to display) -->
+
+                  <div class="form-group">
+                     <label >From: <!-- The user who sent the message (from table) --></label>
+                  </div>
+                  <div class="form-group">
+                     <label >Message: <!-- Message from table --> </label>
+                  </div>
+                  
+                  <button class="cstmButt" onclick="showForm()">Respond</button>
+                        <form id="formElement" style="display: none;">
+                             <div class="mb-4">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Type your response:</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+                                        <center> 
+                                            <button class="button" type="submit" name="submit">Send</button>  <!-- need to be functional -->
+                                         </center>
+                                </div>
+                        </form>
+            </div>
+         </div>
+      </div>
+    
+                <script type="text/javascript">
+                function showForm() {
+                    document.getElementById('formElement').style.display = 'block';
+                }
+                </script>   
+
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous">
+         </script>
+
+     </body>
+</html>

@@ -257,6 +257,15 @@ router.get("/rdRequests", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/rdInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("rdInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 
 // ---------------------Cultural mission pages------------------//
 router.get("/missionHP", authController.isLoggedIn, (req, res) => {
