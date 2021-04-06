@@ -102,6 +102,16 @@ router.get("/SRcomm", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/SRInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("SRInbox", {
+      user: req.user,
+    });
+    console.log(req.user);
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 //--------------------------------------------//
 router.get("/userLogin", (req, res) => {
   //res.send("<h1> Home Page </h1>")
