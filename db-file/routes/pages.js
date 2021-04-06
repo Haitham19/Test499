@@ -415,6 +415,15 @@ router.get("/deputyCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/deputyInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("deputyInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 router.get("/deputyReq", authController.deputyRequsets, (req, res) => {
   if (req.request) {
     res.render("deputyReq", {
