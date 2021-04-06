@@ -92,6 +92,16 @@ router.get("/SRIupdateinfo", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/SRcomm", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("SRcomm", {
+      user: req.user,
+    });
+    console.log(req.user);
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 //--------------------------------------------//
 router.get("/userLogin", (req, res) => {
   //res.send("<h1> Home Page </h1>")
