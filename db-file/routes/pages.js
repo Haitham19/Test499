@@ -500,6 +500,24 @@ router.get("/eduU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/eduCOMM", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("eduCOMM", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
+router.get("/eduInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("eduInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 router.get("/eduReq", authController.eduRequsets, (req, res) => {
   if (req.request) {
     res.render("eduReq", {
