@@ -14,19 +14,29 @@
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>
 
-   <link rel="shortcut icon" href="..//CSS/favicon.ico" />
+   <link rel="shortcut icon" href="../favicon.ico" />
    <link rel="stylesheet" href="../researcherSignup.css">
    <title>CREP - Register Page</title>
 </head>
 
 <body>
+
+   <img src="/image.png" class="logo">
+
+   <nav class='nav1'>
+      <h2>C R E P</h2>
+      <ul>
+         <li><a href="/adminHP">Home</a></li>
+   </nav>
+
+
    <div class="container mt-4">
       <div class="card">
          <div class="card-header">
             <nav>
                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-                     type="button" role="tab" aria-controls="nav-home" aria-selected="true" onclick="location.href='/adminHP';">Home</button>
+                 <!-- <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                     type="button" role="tab" aria-controls="nav-home" aria-selected="true" onclick="location.href='/adminHP';">Home</button> -->
                   <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
                      type="button" role="tab" aria-controls="nav-profile" aria-selected="false">General department</button>
                      <button class="nav-link" id="nav-contact6-tab" data-bs-toggle="tab" data-bs-target="#nav-contact6"
@@ -50,8 +60,12 @@
 
 
             <div class="tab-content" id="nav-tabContent">
-               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
+               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <center>
+                  <h1> Choose which user you want to add.</h1>
+               </center>
                </div>
+
                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                   <form action="auth/generalSignup" method="POST">
                      <div class="form-group">
