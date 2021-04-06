@@ -413,4 +413,20 @@ router.get("/eduU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/eduReq", authController.eduRequsets, (req, res) => {
+  if (req.request) {
+    res.render("eduReq", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("eduHP", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
+  }
+});
 module.exports = router;

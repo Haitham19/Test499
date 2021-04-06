@@ -789,13 +789,14 @@ exports.RDSignup = (req, res) => {
 
 // add request 
 exports.SRaddnewrequest = async (req, res) => {
-   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, foo } = req.body;
-   console.log(req.body.foo);
+   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu } = req.body;
+   console.log(req.body.edu);
    if (researchArea == "base") {
       return res.render('SRhomepage', {
          message: 'research area is not selected'
       })
    }
+   
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query('SELECT * FROM advisor WHERE email=?', [advisorsEmail], (error, resu) => {
       if (error) {
@@ -808,23 +809,31 @@ exports.SRaddnewrequest = async (req, res) => {
       }
       else {
          db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
-            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, educ_dir: [foo], SRI_ID: decoded.id, status: 0 }, (erro, result) => {
-               if (erro) {
-                  console.log(erro)
-                  return res.render('SRhomepage', {
-                     message: 'something went wrong'
-                  })
-               }
-               else {
-                  return res.render('SRhomepage', {
-                     message: 'Request is submitted'
-                  })
-               }
+            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience,  SRI_ID: decoded.id, status: 0 }, (erro, result) => {
+               db.query('SELECT * FROM sr_request WHERE SRI_ID=?', [decoded.id], (erro, sr) => {
+                  for(var i=0;i<edu.length;i++){
+                     db.query("INSERT INTO req_e SET ?",[{reqID:sr[0].reqID,email:edu[i]}],(er,re)=>{
+                        if(er){
+                           console.log(er);
+                        }
+                     })
+                  }
+                  if (erro) {
+                     console.log(erro)
+                     return res.render('SRhomepage', {
+                        message: 'something went wrong'
+                     })
+                  }
+                  else {
+                     return res.render('SRhomepage', {
+                        message: 'Request is submitted'
+                     })
+                  }
+               })  
             })
          })
       }
    })
-
 }
 exports.orgANR = async (req, res) => {
    const { projectTitle, researchArea, url, targetAudience, educationalDirectorates, } = req.body;
@@ -844,78 +853,8 @@ exports.orgANR = async (req, res) => {
    );
 }
 
-//update info
-exports.SRIupdateinfo = async (req, res) => {
-   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   const { name, email, college, deptName, mobNum, country, level, university, password } = req.body;
-   let hashedPassword = await bcrypt.hash(password, 8);
-   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
-      if (erro) {
-         return res.render('SRhomepage', {
-            message: 'The mobile number is already in use or mobile number is used'
-         })
-      }
-      else {
-         db.query('UPDATE studentresearcher SET ? WHERE id=?', [{ name: name, college: college, deptName: deptName, country: country, level: level, university: university }, decoded.id], (err, rese) => {
-            if (err) {
-               console.log(err)
-            }
-            else {//update the cookie
-               const token = jwt.sign({ id: decoded.id, email: email }, process.env.JWT_SECRET, {
-                  expiresIn: process.env.JWT_EXPIRES_IN
-               })
-               console.log("the token is: " + token);
-               const cookieOption = {
-                  expires: new Date(
-                     Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                  ),
-                  httpOnly: true
-               }
-               res.cookie('jwt', token, cookieOption);
-               return res.render('SRhomepage', {
-                  message: 'user information updated'
-               })
-            }
-         })
-      }
-   })
-}
-exports.orgUpdateinfo = async (req, res) => {
-   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   const { name, email, mobNum, organization, password } = req.body;
-   let hashedPassword = await bcrypt.hash(password, 8);
-   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
-      if (erro) {
-         return res.render("orgHP", {
-            message:
-               "The mobile number is already in use or mobile number is used",
-         });
-      }
-      else {
-         db.query('UPDATE organizationresearcher SET ? WHERE id=?', [{ name: name, organization: organization }, decoded.id], (err, rese) => {
-            if (err) {
-               console.log(err)
-            }
-            else {//update the cookie
-               const token = jwt.sign({ id: decoded.id, email: email }, process.env.JWT_SECRET, {
-                  expiresIn: process.env.JWT_EXPIRES_IN
-               })
-               console.log("the token is: " + token);
-               const cookieOption = {
-                  expires: new Date(
-                     Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-                  ),
-                  httpOnly: true
-               }
-               res.cookie('jwt', token, cookieOption);
-               return res.render('orgHP', {
-                  message: 'user information updated'
-               })
-            }
-         })
-      }
-   })
-}
+
+
 //for request
 exports.advRequsets = async (req, res, next) => {
    if (req.cookies.jwt) {
@@ -1075,6 +1014,46 @@ exports.cgmRequsets = async (req, res, next) => {
                      req.request = resul;
                      return next();
                   }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.eduRequsets = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM education WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM req_e WHERE email=?",[decoded.email], (err, resul) => {
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3",[resul[0].reqID],(er,re)=>{
+                     if (er) {
+                        console.log(er);
+                     } else if (resul.length == 0) {
+                        req.user = result[0];
+                        return next();
+                     }
+                     else {
+                        if(re.length==0){
+                           req.user = result[0];
+                           return next();
+                        }
+                        else{
+                           req.request = re;
+                           return next();
+                        }
+                     }
+                  })
                })
             }
          })
@@ -1261,24 +1240,41 @@ exports.deputyApp = async (req, res) => {
 }
 exports.cgmApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   
-      db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 4,  from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
-            if (error) {
-               return res.render("cgmHP", {
+   db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 4,  from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+         if (error) {
+            return res.render("cgmHP", {
+               message: "something went wrong"
+            })
+         }
+         else {
+            return res.render("cgmHP", {
+               message: "request approved"
+            })
+         }
+      })
+   })
+}
+
+exports.done = async (req, res) => {
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("SELECT * FROM req_e WHERE email=?",[decoded.email] ,(erro, resu) => {
+      db.query("SELECT * FROM sr_request WHERE status>3 AND reqID=?", [resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE reqID=?",[{status:5,reason:result[0].reason+"---Done in :"+decoded.email},result[0].reqID],(er,re)=>{
+            if (er) {
+               return res.render("eduHP", {
                   message: "something went wrong"
                })
             }
             else {
-               return res.render("cgmHP", {
-                  message: "request approved"
+               return res.render("eduHP", {
+                  message: "Request Done"
                })
             }
-         })
+         }) 
       })
-   
+   })
 }
-
 //to here
 //these two for admine Delete and Update
 exports.Duser = async (req, res) => {
@@ -1404,6 +1400,79 @@ exports.cgmRej = async (req, res) => {
 }
 
 //update info from here
+exports.SRIupdateinfo = async (req, res) => {
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   const { name, email, college, deptName, mobNum, country, level, university, password } = req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
+   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
+      if (erro) {
+         return res.render('SRhomepage', {
+            message: 'The mobile number is already in use or mobile number is used'
+         })
+      }
+      else {
+         db.query('UPDATE studentresearcher SET ? WHERE id=?', [{ name: name, college: college, deptName: deptName, country: country, level: level, university: university }, decoded.id], (err, rese) => {
+            if (err) {
+               console.log(err)
+            }
+            else {//update the cookie
+               const token = jwt.sign({ id: decoded.id, email: email }, process.env.JWT_SECRET, {
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: " + token);
+               const cookieOption = {
+                  expires: new Date(
+                     Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                  httpOnly: true
+               }
+               res.cookie('jwt', token, cookieOption);
+               return res.render('SRhomepage', {
+                  message: 'user information updated'
+               })
+            }
+         })
+      }
+   })
+}
+exports.orgUpdateinfo = async (req, res) => {
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   const { name, email, mobNum, organization, password } = req.body;
+   let hashedPassword = await bcrypt.hash(password, 8);
+   db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
+      if (erro) {
+         return res.render("orgHP", {
+            message:
+               "The mobile number is already in use or mobile number is used",
+         });
+      }
+      else {
+         db.query('UPDATE organizationresearcher SET ? WHERE id=?', [{ name: name, organization: organization }, decoded.id], (err, rese) => {
+            if (err) {
+               console.log(err)
+            }
+            else {//update the cookie
+               const token = jwt.sign({ id: decoded.id, email: email }, process.env.JWT_SECRET, {
+                  expiresIn: process.env.JWT_EXPIRES_IN
+               })
+               console.log("the token is: " + token);
+               const cookieOption = {
+                  expires: new Date(
+                     Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                  ),
+                  httpOnly: true
+               }
+               res.cookie('jwt', token, cookieOption);
+               return res.render('orgHP', {
+                  message: 'user information updated'
+               })
+            }
+         })
+      }
+   })
+}
+
+
 exports.advisorUP = async (req, res) => {
    const { email, password, mobNum, name } = req.body;
    let hashedPassword = await bcrypt.hash(password, 8);

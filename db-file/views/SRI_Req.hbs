@@ -51,13 +51,14 @@
                      <label >Educational Directorates: {{reqW.[0].educ_dir}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Research tool: {{reqW.[0].url}}</label>
+                     <label >Research tool: <a href="{{reqW.[0].url}}">{{reqW.[0].url}}</a></label>
                   </div>
-                  <button onclick="status({{reqW.[0].status}})">Request status</button>
+                  <button onclick="status({{reqW.[0].status}})">Request status </button>
                   <br><br><br>
                   <div class="form-group">
-                     <label id="st" style="color:green"></label>
+                     <label id="st" style="color:green">{{reqW.[0].reason}}</label>
                   </div>
+                  
             </div>
          </div>
       </div>
@@ -66,9 +67,7 @@
       <div class="card">
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
-                  <div class="form-group">
-                     <label id="st"></label>
-                  </div>
+                  
                   
                   <div class="form-group">
                      <label >Request is Rejected by: {{reqJ.[0].next}}</label>
@@ -107,7 +106,11 @@
                     document.getElementById("st").innerHTML="Request is waiting for approval by Center general manager";
                     break;
                   case 4:
-                    document.getElementById("st").innerHTML="Request is waiting for approval by General department and education directorates";
+                    document.getElementById("st").innerHTML="Request is in processing at chosen General departments and education directorates";
+                    break;
+                  case 5:
+                  console.log(document.getElementById("st").value);
+                    document.getElementById("st").innerHTML=document.getElementById("st");
                     break;
               }
           }
