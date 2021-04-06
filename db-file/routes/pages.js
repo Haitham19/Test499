@@ -361,6 +361,15 @@ router.get("/deanCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/deanInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("deanInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 router.get("/deanReq", authController.deanRequsets, (req, res) => {
   if (req.request) {
     res.render("deanReq", {
