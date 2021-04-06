@@ -322,6 +322,16 @@ router.get("/advisorCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/advisorInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("advisorInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
+
 
 // --------------------------College Dean pages----------------//
 router.get("/deanHP", authController.isLoggedIn, (req, res) => {
