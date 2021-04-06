@@ -208,6 +208,15 @@ router.get("/cgmU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
+router.get("/cgmInbox", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("cgmInbox", {
+      user: req.user,
+    });
+  } else {
+    res.redirect("/userLogin");
+  }
+});
 
 // -------------------RD pages-----------------------------//.
 router.get("/rdHP", authController.isLoggedIn, (req, res) => {
