@@ -393,15 +393,7 @@ router.get("/genU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/genCOMM", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("genCOMM", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/userLogin");
-  }
-});
+
 
 
 //-----------------------Education-----------------//
