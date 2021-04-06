@@ -149,8 +149,8 @@ router.get("/cgmHP", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/userSignup", (req, res) => {
-  res.render("userSignup");
+router.get("/userLogin", (req, res) => {
+  res.render("userLogin");
 });
 
 router.get("/cgmCOMM", authController.isLoggedIn, (req, res) => {

@@ -480,7 +480,7 @@ exports.advisorSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('adminReg   ', {
+                        return res.render('adminReg', {
                            message: 'Advisor Registered'
                         });
                      }
@@ -554,12 +554,12 @@ exports.deputySignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('userSignup', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('userSignup', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -567,7 +567,7 @@ exports.deputySignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('userSignup', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -577,7 +577,7 @@ exports.deputySignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('userSignup', {
+                  return res.render('adminReg', {
                      message: 'Deputyship user Registered'
                   });
                }

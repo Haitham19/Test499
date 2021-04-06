@@ -35,12 +35,12 @@
                      type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Center General Manager</button>
                   <button class="nav-link" id="nav-contact1-tab" data-bs-toggle="tab" data-bs-target="#nav-contact1"
                      type="button" role="tab" aria-controls="nav-contact1" aria-selected="false">RD Department</button>
-                  <button class="nav-link" id="nav-contact2-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2"
-                     type="button" role="tab" aria-controls="nav-contact2" aria-selected="false">Advisor</button>
-                  <button class="nav-link" id="nav-contact3-tab" data-bs-toggle="tab" data-bs-target="#nav-contact3"
+                   <button class="nav-link" id="nav-contact2-tab" data-bs-toggle="tab" data-bs-target="#nav-contact2"
+                     type="button" role="tab" aria-controls="nav-contact2" aria-selected="false">Deputyship</button>
+                   <button class="nav-link" id="nav-contact3-tab" data-bs-toggle="tab" data-bs-target="#nav-contact3"
                      type="button" role="tab" aria-controls="nav-contact3" aria-selected="false">College Dean</button>
-                  <button class="nav-link" id="nav-contact4-tab" data-bs-toggle="tab" data-bs-target="#nav-contact4"
-                     type="button" role="tab" aria-controls="nav-contact4" aria-selected="false">University Deputyship for Graduate Studies</button>
+                   <button class="nav-link" id="nav-contact4-tab" data-bs-toggle="tab" data-bs-target="#nav-contact4"
+                     type="button" role="tab" aria-controls="nav-contact4" aria-selected="false">Advisor</button>
                   <button class="nav-link" id="nav-contact5-tab" data-bs-toggle="tab" data-bs-target="#nav-contact5"
                      type="button" role="tab" aria-controls="nav-contact5" aria-selected="false">Cultural Mission</button>
                   
@@ -175,7 +175,7 @@
                   </form>
                </div>
                <div class="tab-pane fade" id="nav-contact2" role="tabpanel" aria-labelledby="nav-contact2-tab">
-                  <form action="auth/advisorSignup" method="POST">   <!--auth/advisorSignup -->
+                  <form action="auth/deputySignup" method="POST">
                      <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="name" name="name">
@@ -189,45 +189,6 @@
                      <div class="form-group">
                         <label for="mobNum">Mobile Number</label>
                         <input type="number" class="form-control" id="mobNum" name="mobNum">
-                     </div>
-                     <div class="form-group">
-                        <label for="de">Dean email</label>
-                        <input type="text" class="form-control" id="de" name="de">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="passwordConfirm">Confirm Password</label>
-                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
-                     </div>
-
-
-                     <button type="submit" class="btn btn-primary">Register Researcher</button>
-                  </form>
-               </div>
-               <div class="tab-pane fade" id="nav-contact3" role="tabpanel" aria-labelledby="nav-contact3-tab">
-                  <form action="auth/deanSignup" method="POST">  <!--auth/deanSignup -->
-                     <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                     </div>
-
-                     <div class="form-group">
-                        <label for="mobNum">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobNum" name="mobNum">
-                     </div>
-                     <div class="form-group">
-                        <label for="de">Deputy email</label>
-                        <input type="text" class="form-control" id="de" name="de">
                      </div>
                      
                      <div class="form-group">
@@ -240,11 +201,11 @@
                         <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
                      </div>
 
-                     <button type="submit" class="btn btn-primary">Register Researcher</button>
+                     <button type="submit" class="btn btn-primary">Register Deputyship</button>
                   </form>
                </div>
-               <div class="tab-pane fade" id="nav-contact4" role="tabpanel" aria-labelledby="nav-contact4-tab">
-                  <form action="auth/deputySignup" method="POST">   <!--auth/uniSignup -->
+               <div class="tab-pane fade" id="nav-contact3" role="tabpanel" aria-labelledby="nav-contact3-tab">
+                  <form action="auth/deanSignup" method="POST">
                      <div class="form-group">
                         <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="name" name="name">
@@ -259,7 +220,11 @@
                         <label for="mobNum">Mobile Number</label>
                         <input type="number" class="form-control" id="mobNum" name="mobNum">
                      </div>
-
+                     <div class="form-group">
+                        <label for="de">Deputyship email</label>
+                        <input type="email" class="form-control" id="de" name="de">
+                     </div>
+                     
                      <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password">
@@ -270,8 +235,41 @@
                         <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
                      </div>
 
+                     <button type="submit" class="btn btn-primary">Register College dean</button>
+                  </form>
+               </div>
+               <div class="tab-pane fade" id="nav-contact4" role="tabpanel" aria-labelledby="nav-contact4-tab">
+                  <form action="auth/advisorSignup" method="POST">
+                     <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                     </div>
 
-                     <button type="submit" class="btn btn-primary">Register Researcher</button>
+                     <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                     </div>
+
+                     <div class="form-group">
+                        <label for="mobNum">Mobile Number</label>
+                        <input type="number" class="form-control" id="mobNum" name="mobNum">
+                     </div>
+                     <div class="form-group">
+                        <label for="de">College dean email</label>
+                        <input type="email" class="form-control" id="de" name="de">
+                     </div>
+                     
+                     <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                     </div>
+
+                     <div class="form-group">
+                        <label for="passwordConfirm">Confirm Password</label>
+                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
+                     </div>
+
+                     <button type="submit" class="btn btn-primary">Register Advisor</button>
                   </form>
                </div>
                <div class="tab-pane fade" id="nav-contact5" role="tabpanel" aria-labelledby="nav-contact5-tab">
