@@ -1074,6 +1074,46 @@ exports.eduRequsets = async (req, res, next) => {
       next();
    }
 }
+exports.genRequsets = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM general WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM req_g WHERE email=?",[decoded.email], (err, resul) => {
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3",[resul[0].reqID],(er,re)=>{
+                     if (er) {
+                        console.log(er);
+                     } else if (resul.length == 0) {
+                        req.user = result[0];
+                        return next();
+                     }
+                     else {
+                        if(re.length==0){
+                           req.user = result[0];
+                           return next();
+                        }
+                        else{
+                           req.request = re;
+                           return next();
+                        }
+                     }
+                  })
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
 
 //to here
 exports.isLoggedIn = async (req, res, next) => {
