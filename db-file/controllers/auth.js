@@ -447,12 +447,12 @@ exports.advisorSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -463,14 +463,14 @@ exports.advisorSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'College Dean email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -480,7 +480,7 @@ exports.advisorSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('adminReg', {
+                        return res.render('adminHP', {
                            message: 'Advisor Registered'
                         });
                      }
@@ -500,12 +500,12 @@ exports.deanSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -516,14 +516,14 @@ exports.deanSignup = (req, res) => {
             console.log(error);
          }
          if (resu.length == 0) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'Deputy email does not exist'
             })
          }
          else {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'The mobile number is already in use'
                   })
                }
@@ -533,7 +533,7 @@ exports.deanSignup = (req, res) => {
                         console.log(error);
                      }
                      else {
-                        return res.render('adminReg', {
+                        return res.render('adminHP', {
                            message: 'College Dean Registered'
                         });
                      }
@@ -577,7 +577,7 @@ exports.deputySignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'Deputyship user Registered'
                   });
                }
@@ -595,12 +595,12 @@ exports.missionSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -608,7 +608,7 @@ exports.missionSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -618,7 +618,7 @@ exports.missionSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'Cultural Mission user Registered'
                   });
                }
@@ -636,12 +636,12 @@ exports.CGMSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -649,7 +649,7 @@ exports.CGMSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -659,7 +659,7 @@ exports.CGMSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'Center General Manager Registered'
                   });
                }
@@ -675,19 +675,19 @@ exports.generalSignup = (req, res) => {
          console.log(error)
       }
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -697,7 +697,7 @@ exports.generalSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'General department Registered'
                   });
                }
@@ -713,19 +713,19 @@ exports.educSignup = (req, res) => {
          console.log(error)
       }
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -735,7 +735,7 @@ exports.educSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'Education directorates user Registered'
                   });
                }
@@ -753,12 +753,12 @@ exports.RDSignup = (req, res) => {
       }
 
       if (results.length > 0) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('adminReg', {
+         return res.render('adminHP', {
             message: 'password do not match'
          })
       }
@@ -766,7 +766,7 @@ exports.RDSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('adminReg', {
+            return res.render('adminHP', {
                message: 'The mobile number is already in use'
             })
          }
@@ -776,7 +776,7 @@ exports.RDSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('adminReg', {
+                  return res.render('adminHP', {
                      message: 'Research and Development Department User Registered'
                   });
                }
@@ -789,7 +789,8 @@ exports.RDSignup = (req, res) => {
 
 // add request 
 exports.SRaddnewrequest = async (req, res) => {
-   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu } = req.body;
+   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu ,gen } = req.body;
+   console.log(req.body.gen);
    console.log(req.body.edu);
    if (researchArea == "base") {
       return res.render('SRhomepage', {
@@ -813,6 +814,13 @@ exports.SRaddnewrequest = async (req, res) => {
                db.query('SELECT * FROM sr_request WHERE SRI_ID=?', [decoded.id], (erro, sr) => {
                   for(var i=0;i<edu.length;i++){
                      db.query("INSERT INTO req_e SET ?",[{reqID:sr[0].reqID,email:edu[i]}],(er,re)=>{
+                        if(er){
+                           console.log(er);
+                        }
+                     })
+                  }
+                  for(var j=0;j<gen.length;j++){
+                     db.query("INSERT INTO req_g SET ?",[{reqID:sr[0].reqID,email:gen[j]}],(er,re)=>{
                         if(er){
                            console.log(er);
                         }
@@ -1066,6 +1074,46 @@ exports.eduRequsets = async (req, res, next) => {
       next();
    }
 }
+exports.genRequsets = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM general WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM req_g WHERE email=?",[decoded.email], (err, resul) => {
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3",[resul[0].reqID],(er,re)=>{
+                     if (er) {
+                        console.log(er);
+                     } else if (resul.length == 0) {
+                        req.user = result[0];
+                        return next();
+                     }
+                     else {
+                        if(re.length==0){
+                           req.user = result[0];
+                           return next();
+                        }
+                        else{
+                           req.request = re;
+                           return next();
+                        }
+                     }
+                  })
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
 
 //to here
 exports.isLoggedIn = async (req, res, next) => {
@@ -1256,7 +1304,7 @@ exports.cgmApp = async (req, res) => {
    })
 }
 
-exports.done = async (req, res) => {
+exports.Edone = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM req_e WHERE email=?",[decoded.email] ,(erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>3 AND reqID=?", [resu[0].reqID], (error, result) => {
@@ -1267,6 +1315,21 @@ exports.done = async (req, res) => {
                })
             }
             else {
+               db.query("SELECT * FROM req_e WHERE email=?",[decoded.email],(err,resul)=>{
+                  if(resul.length==0){
+                     db.query("SELECT * FROM req_g",(erorrr,resuuuu)=>{
+                        if(resuuuu.length==0){
+                           db.query("UPDATE sr_request SET ? WHERE reqID=?",[{status:10,reason:"Completed"},result[0].reqID],(er,re)=>{
+                              if (er) {
+                                 return res.render("eduHP", {
+                                    message: "something went wrong"
+                                 })
+                              }
+                           })
+                        }
+                     })
+                  }
+               })
                return res.render("eduHP", {
                   message: "Request Done"
                })

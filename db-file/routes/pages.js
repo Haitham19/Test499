@@ -477,7 +477,22 @@ router.get("/genInbox", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
+router.get("/genReq", authController.genRequsets, (req, res) => {
+  if (req.request) {
+    res.render("genReq", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("genHP", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
+  }
+});
 
 
 
@@ -534,4 +549,5 @@ router.get("/eduReq", authController.eduRequsets, (req, res) => {
     }
   }
 });
+
 module.exports = router;
