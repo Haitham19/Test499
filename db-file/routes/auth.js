@@ -27,7 +27,7 @@ router.get('/deanApp',authController.deanApp);
 router.get('/deputyApp',authController.deputyApp);
 router.get('/cgmApp',authController.cgmApp);
 
-router.get('/done',authController.done);
+router.get('/Edone',authController.Edone);
 
 router.post('/Duser', authController.Duser);
 router.post('/Uuser', authController.Uuser);
