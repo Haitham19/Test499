@@ -819,8 +819,8 @@ exports.SRaddnewrequest = async (req, res) => {
                         }
                      })
                   }
-                  for(var j=0;i<gen.length;i++){
-                     db.query("INSERT INTO req_g SET ?",[{reqID:sr[0].reqID,email:gen[i]}],(er,re)=>{
+                  for(var j=0;j<gen.length;j++){
+                     db.query("INSERT INTO req_g SET ?",[{reqID:sr[0].reqID,email:gen[j]}],(er,re)=>{
                         if(er){
                            console.log(er);
                         }
