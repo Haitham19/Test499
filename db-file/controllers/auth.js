@@ -867,7 +867,7 @@ exports.SRrating = async (req, res) => {
    const { ratingN, ratingT } = req.body;
    if (ratingN == "base") {
       return res.render('SRhomepage', {
-         message: 'Rating Option  is not selected'
+         message: 'Rating Option is not selected'
       })
    }
 
@@ -887,6 +887,198 @@ exports.SRrating = async (req, res) => {
 
 }
 
+//sending messages
+exports.SRinbox=async(req,res,next)=>{
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM studentresearcher WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM msg WHERE too=?",[decoded.email],(err,resu)=>{
+                  if(resu.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  else{
+                     req.mes=resu;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.SRsend = async (req, res) => {
+   const {mess } = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   // if(typeof to!== undefined){
+   //    db.query("SELECT * FROM users WHERE email=?",[to],(erro,resu)=>{
+   //       if(resu.length==0){
+   //          return res.render('SRhomepage', {
+   //             message: 'the selected user does not exist please make sure of writing the correct email in "send to" field'
+   //          })
+   //       }
+   //    })
+   //    db.query("INSERT INTO msg SET ?",{from:decoded.email,to:to,mess:mess},(error,result)=>{
+   //       if(error){
+   //          console.log(error);
+   //       }
+   //       else{
+   //          return res.render('SRhomepage', {
+   //             message: 'Message sended seuccessfully'
+   //          })
+   //       }
+   //    })
+   // }
+  // else{
+      db.query("SELECT * FROM rd",(er,re)=>{
+         db.query("INSERT INTO msg SET ?",{frm:decoded.email,too:re[0].email,mess:mess},(error,result)=>{
+            if(error){
+               console.log(error);
+            }
+            else{
+               return res.render('SRhomepage', {
+                  message: 'Message sended seuccessfully'
+               })
+            }
+         })
+      })
+  // }
+}
+exports.SRres=async(req,res)=>{
+   const {frm,mess} = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+         if(erro){
+            console.log(erro);
+         }
+         else{
+            return res.render('SRhomepage', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.SRread=async(req,res)=>{
+   const frm=req.body.submit;
+   console.log(req.body);
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('SRhomepage', {
+            message: 'Message is no longer available'
+         })
+      }
+   })
+}
+//
+exports.RDinbox=async(req,res,next)=>{
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM rd WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM msg WHERE too=?",[decoded.email],(err,resu)=>{
+                  if(resu.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  else{
+                     req.mes=resu;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.RDsend=async(req,res)=>{
+   const {HG,edu,gen,mess}=req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   if(typeof to!=undefined){
+      db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:HG,mess:mess}],(error,result)=>{
+         if(error){
+            console.log(error);
+         }
+      })
+   }
+   if(edu.length!=0){
+      for(var i=0;i<edu.length;i++){
+         db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:edu[i],mess:mess}],(error,result)=>{
+            if(error){
+               console.log(error);
+            }
+         })
+      }
+   }
+   if(gen.length!=0){
+      for(var j=0;j<gen.length;j++){
+         db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:gen[j],mess:mess}],(error,result)=>{
+            if(error){
+               console.log(error);
+            }
+         })
+      }
+   }
+   return res.render('rdHP', {
+      message: 'Message sended seuccessfully'
+   })
+}
+exports.RDres=async(req,res)=>{
+   const {frm,mess} = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+         if(erro){
+            console.log(erro);
+         }
+         else{
+            return res.render('rdHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.RDread=async(req,res)=>{
+   const frm=req.body.submit;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('rdHP', {
+            message: 'Message is no longer available'
+         })
+      }
+   })
+}
 
 //for request
 exports.advRequsets = async (req, res, next) => {

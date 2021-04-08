@@ -46,6 +46,13 @@ router.post('/deanRej', authController.deanRej);
 router.post('/deputyRej', authController.deputyRej);
 router.post('/cgmRej', authController.cgmRej);
 
+router.post('/SRsend', authController.SRsend);
+router.post('/SRres', authController.SRres);
+router.post('/SRread', authController.SRread);
+
+router.post('/RDsend', authController.RDsend);
+router.post('/RDres', authController.RDres);
+router.post('/RDread', authController.RDread);
 
 router.get('/Dreq', authController.Dreq);
 module.exports = router;

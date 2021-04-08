@@ -97,17 +97,20 @@ router.get("/SRcomm", authController.isLoggedIn, (req, res) => {
     res.render("SRcomm", {
       user: req.user,
     });
-    console.log(req.user);
   } else {
     res.redirect("/userLogin");
   }
 });
-router.get("/SRInbox", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
+router.get("/SRInbox", authController.SRinbox, (req, res) => {
+  if (req.mes) {
     res.render("SRInbox", {
+      mes: req.mes,
+    });
+  }else if(req.user){
+    res.render("SRhomepage", {
+      message: "you don't have any messages",
       user: req.user,
     });
-    console.log(req.user);
   } else {
     res.redirect("/userLogin");
   }
@@ -118,7 +121,6 @@ router.get("/SRrating", authController.isLoggedIn, (req, res) => {
     res.render("SRrating", {
       user: req.user,
     });
-    console.log(req.user);
   } else {
     res.redirect("/userLogin");
   }
@@ -268,9 +270,14 @@ router.get("/rdRequests", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/rdInbox", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
+router.get("/rdInbox", authController.RDinbox, (req, res) => {
+  if (req.mes) {
     res.render("rdInbox", {
+      mes: req.mes,
+    });
+  }else if(req.user){
+    res.render("rdHP", {
+      message: "you don't have any messages",
       user: req.user,
     });
   } else {
