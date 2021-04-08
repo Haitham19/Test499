@@ -65,8 +65,8 @@ router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
     res.render("SRI_Req", {
       reqJ: req.reqJ,
     });
-  } 
-  else if(req.reqW){
+  }
+  else if (req.reqW) {
     res.render("SRI_Req", {
       reqW: req.reqW,
     });
@@ -105,6 +105,17 @@ router.get("/SRcomm", authController.isLoggedIn, (req, res) => {
 router.get("/SRInbox", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("SRInbox", {
+      user: req.user,
+    });
+    console.log(req.user);
+  } else {
+    res.redirect("/userLogin");
+  }
+});
+
+router.get("/SRrating", authController.isLoggedIn, (req, res) => {
+  if (req.user) {
+    res.render("SRrating", {
       user: req.user,
     });
     console.log(req.user);

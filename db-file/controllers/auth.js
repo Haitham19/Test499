@@ -290,7 +290,7 @@ exports.userLogin = async (req, res) => {
                                           res.cookie('jwt', token, cookieOption);
                                           res.status(200).redirect("/genHP");
                                        }
-                                       
+
                                     })
                                  })
                               })
@@ -789,7 +789,7 @@ exports.RDSignup = (req, res) => {
 
 // add request 
 exports.SRaddnewrequest = async (req, res) => {
-   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu ,gen } = req.body;
+   const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu, gen } = req.body;
    console.log(req.body.gen);
    console.log(req.body.edu);
    if (researchArea == "base") {
@@ -797,7 +797,7 @@ exports.SRaddnewrequest = async (req, res) => {
          message: 'research area is not selected'
       })
    }
-   
+
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query('SELECT * FROM advisor WHERE email=?', [advisorsEmail], (error, resu) => {
       if (error) {
@@ -810,18 +810,18 @@ exports.SRaddnewrequest = async (req, res) => {
       }
       else {
          db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
-            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience,  SRI_ID: decoded.id, status: 0 }, (erro, result) => {
+            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, SRI_ID: decoded.id, status: 0 }, (erro, result) => {
                db.query('SELECT * FROM sr_request WHERE SRI_ID=?', [decoded.id], (erro, sr) => {
-                  for(var i=0;i<edu.length;i++){
-                     db.query("INSERT INTO req_e SET ?",[{reqID:sr[0].reqID,email:edu[i]}],(er,re)=>{
-                        if(er){
+                  for (var i = 0; i < edu.length; i++) {
+                     db.query("INSERT INTO req_e SET ?", [{ reqID: sr[0].reqID, email: edu[i] }], (er, re) => {
+                        if (er) {
                            console.log(er);
                         }
                      })
                   }
-                  for(var j=0;j<gen.length;j++){
-                     db.query("INSERT INTO req_g SET ?",[{reqID:sr[0].reqID,email:gen[j]}],(er,re)=>{
-                        if(er){
+                  for (var j = 0; j < gen.length; j++) {
+                     db.query("INSERT INTO req_g SET ?", [{ reqID: sr[0].reqID, email: gen[j] }], (er, re) => {
+                        if (er) {
                            console.log(er);
                         }
                      })
@@ -837,7 +837,7 @@ exports.SRaddnewrequest = async (req, res) => {
                         message: 'Request is submitted'
                      })
                   }
-               })  
+               })
             })
          })
       }
@@ -861,6 +861,31 @@ exports.orgANR = async (req, res) => {
    );
 }
 
+
+//Rating
+exports.SRrating = async (req, res) => {
+   const { ratingN, ratingT } = req.body;
+   if (ratingN == "base") {
+      return res.render('SRhomepage', {
+         message: 'Rating Option  is not selected'
+      })
+   }
+
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
+      db.query('INSERT INTO sr_rating SET ?', { email: decoded.email, ratingNumber: ratingN, ratingText: ratingT, SRI_ID: decoded.id }, (erro, result) => {
+         if (erro) {
+            console.log(er);
+         }
+         else {
+            return res.render('SRhomepage', {
+               message: 'Rating is submitted'
+            })
+         }
+      })
+   })
+
+}
 
 
 //for request
@@ -1043,8 +1068,8 @@ exports.eduRequsets = async (req, res, next) => {
                return next();
             }
             else {
-               db.query("SELECT * FROM req_e WHERE email=?",[decoded.email], (err, resul) => {
-                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3",[resul[0].reqID],(er,re)=>{
+               db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (err, resul) => {
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3", [resul[0].reqID], (er, re) => {
                      if (er) {
                         console.log(er);
                      } else if (resul.length == 0) {
@@ -1052,11 +1077,11 @@ exports.eduRequsets = async (req, res, next) => {
                         return next();
                      }
                      else {
-                        if(re.length==0){
+                        if (re.length == 0) {
                            req.user = result[0];
                            return next();
                         }
-                        else{
+                        else {
                            req.request = re;
                            return next();
                         }
@@ -1083,8 +1108,8 @@ exports.genRequsets = async (req, res, next) => {
                return next();
             }
             else {
-               db.query("SELECT * FROM req_g WHERE email=?",[decoded.email], (err, resul) => {
-                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3",[resul[0].reqID],(er,re)=>{
+               db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (err, resul) => {
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3", [resul[0].reqID], (er, re) => {
                      if (er) {
                         console.log(er);
                      } else if (resul.length == 0) {
@@ -1092,11 +1117,11 @@ exports.genRequsets = async (req, res, next) => {
                         return next();
                      }
                      else {
-                        if(re.length==0){
+                        if (re.length == 0) {
                            req.user = result[0];
                            return next();
                         }
-                        else{
+                        else {
                            req.request = re;
                            return next();
                         }
@@ -1160,7 +1185,7 @@ exports.isLoggedIn = async (req, res, next) => {
                                                                   else {
                                                                      req.user = gen[0];//sending user data                                                                  
                                                                      return next();
-                                                                  }                                                                        
+                                                                  }
                                                                }
                                                                else {
                                                                   req.user = cgm[0];//sending user data
@@ -1289,7 +1314,7 @@ exports.deputyApp = async (req, res) => {
 exports.cgmApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 4,  from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 4, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
          if (error) {
             return res.render("cgmHP", {
                message: "something went wrong"
@@ -1306,20 +1331,20 @@ exports.cgmApp = async (req, res) => {
 
 exports.Edone = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("SELECT * FROM req_e WHERE email=?",[decoded.email] ,(erro, resu) => {
+   db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>3 AND reqID=?", [resu[0].reqID], (error, result) => {
-         db.query("UPDATE sr_request SET ? WHERE reqID=?",[{status:5,reason:result[0].reason+"---Done in :"+decoded.email},result[0].reqID],(er,re)=>{
+         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 5, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
             if (er) {
                return res.render("eduHP", {
                   message: "something went wrong"
                })
             }
             else {
-               db.query("SELECT * FROM req_e WHERE email=?",[decoded.email],(err,resul)=>{
-                  if(resul.length==0){
-                     db.query("SELECT * FROM req_g",(erorrr,resuuuu)=>{
-                        if(resuuuu.length==0){
-                           db.query("UPDATE sr_request SET ? WHERE reqID=?",[{status:10,reason:"Completed"},result[0].reqID],(er,re)=>{
+               db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (err, resul) => {
+                  if (resul.length == 0) {
+                     db.query("SELECT * FROM req_g", (erorrr, resuuuu) => {
+                        if (resuuuu.length == 0) {
+                           db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 10, reason: "Completed" }, result[0].reqID], (er, re) => {
                               if (er) {
                                  return res.render("eduHP", {
                                     message: "something went wrong"
@@ -1334,7 +1359,7 @@ exports.Edone = async (req, res) => {
                   message: "Request Done"
                })
             }
-         }) 
+         })
       })
    })
 }
