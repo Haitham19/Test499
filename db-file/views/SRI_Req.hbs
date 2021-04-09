@@ -55,8 +55,12 @@
                   </div>
                   <button onclick="status({{reqW.[0].status}})">Request status </button>
                   <br><br><br>
-                  <div class="form-group">
+                  <div class="form-group" id="rrr" style="display: none;">
                      <label id="st" style="color:green">{{reqW.[0].reason}}</label>
+                  </div>
+                  <div class="form-group" id="ah" style="display: none;">
+                     <label >we are asking for your feedback if you have time please give as your review</label>
+                     <li class="form-control"><a href="/SRrating">review</a></li>
                   </div>
                   
             </div>
@@ -90,8 +94,10 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>
-      <script>
+      <script type="text/javascript">
+                
           function status(x){
+             document.getElementById('rrr').style.display = 'block';
               switch (x){
                   case 0:
                     document.getElementById("st").innerHTML="Request is waiting for approval by Advisor";
@@ -106,12 +112,16 @@
                     document.getElementById("st").innerHTML="Request is waiting for approval by Center general manager";
                     break;
                   case 4:
-                    document.getElementById("st").innerHTML="Request is in processing at chosen General departments and education directorates";
+                    document.getElementById("st").innerHTML="Request is waiting for approval by Center general manager";
                     break;
                   case 5:
-                  console.log(document.getElementById("st").value);
+                    document.getElementById("st").innerHTML="Request is in processing at chosen General departments and education directorates";    
                     document.getElementById("st").innerHTML=document.getElementById("st");
                     break;
+                  case 10:
+                  document.getElementById("st").innerHTML="completed";
+                   document.getElementById('ah').style.display = 'block';
+                  break;
               }
           }
       </script>

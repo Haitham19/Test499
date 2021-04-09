@@ -27,6 +27,7 @@ router.get('/advApp', authController.advApp);
 router.get('/deanApp', authController.deanApp);
 router.get('/deputyApp', authController.deputyApp);
 router.get('/cgmApp', authController.cgmApp);
+router.get('/rdApp', authController.rdApp);
 
 router.get('/Edone', authController.Edone);
 
@@ -45,6 +46,8 @@ router.post('/advRej', authController.advRej);
 router.post('/deanRej', authController.deanRej);
 router.post('/deputyRej', authController.deputyRej);
 router.post('/cgmRej', authController.cgmRej);
+router.post('/rdRej', authController.rdRej);
+
 
 router.post('/SRsend', authController.SRsend);
 router.post('/SRres', authController.SRres);
@@ -55,4 +58,5 @@ router.post('/RDres', authController.RDres);
 router.post('/RDread', authController.RDread);
 
 router.get('/Dreq', authController.Dreq);
+router.post('/find',authController.find);
 module.exports = router;

@@ -1228,7 +1228,7 @@ exports.cgmRequsets = async (req, res, next) => {
                return next();
             }
             else {
-               db.query("SELECT * FROM sr_request WHERE status=3 AND next=?", [decoded.email], (err, resul) => {
+               db.query("SELECT * FROM sr_request WHERE status=4 AND next=?", [decoded.email], (err, resul) => {
                   if (err) {
                      console.log(err);
                   } else if (resul.length == 0) {
@@ -1251,6 +1251,39 @@ exports.cgmRequsets = async (req, res, next) => {
       next();
    }
 }
+exports.rdRequests = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM rd WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else {
+               db.query("SELECT * FROM sr_request WHERE status=3", [decoded.email], (err, resul) => {
+                  if (err) {
+                     console.log(err);
+                  } else if (resul.length == 0) {
+                     req.user = result[0];
+                     return next();
+                  }
+                  else {
+                     req.request = resul;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+
 exports.eduRequsets = async (req, res, next) => {
    if (req.cookies.jwt) {
       try {
@@ -1506,7 +1539,7 @@ exports.deputyApp = async (req, res) => {
 exports.cgmApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 4, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 5, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
          if (error) {
             return res.render("cgmHP", {
                message: "something went wrong"
@@ -1520,12 +1553,29 @@ exports.cgmApp = async (req, res) => {
       })
    })
 }
+exports.rdApp = async (req, res) => {
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
+      db.query("UPDATE sr_request SET ? WHERE reqID=?", [{status: 4}, resu[0].reqID], (error, result) => {
+         if (error) {
+            return res.render("rdHP", {
+               message: "something went wrong"
+            })
+         }
+         else {
+            return res.render("rdHP", {
+               message: "request approved"
+            })
+         }
+      })
+   })
+}
 
 exports.Edone = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (erro, resu) => {
-      db.query("SELECT * FROM sr_request WHERE status>3 AND reqID=?", [resu[0].reqID], (error, result) => {
-         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 5, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+      db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
             if (er) {
                return res.render("eduHP", {
                   message: "something went wrong"
@@ -1548,6 +1598,40 @@ exports.Edone = async (req, res) => {
                   }
                })
                return res.render("eduHP", {
+                  message: "Request Done"
+               })
+            }
+         })
+      })
+   })
+}
+exports.Gdone = async (req, res) => {
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (erro, resu) => {
+      db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+            if (er) {
+               return res.render("genHP", {
+                  message: "something went wrong"
+               })
+            }
+            else {
+               db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (err, resul) => {
+                  if (resul.length == 0) {
+                     db.query("SELECT * FROM req_e", (erorrr, resuuuu) => {
+                        if (resuuuu.length == 0) {
+                           db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 10, reason: "Completed" }, result[0].reqID], (er, re) => {
+                              if (er) {
+                                 return res.render("genHP", {
+                                    message: "something went wrong"
+                                 })
+                              }
+                           })
+                        }
+                     })
+                  }
+               })
+               return res.render("genHP", {
                   message: "Request Done"
                })
             }
@@ -1672,6 +1756,25 @@ exports.cgmRej = async (req, res) => {
          }
          else {
             return res.render("cgmHP", {
+               message: "request rejected"
+            })
+         }
+      })
+   })
+}
+exports.rdRej = async (req, res) => {
+   const reason = req.body.reason;
+   console.log(reason);
+   db.query("SELECT * FROM sr_request WHERE status=3" ,(erro, resu) => {
+      db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 4, reason: reason }, resu[0].reqID], (error, result) => {
+         if (error) {
+            console.log(error);
+            return res.render("rdHP", {
+               message: "something went wrong"
+            })
+         }
+         else {
+            return res.render("rdHP", {
                message: "request rejected"
             })
          }
@@ -2046,5 +2149,34 @@ exports.Dreq = async (req, res) => {
             message: "request deleted"
          })
       }
+   })
+}
+
+exports.find=async(req,res)=>{
+   const email=req.body.email;
+   db.query('SELECT * FROM studentresearcher WHERE email=?',[email],(err,resu)=>{
+      if(resu.length==0){
+         return res.render('rdHP', {
+            message: "there aren't any researcher with intered email"
+         })
+      }
+      db.query('SELECT * FROM sr_request WHERE SRI_ID=?',[resu[0].id],(error,result)=>{
+         if(result.length==0){
+            return res.render('rdHP', {
+               message: 'there are no requests with intered email'
+            })
+         }
+         else{
+            db.query('SELECT * FROM req_e WHERE reqID=?',[result[0].reqID],(err,ed)=>{
+               db.query('SELECT * FROM req_g WHERE reqID=?',[result[0].reqID],(err,ge)=>{
+                  return res.render('rdFinded', {
+                     request:result[0],
+                     gen:ge,
+                     edu:ed
+                  })
+               })
+            })
+         }
+      })
    })
 }

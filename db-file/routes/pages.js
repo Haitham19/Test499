@@ -260,14 +260,44 @@ router.get("/rdCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
-router.get("/rdRequests", authController.isLoggedIn, (req, res) => {
+router.get("/rdFind", authController.isLoggedIn, (req, res) => {
   if (req.user) {
-    res.render("rdRequests", {
+    res.render("rdFind", {
       user: req.user,
     });
   } else {
     res.redirect("/userLogin");
+  }
+});
+router.get("/rdFinded", authController.isLoggedIn, (req, res) => {
+    if(req.request){
+      
+      res.render("rdFinded", {
+        request: req.request,
+      });
+    }
+    else{
+      res.render("rdHP", {
+        message: "didn't find",
+      });
+    }
+    res.redirect("/userLogin");
+});
+
+router.get("/rdRequests", authController.rdRequests, (req, res) => {
+  if (req.request) {
+    res.render("rdRequests", {
+      request: req.request,
+    });
+  } else {
+    if (req.user) {
+      res.render("rdHP", {
+        message: "there are no requests to check",
+        user: req.user,
+      });
+    } else {
+      res.redirect("/userLogin");
+    }
   }
 });
 router.get("/rdInbox", authController.RDinbox, (req, res) => {
