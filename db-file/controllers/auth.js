@@ -1079,6 +1079,255 @@ exports.RDread=async(req,res)=>{
       }
    })
 }
+//
+exports.cgminbox=async(req,res,next)=>{
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM cgm WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM msg WHERE too=?",[decoded.email],(err,resu)=>{
+                  if(resu.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  else{
+                     req.mes=resu;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.cgmSend=async(req,res)=>{
+   const {HG,edu,gen,mess}=req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   if(typeof to!=undefined){
+      db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:HG,mess:mess}],(error,result)=>{
+         if(error){
+            console.log(error);
+         }
+      })
+   }
+   if(edu.length!=0){
+      for(var i=0;i<edu.length;i++){
+         db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:edu[i],mess:mess}],(error,result)=>{
+            if(error){
+               console.log(error);
+            }
+         })
+      }
+   }
+   if(gen.length!=0){
+      for(var j=0;j<gen.length;j++){
+         db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:gen[j],mess:mess}],(error,result)=>{
+            if(error){
+               console.log(error);
+            }
+         })
+      }
+   }
+   return res.render('cgmHP', {
+      message: 'Message sended seuccessfully'
+   })
+}
+exports.cgmRes=async(req,res)=>{
+   const {frm,mess} = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+         if(erro){
+            console.log(erro);
+         }
+         else{
+            return res.render('cgmHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.cgmRead=async(req,res)=>{
+   const frm=req.body.submit;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('cgmHP', {
+            message: 'Message is no longer available'
+         })
+      }
+   })
+}
+//
+exports.eduinbox=async(req,res,next)=>{
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM education WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM msg WHERE too=?",[decoded.email],(err,resu)=>{
+                  if(resu.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  else{
+                     req.mes=resu;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.eduSend = async (req, res) => {
+   const {mess } = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("SELECT * FROM rd",(er,re)=>{
+      db.query("INSERT INTO msg SET ?",{frm:decoded.email,too:re[0].email,mess:mess},(error,result)=>{
+         if(error){
+            console.log(error);
+         }
+         else{
+            return res.render('eduHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.eduRes=async(req,res)=>{
+   const {frm,mess} = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+         if(erro){
+            console.log(erro);
+         }
+         else{
+            return res.render('eduHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.eduRead=async(req,res)=>{
+   const frm=req.body.submit;
+   console.log(req.body);
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('eduHP', {
+            message: 'Message is no longer available'
+         })
+      }
+   })
+}
+//
+exports.geninbox=async(req,res,next)=>{
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM general WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM msg WHERE too=?",[decoded.email],(err,resu)=>{
+                  if(resu.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  else{
+                     req.mes=resu;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.genSend = async (req, res) => {
+   const {mess } = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("SELECT * FROM rd",(er,re)=>{
+      db.query("INSERT INTO msg SET ?",{frm:decoded.email,too:re[0].email,mess:mess},(error,result)=>{
+         if(error){
+            console.log(error);
+         }
+         else{
+            return res.render('genHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.genRes=async(req,res)=>{
+   const {frm,mess} = req.body;
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+         if(erro){
+            console.log(erro);
+         }
+         else{
+            return res.render('genHP', {
+               message: 'Message sended seuccessfully'
+            })
+         }
+      })
+   })
+}
+exports.genRead=async(req,res)=>{
+   const frm=req.body.submit;
+   console.log(req.body);
+   const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
+      if(error){
+         console.log(error);
+      }
+      else{
+         return res.render('genHP', {
+            message: 'Message is no longer available'
+         })
+      }
+   })
+}
 
 //for request
 exports.advRequsets = async (req, res, next) => {
@@ -1294,7 +1543,11 @@ exports.eduRequsets = async (req, res, next) => {
             }
             else {
                db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (err, resul) => {
-                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3", [resul[0].reqID], (er, re) => {
+                  if(resul.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>4", [resul[0].reqID], (er, re) => {
                      if (er) {
                         console.log(er);
                      } else if (resul.length == 0) {
@@ -1334,7 +1587,11 @@ exports.genRequsets = async (req, res, next) => {
             }
             else {
                db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (err, resul) => {
-                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>3", [resul[0].reqID], (er, re) => {
+                  if(resul.length==0){
+                     req.user = result[0];
+                     return next();
+                  }
+                  db.query("SELECT * FROM sr_request WHERE reqID=? AND status>4", [resul[0].reqID], (er, re) => {
                      if (er) {
                         console.log(er);
                      } else if (resul.length == 0) {
@@ -1576,6 +1833,11 @@ exports.Edone = async (req, res) => {
    db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
          db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+            db.query("DELETE FROM req_e WHERE reqID=? AND email=?",[result[0].reqID,decoded.email],(err,ww)=>{
+               if(err){
+                  console.log(err);
+               }
+            })
             if (er) {
                return res.render("eduHP", {
                   message: "something went wrong"
@@ -1610,6 +1872,11 @@ exports.Gdone = async (req, res) => {
    db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
          db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+            db.query("DELETE FROM req_g WHERE reqID=? AND email=?",[result[0].reqID,decoded.email],(err,ww)=>{
+               if(err){
+                  console.log(err);
+               }
+            })
             if (er) {
                return res.render("genHP", {
                   message: "something went wrong"

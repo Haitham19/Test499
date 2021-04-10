@@ -34,20 +34,28 @@
             <div class="tab-content" id="nav-tabContent">
                   
                 <!-- if there is no messages the page should be empty like (no requests, messages to display) -->
-
+                <form action="auth/genRead" method="POST">
                   <div class="form-group">
-                     <label >From: <!-- The user who sent the message (from table) --></label>
+                     <label>incoming messages : {{mes.length}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Message: <!-- Message from table --> </label>
+                     <label >From :</label>
+                     <li class="form-control" id="frm" name="frm" value="{{mes.[0].frm}}">{{mes.[0].frm}}</li>
+                  </div>
+                  <div class="form-group">
+                     <label >Message: </label>
+                     <li class="form-control" id="msg" name="msg" value="{{mes.[0].mess}}">{{mes.[0].mess}}</li>
                   </div>
                   
                   <button class="cstmButt" onclick="showForm()">Respond</button>
-                        <form id="formElement" style="display: none;">
+                    <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as readed</button>
+                  </form>
+                        <form id="formElement" style="display: none;" action="auth/genRes" method="POST">
                              <div class="mb-4">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Type your response:</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-
+                                 <label for="frm">respond to: </label><br>
+                                 <li class="form-control" id="frm" name="frm" value="{{mes.[0].frm}}">{{mes.[0].frm}}</li>
+                                    <label for="mess" class="form-label">Type your response:</label>
+                                    <textarea class="form-control" id="mess" name="mess" rows="3"></textarea>
                                         <center> 
                                             <button class="button" type="submit" name="submit">Send</button>  <!-- need to be functional -->
                                          </center>

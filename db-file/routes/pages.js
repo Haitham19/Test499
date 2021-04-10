@@ -20,8 +20,6 @@ router.get("/orgHP", authController.isLoggedIn, (req, res) => {
     res.redirect("/researcherLogin");
   }
 });
-
-
 router.get("/orgANR", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("orgANR", {
@@ -115,7 +113,6 @@ router.get("/SRInbox", authController.SRinbox, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
 router.get("/SRrating", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("SRrating", {
@@ -185,7 +182,6 @@ router.get("/cgmHP", authController.isLoggedIn, (req, res) => {
 router.get("/userLogin", (req, res) => {
   res.render("userLogin");
 });
-
 router.get("/cgmCOMM", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("cgmCOMM", {
@@ -195,7 +191,6 @@ router.get("/cgmCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
 router.get("/cgmReq", authController.cgmRequsets, (req, res) => {
   if (req.request) {
     res.render("cgmReq", {
@@ -221,9 +216,14 @@ router.get("/cgmU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/cgmInbox", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
+router.get("/cgmInbox", authController.cgminbox, (req, res) => {
+  if (req.mes) {
     res.render("cgmInbox", {
+      mes: req.mes,
+    });
+  }else if(req.user){
+    res.render("cgmHP", {
+      message: "you don't have any messages",
       user: req.user,
     });
   } else {
@@ -250,7 +250,6 @@ router.get("/rdU", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-
 router.get("/rdCOMM", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("rdCOMM", {
@@ -283,7 +282,6 @@ router.get("/rdFinded", authController.isLoggedIn, (req, res) => {
     }
     res.redirect("/userLogin");
 });
-
 router.get("/rdRequests", authController.rdRequests, (req, res) => {
   if (req.request) {
     res.render("rdRequests", {
@@ -516,9 +514,14 @@ router.get("/genCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/genInbox", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
+router.get("/genInbox", authController.geninbox, (req, res) => {
+  if (req.mes) {
     res.render("genInbox", {
+      mes: req.mes,
+    });
+  }else if(req.user){
+    res.render("genHP", {
+      message: "you don't have any messages",
       user: req.user,
     });
   } else {
@@ -572,9 +575,14 @@ router.get("/eduCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/eduInbox", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
+router.get("/eduInbox", authController.eduinbox, (req, res) => {
+  if (req.mes) {
     res.render("eduInbox", {
+      mes: req.mes,
+    });
+  }else if(req.user){
+    res.render("eduHP", {
+      message: "you don't have any messages",
       user: req.user,
     });
   } else {
