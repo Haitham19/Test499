@@ -948,7 +948,7 @@ exports.SRsend = async (req, res) => {
             }
             else{
                return res.render('SRhomepage', {
-                  message: 'Message sended seuccessfully'
+                  message: 'Message sent successfully'
                })
             }
          })
@@ -965,7 +965,7 @@ exports.SRres=async(req,res)=>{
          }
          else{
             return res.render('SRhomepage', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1046,7 +1046,7 @@ exports.RDsend=async(req,res)=>{
       }
    }
    return res.render('rdHP', {
-      message: 'Message sended seuccessfully'
+      message: 'Message sent successfully'
    })
 }
 exports.RDres=async(req,res)=>{
@@ -1059,7 +1059,7 @@ exports.RDres=async(req,res)=>{
          }
          else{
             return res.render('rdHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1139,7 +1139,7 @@ exports.cgmSend=async(req,res)=>{
       }
    }
    return res.render('cgmHP', {
-      message: 'Message sended seuccessfully'
+      message: 'Message sent successfully'
    })
 }
 exports.cgmRes=async(req,res)=>{
@@ -1152,7 +1152,7 @@ exports.cgmRes=async(req,res)=>{
          }
          else{
             return res.render('cgmHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1213,7 +1213,7 @@ exports.eduSend = async (req, res) => {
          }
          else{
             return res.render('eduHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1229,7 +1229,7 @@ exports.eduRes=async(req,res)=>{
          }
          else{
             return res.render('eduHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1291,7 +1291,7 @@ exports.genSend = async (req, res) => {
          }
          else{
             return res.render('genHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
@@ -1307,7 +1307,7 @@ exports.genRes=async(req,res)=>{
          }
          else{
             return res.render('genHP', {
-               message: 'Message sended seuccessfully'
+               message: 'Message sent successfully'
             })
          }
       })
