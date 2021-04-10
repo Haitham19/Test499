@@ -1812,7 +1812,7 @@ exports.cgmApp = async (req, res) => {
 }
 exports.rdApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
+   db.query("SELECT * FROM sr_request WHERE status=3", (erro, resu) => {
       db.query("UPDATE sr_request SET ? WHERE reqID=?", [{status: 4}, resu[0].reqID], (error, result) => {
          if (error) {
             return res.render("rdHP", {
