@@ -60,19 +60,41 @@ router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
 });
 router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
   if (req.reqJ) {
-    res.render("SRI_Req", {
-      reqJ: req.reqJ,
+      return res.status(200).render("SRI_Req", {
+      reqJ: req.reqJ
     });
   }
-  else if (req.reqW) {
-    res.render("SRI_Req", {
-      reqW: req.reqW,
-    });
-  }
-  else {
+  if (req.request) {
+    if(req.edu){
+      if(req.gen){
+        res.render("SRI_Req", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("SRI_Req", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("SRI_Req", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("SRI_Req", {
+        request: req.request,
+        })
+    }
+    
+  } else {
     if (req.user) {
       res.render("SRhomepage", {
-        message: "you don't have any requests",
+        message: "there are no requests to check",
         user: req.user,
       });
     } else {
@@ -193,9 +215,32 @@ router.get("/cgmCOMM", authController.isLoggedIn, (req, res) => {
 });
 router.get("/cgmReq", authController.cgmRequsets, (req, res) => {
   if (req.request) {
-    res.render("cgmReq", {
-      request: req.request,
-    });
+    if(req.edu){
+      if(req.gen){
+        res.render("cgmReq", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("cgmReq", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("cgmReq", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("cgmReq", {
+        request: req.request,
+        })
+    }
+    
   } else {
     if (req.user) {
       res.render("cgmHP", {
@@ -336,9 +381,32 @@ router.get("/advisorHP", authController.isLoggedIn, (req, res) => {
 });
 router.get("/advisorReq", authController.advRequsets, (req, res) => {
   if (req.request) {
-    res.render("advisorReq", {
-      request: req.request,
-    });
+    if(req.edu){
+      if(req.gen){
+        res.render("advisorReq", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("advisorReq", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("advisorReq", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("advisorReq", {
+        request: req.request,
+        })
+    }
+    
   } else {
     if (req.user) {
       res.render("advisorHP", {
@@ -418,9 +486,32 @@ router.get("/deanInbox", authController.isLoggedIn, (req, res) => {
 });
 router.get("/deanReq", authController.deanRequsets, (req, res) => {
   if (req.request) {
-    res.render("deanReq", {
-      request: req.request,
-    });
+    if(req.edu){
+      if(req.gen){
+        res.render("deanReq", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("deanReq", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("deanReq", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("deanReq", {
+        request: req.request,
+        })
+    }
+    
   } else {
     if (req.user) {
       res.render("deanHP", {
@@ -472,9 +563,32 @@ router.get("/deputyInbox", authController.isLoggedIn, (req, res) => {
 });
 router.get("/deputyReq", authController.deputyRequsets, (req, res) => {
   if (req.request) {
-    res.render("deputyReq", {
-      request: req.request,
-    });
+    if(req.edu){
+      if(req.gen){
+        res.render("deputyReq", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("deputyReq", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("deputyReq", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("deputyReq", {
+        request: req.request,
+        })
+    }
+    
   } else {
     if (req.user) {
       res.render("deputyHP", {

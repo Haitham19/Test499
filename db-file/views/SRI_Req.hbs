@@ -20,7 +20,7 @@
    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
    <title>Document</title>
-</head>
+
 
 <body >
 
@@ -32,31 +32,51 @@
          <li><a href="/auth/logout">Log Out</a></li>
       </ul>
    </nav>
-    {{#if reqW}}
+    {{#if request}}
    <div class="container mt-4">
       <div class="card">
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
                   
                   <div class="form-group">
-                     <label >Project title: {{reqW.[0].projectTitle}}</label>
+                     <label >Project title: {{request.[0].projectTitle}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Project area: {{reqW.[0].area}}</label>
+                     <label >Project area: {{request.[0].area}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Target audience: {{reqW.[0].target}}</label>
+                     <label >Target audience: {{request.[0].target}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Educational Directorates: {{reqW.[0].educ_dir}}</label>
+                     <label >Educational Directorates: {{request.[0].educ_dir}}</label>
                   </div>
                   <div class="form-group">
-                     <label >Research tool: <a href="{{reqW.[0].url}}">{{reqW.[0].url}}</a></label>
+                     <label >Research tool: <a href="{{request.[0].url}}">{{request.[0].url}}</a></label>
                   </div>
-                  <button onclick="status({{reqW.[0].status}})">Request status </button>
+                  <button onclick="status({{request.[0].status}})">Request status </button>
                   <br><br><br>
                   <div class="form-group" id="rrr" style="display: none;">
-                     <label id="st" style="color:green">{{reqW.[0].reason}}</label>
+                     <label id="st" style="color:green">{{request.[0].reason}}</label>
+                     {{#if edu}}
+                  <div class="form-group">
+                      <label >Pending Education directorates: </label>
+                    <ul>
+                        {{#each edu}}
+                        <li>{{this.name}}</li>
+                        {{/each}}
+                    </ul>
+                  </div>
+                  {{/if}}
+                  {{#if gen}}
+                  <div class="form-group">
+                      <label >Pending General departments: </label>
+                    <ul>
+                        {{#each gen}}
+                        <li>{{this.name}}</li>
+                        {{/each}}
+                    </ul>
+                  </div>
+                  {{/if}}
                   </div>
                   <div class="form-group" id="ah" style="display: none;">
                      <label >We are asking for your feedback if you have time please give us your review</label>
@@ -68,21 +88,21 @@
       </div>
       {{else}}
       <div class="container mt-4">
-      <div class="card">
-         <div class="card-header">
-            <div class="tab-content" id="nav-tabContent">
-                  
-                  
-                  <div class="form-group">
-                     <label >Request is Rejected by: {{reqJ.[0].next}}</label>
-                  </div>
-                  <div class="form-group">
-                     <label >Rejection Reason: {{reqJ.[0].reason}}</label>
-                  </div>
-                  <form action="auth/Dreq">
-                  <button type="submit" class="btn btn-primary">Back</button>
-               </form>
-               <br>
+         <div class="card">
+            <div class="card-header">
+               <div class="tab-content" id="nav-tabContent">
+                     
+                     <div class="form-group">
+                        <label >Request is Rejected by: {{reqJ.[0].next}}</label>
+                     </div>
+                     <div class="form-group">
+                        <label >Rejection Reason: {{reqJ.[0].reason}}</label>
+                     </div>
+                     <form action="auth/Dreq">
+                        <button type="submit" class="btn btn-primary">Back</button>
+                     </form>
+                  <br>
+               </div>
             </div>
          </div>
       </div>
@@ -90,7 +110,8 @@
       {{#if message}}
       <h4 class="alert alert-danger mt-4">{{message}}</h4>
       {{/if}}
-   </div>
+   
+   </head>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
       crossorigin="anonymous"></script>

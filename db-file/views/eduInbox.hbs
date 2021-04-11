@@ -36,7 +36,7 @@
                 <!-- if there is no messages the page should be empty like (no requests, messages to display) -->
                 <form action="auth/eduRead" method="POST">
                   <div class="form-group">
-                     <label>incoming messages : {{mes.length}}</label>
+                     <label >incoming messages : {{mes.length}}</label>
                   </div>
                   <div class="form-group">
                      <label >From :</label>
@@ -44,12 +44,12 @@
                   </div>
                   <div class="form-group">
                      <label >Message: </label>
-                     <li class="form-control" id="msg" name="msg" value="{{mes.[0].mess}}">{{mes.[0].mess}}</li>
-                  </div>
-                  
-                  <button class="cstmButt" onclick="showForm()">Respond</button>
-                    <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as readed</button>
+                     <li class="form-control" id="frm" name="frm" value="{{mes.[0].mess}}">{{mes.[0].mess}}</li>
+                  </div>                  
+                    
+                   <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as read</button>
                   </form>
+                  <button class="cstmButt" onclick="showForm()">Respond</button>
                         <form id="formElement" style="display: none;" action="auth/eduRes" method="POST">
                              <div class="mb-4">
                                  <label for="frm">respond to: </label><br>
@@ -57,7 +57,7 @@
                                     <label for="mess" class="form-label">Type your response:</label>
                                     <textarea class="form-control" id="mess" name="mess" rows="3"></textarea>
                                         <center> 
-                                            <button class="button" type="submit" name="submit">Send</button>  <!-- need to be functional -->
+                                           <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Send</button> <!-- need to be functional -->
                                          </center>
                                 </div>
                         </form>

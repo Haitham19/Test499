@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { promisify } = require("util");
+const { nextTick } = require("process");
 
 // we use process.env for security => detrnv .
 //we can creat file with coonection and importit whene we whant.
@@ -790,8 +791,6 @@ exports.RDSignup = (req, res) => {
 // add request 
 exports.SRaddnewrequest = async (req, res) => {
    const { projectTitle, researchArea, advisorsEmail, url, targetAudience, edu, gen } = req.body;
-   console.log(req.body.gen);
-   console.log(req.body.edu);
    if (researchArea == "base") {
       return res.render('SRhomepage', {
          message: 'research area is not selected'
@@ -812,19 +811,27 @@ exports.SRaddnewrequest = async (req, res) => {
          db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
             db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, SRI_ID: decoded.id, status: 0 }, (erro, result) => {
                db.query('SELECT * FROM sr_request WHERE SRI_ID=?', [decoded.id], (erro, sr) => {
-                  for (var i = 0; i < edu.length; i++) {
-                     db.query("INSERT INTO req_e SET ?", [{ reqID: sr[0].reqID, email: edu[i] }], (er, re) => {
-                        if (er) {
-                           console.log(er);
-                        }
-                     })
+                  if(edu){
+                     for (var i = 0; i < edu.length; i++) {
+                        db.query("SELECT * FROM education WHERE email=?",[edu[i]],(ere,rer)=>{
+                           db.query("INSERT INTO req_e SET ?", [{ reqID: sr[0].reqID, email: rer[0].email ,name:rer[0].name}], (er, re) => {
+                              if (er) {
+                                 console.log(er);
+                              }
+                           })
+                        })
+                     }
                   }
-                  for (var j = 0; j < gen.length; j++) {
-                     db.query("INSERT INTO req_g SET ?", [{ reqID: sr[0].reqID, email: gen[j] }], (er, re) => {
-                        if (er) {
-                           console.log(er);
-                        }
-                     })
+                  if(gen){
+                     for (var j = 0; j < gen.length; j++) {
+                        db.query("SELECT * FROM general WHERE email=?",[gen[j]],(ere,rer)=>{
+                           db.query("INSERT INTO req_g SET ?", [{ reqID: sr[0].reqID, email: rer[0].email ,name:rer[0].name}], (er, re) => {
+                              if (er) {
+                                 console.log(er);
+                              }
+                           })
+                        })
+                     }
                   }
                   if (erro) {
                      console.log(erro)
@@ -956,10 +963,10 @@ exports.SRsend = async (req, res) => {
   // }
 }
 exports.SRres=async(req,res)=>{
-   const {frm,mess} = req.body;
+   const {submit,mess} = req.body;
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
-      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,submit],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:submit}],(erro,resu)=>{
          if(erro){
             console.log(erro);
          }
@@ -973,7 +980,6 @@ exports.SRres=async(req,res)=>{
 }
 exports.SRread=async(req,res)=>{
    const frm=req.body.submit;
-   console.log(req.body);
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
       if(error){
@@ -1027,7 +1033,7 @@ exports.RDsend=async(req,res)=>{
          }
       })
    }
-   if(edu.length!=0){
+   if(edu){
       for(var i=0;i<edu.length;i++){
          db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:edu[i],mess:mess}],(error,result)=>{
             if(error){
@@ -1036,7 +1042,7 @@ exports.RDsend=async(req,res)=>{
          })
       }
    }
-   if(gen.length!=0){
+   if(gen){
       for(var j=0;j<gen.length;j++){
          db.query("INSERT INTO msg SET ?",[{frm:decoded.email,too:gen[j],mess:mess}],(error,result)=>{
             if(error){
@@ -1050,10 +1056,11 @@ exports.RDsend=async(req,res)=>{
    })
 }
 exports.RDres=async(req,res)=>{
-   const {frm,mess} = req.body;
+   const {submit,mess} = req.body;
+   
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
-      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,submit],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:submit}],(erro,resu)=>{
          if(erro){
             console.log(erro);
          }
@@ -1143,10 +1150,10 @@ exports.cgmSend=async(req,res)=>{
    })
 }
 exports.cgmRes=async(req,res)=>{
-   const {frm,mess} = req.body;
+   const {submit,mess} = req.body;
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
-      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,submit],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:submit}],(erro,resu)=>{
          if(erro){
             console.log(erro);
          }
@@ -1220,10 +1227,10 @@ exports.eduSend = async (req, res) => {
    })
 }
 exports.eduRes=async(req,res)=>{
-   const {frm,mess} = req.body;
+   const {submit,mess} = req.body;
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
-      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,submit],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:submit}],(erro,resu)=>{
          if(erro){
             console.log(erro);
          }
@@ -1237,7 +1244,6 @@ exports.eduRes=async(req,res)=>{
 }
 exports.eduRead=async(req,res)=>{
    const frm=req.body.submit;
-   console.log(req.body);
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
       if(error){
@@ -1298,10 +1304,10 @@ exports.genSend = async (req, res) => {
    })
 }
 exports.genRes=async(req,res)=>{
-   const {frm,mess} = req.body;
+   const {submit,mess} = req.body;
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
-      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:frm}],(erro,resu)=>{
+   db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,submit],(error,result)=>{
+      db.query("INSERT INTO msg SET ?",[{mess:mess,frm:decoded.email,too:submit}],(erro,resu)=>{
          if(erro){
             console.log(erro);
          }
@@ -1315,7 +1321,6 @@ exports.genRes=async(req,res)=>{
 }
 exports.genRead=async(req,res)=>{
    const frm=req.body.submit;
-   console.log(req.body);
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("DELETE FROM msg WHERE too=? AND frm=?",[decoded.email,frm],(error,result)=>{
       if(error){
@@ -1347,8 +1352,34 @@ exports.advRequsets = async (req, res, next) => {
                      return next();
                   }
                   else {
-                     req.request = resul;
-                     return next();
+                     db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                        db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                           if(resulte.length!=0){
+                              if(resultg.length!=0){
+                                 req.edu=resulte;
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.edu=resulte;
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                           else{
+                              if(resultg.length!=0){
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                        })
+                     })
                   }
                })
             }
@@ -1371,25 +1402,51 @@ exports.SRIRequsets = async (req, res, next) => {
                return next();
             }
             else {
-               db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status=-1", [decoded.id], (err, resul) => {
+               db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status=-1", [decoded.id], (err, resu) => {
                   if (err) {
                      console.log(err);
-                  } else if (resul.length == 0) {
-                     db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status>=0", [decoded.id], (err, resu) => {
+                  } else if (resu.length == 0) {
+                     db.query("SELECT * FROM sr_request WHERE SRI_ID=? AND status>=0", [decoded.id], (err, resul) => {
                         if (err) {
                            console.log(err);
-                        } else if (resu.length == 0) {
+                        } else if (resul.length == 0) {
                            req.user = result[0];
                            return next();
                         }
                         else {
-                           req.reqW = resu;
-                           return next();
+                           db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                              db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                                 if(resulte.length!=0){
+                                    if(resultg.length!=0){
+                                       req.edu=resulte;
+                                       req.gen=resultg;
+                                       req.request = resul;
+                                       return next();
+                                    }
+                                    else{
+                                       req.edu=resulte;
+                                       req.request = resul;
+                                       return next();
+                                    }
+                                 }
+                                 else{
+                                    if(resultg.length!=0){
+                                       req.gen=resultg;
+                                       req.request = resul;
+                                       return next();
+                                    }
+                                    else{
+                                       req.request = resul;
+                                       return next();
+                                    }
+                                 }
+                              })
+                           })
                         }
                      })
                   }
                   else {
-                     req.reqJ = resul;
+                     req.reqJ = resu;
                      return next();
                   }
                })
@@ -1420,9 +1477,35 @@ exports.deanRequsets = async (req, res, next) => {
                      req.user = result[0];
                      return next();
                   }
-                  else {
-                     req.request = resul;
-                     return next();
+                  else{
+                     db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                        db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                           if(resulte.length!=0){
+                              if(resultg.length!=0){
+                                 req.edu=resulte;
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.edu=resulte;
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                           else{
+                              if(resultg.length!=0){
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                        })
+                     })
                   }
                })
             }
@@ -1452,9 +1535,35 @@ exports.deputyRequsets = async (req, res, next) => {
                      req.user = result[0];
                      return next();
                   }
-                  else {
-                     req.request = resul;
-                     return next();
+                  else{
+                     db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                        db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                           if(resulte.length!=0){
+                              if(resultg.length!=0){
+                                 req.edu=resulte;
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.edu=resulte;
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                           else{
+                              if(resultg.length!=0){
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                        })
+                     })
                   }
                })
             }
@@ -1484,9 +1593,35 @@ exports.cgmRequsets = async (req, res, next) => {
                      req.user = result[0];
                      return next();
                   }
-                  else {
-                     req.request = resul;
-                     return next();
+                  else{
+                     db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                        db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                           if(resulte.length!=0){
+                              if(resultg.length!=0){
+                                 req.edu=resulte;
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.edu=resulte;
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                           else{
+                              if(resultg.length!=0){
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                        })
+                     })
                   }
                })
             }
@@ -1516,9 +1651,35 @@ exports.rdRequests = async (req, res, next) => {
                      req.user = result[0];
                      return next();
                   }
-                  else {
-                     req.request = resul;
-                     return next();
+                  else{
+                     db.query("SELECT * FROM req_e WHERE reqID=?",[resul[0].reqID],(errors,resulte)=>{
+                        db.query("SELECT * FROM req_g WHERE reqID=?",[resul[0].reqID],(errors,resultg)=>{
+                           if(resulte.length!=0){
+                              if(resultg.length!=0){
+                                 req.edu=resulte;
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.edu=resulte;
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                           else{
+                              if(resultg.length!=0){
+                                 req.gen=resultg;
+                                 req.request = resul;
+                                 return next();
+                              }
+                              else{
+                                 req.request = resul;
+                                 return next();
+                              }
+                           }
+                        })
+                     })
                   }
                })
             }
@@ -1832,7 +1993,7 @@ exports.Edone = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM req_e WHERE email=?", [decoded.email], (erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
-         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + resu[0].name }, result[0].reqID], (er, re) => {
             db.query("DELETE FROM req_e WHERE reqID=? AND email=?",[result[0].reqID,decoded.email],(err,ww)=>{
                if(err){
                   console.log(err);
@@ -1871,7 +2032,7 @@ exports.Gdone = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM req_g WHERE email=?", [decoded.email], (erro, resu) => {
       db.query("SELECT * FROM sr_request WHERE status>4 AND reqID=?", [resu[0].reqID], (error, result) => {
-         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + decoded.email }, result[0].reqID], (er, re) => {
+         db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 6, reason: result[0].reason + "---Done in :" + resu[0].name }, result[0].reqID], (er, re) => {
             db.query("DELETE FROM req_g WHERE reqID=? AND email=?",[result[0].reqID,decoded.email],(err,ww)=>{
                if(err){
                   console.log(err);
@@ -2033,7 +2194,7 @@ exports.rdRej = async (req, res) => {
    const reason = req.body.reason;
    console.log(reason);
    db.query("SELECT * FROM sr_request WHERE status=3" ,(erro, resu) => {
-      db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 4, reason: reason }, resu[0].reqID], (error, result) => {
+      db.query("UPDATE sr_request SET ? WHERE reqID=?", [{ status: 4, reason: "RD Department disliked the request, this is the reason :"+reason }, resu[0].reqID], (error, result) => {
          if (error) {
             console.log(error);
             return res.render("rdHP", {
@@ -2412,9 +2573,14 @@ exports.Dreq = async (req, res) => {
          console.log(error);
       }
       else {
-         return res.render('SRhomepage', {
-            message: "request deleted"
+         db.query("SELECT * FROM studentresearcher WHERE email=?",[decoded.email],(err,resu)=>{
+            req.user=resu[0];
+            return res.render('SRhomepage', {
+               message: "request deleted",
+               user:req.user
+            })
          })
+         
       }
    })
 }

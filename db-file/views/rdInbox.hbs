@@ -47,19 +47,20 @@
                      <li class="form-control" id="msg" name="msg" value="{{mes.[0].mess}}">{{mes.[0].mess}}</li>
                   </div>
                   
-                  <button class="cstmButt" onclick="showForm()">Respond</button>
+                 
                     <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as read</button>
                   </form>
+                   <button class="cstmButt" onclick="showForm()">Respond</button>
                         <form id="formElement" style="display: none;" action="auth/RDres" method="POST">
                              <div class="mb-4">
-                                 <label for="frm">respond to: </label><br>
+                                 <label >respond to: </label><br>
                                  <li class="form-control" id="frm" name="frm" value="{{mes.[0].frm}}">{{mes.[0].frm}}</li>
-                                    <label for="mess" class="form-label">Type your response:</label>
-                                    <textarea class="form-control" id="mess" name="mess" rows="3"></textarea>
+                                 <label class="form-label">Type your response:</label>
+                                 <textarea class="form-control" id="mess" name="mess" rows="3"></textarea>
                                         <center> 
-                                            <button class="button" type="submit" name="submit">Send</button>  <!-- need to be functional -->
+                                            <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Send</button>  <!-- need to be functional -->
                                          </center>
-                                </div>
+                              </div>
                         </form>
             </div>
          </div>
