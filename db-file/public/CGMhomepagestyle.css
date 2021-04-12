@@ -70,3 +70,12 @@ nav li a:hover {
     border-radius: 3mm;
     
 }
+
+.usrname {
+    list-style: none;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: whitesmoke;
+  }
+  
