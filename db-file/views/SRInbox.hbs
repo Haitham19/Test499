@@ -33,7 +33,7 @@
          <div class="card-header">
             <div class="tab-content" id="nav-tabContent">
                   
-                <!-- if there is no messages the page should be empty like (no requests, messages to display) -->
+                
                 <form action="auth/SRread" method="POST">
                   <div class="form-group">
                      <label >incoming messages : {{mes.length}}</label>
@@ -47,7 +47,7 @@
                      <li class="form-control" id="frm" name="frm" value="{{mes.[0].mess}}">{{mes.[0].mess}}</li>
                   </div>                  
                     
-                   <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as read</button>
+                   <button class="button2" type="submit" name="submit" value="{{mes.[0].frm}}">Mark as read</button>
                   </form>
                   <button class="cstmButt" onclick="showForm()">Respond</button>
                         <form id="formElement" style="display: none;" action="auth/SRres" method="POST">
@@ -57,7 +57,7 @@
                                     <label for="mess" class="form-label">Type your response:</label>
                                     <textarea class="form-control" id="mess" name="mess" rows="3"></textarea>
                                         <center> 
-                                           <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Send</button> <!-- need to be functional -->
+                                           <button class="button" type="submit" name="submit" value="{{mes.[0].frm}}">Send</button> 
                                          </center>
                                 </div>
                         </form>

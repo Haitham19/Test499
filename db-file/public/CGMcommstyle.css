@@ -84,7 +84,7 @@ nav li a:hover {
     background-color:rgba(128, 128, 128, 0.137);
     text-align: center;
     font-size: 16px;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 0px 5px 0px;
     width: 30mm;
     border-color: rgb(68, 68, 68);
     border-radius:1mm;
@@ -93,6 +93,26 @@ nav li a:hover {
 }
 
 .cstmButt:hover{
+    background-color: rgba(128, 128, 128, 0.363);
+   
+}
+
+.button2 {
+    background-color:rgba(128, 128, 128, 0.137);
+    position: relative;
+    left: 10%;
+    top: 38.3px;
+    text-align: center;
+    padding: 5px 0px 5px 0px;
+    font-size: 16px;
+    width: 30mm;
+    border-color: rgb(68, 68, 68);
+    border-radius:1mm;
+    transition: 0.2s ease-in-out;
+    
+}
+
+.button2:hover{
     background-color: rgba(128, 128, 128, 0.363);
    
 }
