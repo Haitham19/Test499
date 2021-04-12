@@ -34,10 +34,14 @@
                 <label for="exampleFormControlInput1" class="form-label">Your email address:</label>
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
             </div> -->
-        <form action="auth/find" method="POST">
+        <form action="auth/rdfind" method="POST">
             <div class="mb-3">
-                <label  class="form-label">Researcher email:</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="person@example.com">
+                <label  class="form-label">Choose request:</label>
+                <select name="email" id="email">
+                        {{#each request}}
+                        <option value="{{this.frm}}">{{this.SRname}}</li>
+                        {{/each}}
+                     </select>
             </div>
             <center> 
             <button class="button" type="submit" name="submit">Next</button>              

@@ -119,3 +119,11 @@ nav li a:hover {
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
 }
+
+.usrname {
+  list-style: none;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: whitesmoke;
+}

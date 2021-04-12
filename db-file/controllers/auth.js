@@ -809,7 +809,7 @@ exports.SRaddnewrequest = async (req, res) => {
       }
       else {
          db.query('SELECT * FROM studentresearcher WHERE email=?', [decoded.email], (erro, results) => {
-            db.query('INSERT INTO sr_request SET ?', { from: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, SRI_ID: decoded.id, status: 0 }, (erro, result) => {
+            db.query('INSERT INTO sr_request SET ?', { frm: decoded.email, SRname: results[0].name, projectTitle: projectTitle, area: researchArea, next: advisorsEmail, url: url, target: targetAudience, SRI_ID: decoded.id, status: 0 }, (erro, result) => {
                db.query('SELECT * FROM sr_request WHERE SRI_ID=?', [decoded.id], (erro, sr) => {
                   if(edu){
                      for (var i = 0; i < edu.length; i++) {
@@ -1901,7 +1901,7 @@ exports.advApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM advisor WHERE email=?", [decoded.email], (err, resul) => {
       db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 1, next: resul[0].deanEmail, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 1, next: resul[0].deanEmail}, decoded.email, resu[0].reqID], (error, result) => {
             if (error) {
                return res.render("advisorHP", {
                   message: "something went wrong"
@@ -1920,7 +1920,7 @@ exports.deanApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM dean WHERE email=?", [decoded.email], (err, resul) => {
       db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 2, next: resul[0].deputyEmail, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 2, next: resul[0].deputyEmail}, decoded.email, resu[0].reqID], (error, result) => {
             if (error) {
                return res.render("deanHP", {
                   message: "something went wrong"
@@ -1939,7 +1939,7 @@ exports.deputyApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM cgm ", (err, resul) => {
       db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 3, next: resul[0].email, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+         db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 3, next: resul[0].email}, decoded.email, resu[0].reqID], (error, result) => {
             if (error) {
                return res.render("deputyHP", {
                   message: "something went wrong"
@@ -1957,7 +1957,7 @@ exports.deputyApp = async (req, res) => {
 exports.cgmApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 5, from: decoded.email }, decoded.email, resu[0].reqID], (error, result) => {
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 5}, decoded.email, resu[0].reqID], (error, result) => {
          if (error) {
             return res.render("cgmHP", {
                message: "something went wrong"
@@ -2585,12 +2585,45 @@ exports.Dreq = async (req, res) => {
    })
 }
 
-exports.find=async(req,res)=>{
+exports.rdfinds = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM rd WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM sr_request WHERE status>3",(erro,resul)=>{
+                  if(resul.length==0){
+                     req.uesr=result[0];
+                     return next();
+                  }
+                  else{
+                     req.request=resul;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.rdfind=async(req,res)=>{
    const email=req.body.email;
    db.query('SELECT * FROM studentresearcher WHERE email=?',[email],(err,resu)=>{
-      if(resu.length==0){
+      if(err){
+         console.log(err);
+      }
+      if(!resu){
          return res.render('rdHP', {
-            message: "there aren't any researcher with intered email"
+            message: "something went wrong"
          })
       }
       db.query('SELECT * FROM sr_request WHERE SRI_ID=?',[resu[0].id],(error,result)=>{
@@ -2612,4 +2645,93 @@ exports.find=async(req,res)=>{
          }
       })
    })
+}
+exports.cgmfinds = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM cgm WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM sr_request WHERE status>3",(erro,resul)=>{
+                  if(resul.length==0){
+                     req.uesr=result[0];
+                     return next();
+                  }
+                  else{
+                     req.request=resul;
+                     return next();
+                  }
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
+}
+exports.cgmfind=async(req,res)=>{
+   const email=req.body.email;
+   db.query('SELECT * FROM studentresearcher WHERE email=?',[email],(err,resu)=>{
+      if(err){
+         console.log(err);
+      }
+      if(!resu){
+         return res.render('cgmHP', {
+            message: "something went wrong"
+         })
+      }
+      db.query('SELECT * FROM sr_request WHERE SRI_ID=?',[resu[0].id],(error,result)=>{
+         if(result.length==0){
+            return res.render('cgmHP', {
+               message: "something went wrong"
+            })
+         }
+         else{
+            db.query('SELECT * FROM req_e WHERE reqID=?',[result[0].reqID],(err,ed)=>{
+               db.query('SELECT * FROM req_g WHERE reqID=?',[result[0].reqID],(err,ge)=>{
+                  return res.render('cgmFinded', {
+                     request:result[0],
+                     gen:ge,
+                     edu:ed
+                  })
+               })
+            })
+         }
+      })
+   })
+}
+
+exports.srREq = async (req, res, next) => {
+   if (req.cookies.jwt) {
+      try {
+         const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+         db.query("SELECT * FROM studentresearcher WHERE email=?", [decoded.email], (error, result) => {
+            if (result.length == 0) {
+               return next();
+            }
+            else{
+               db.query("SELECT * FROM education",(erro,edu)=>{
+                  db.query("SELECT * FROM general",(erro,gen)=>{
+                  req.edu=edu;
+                  req.gen=gen;
+                  return next();
+                  })
+               })
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         return next();
+      }
+   }
+   else {
+      next();
+   }
 }

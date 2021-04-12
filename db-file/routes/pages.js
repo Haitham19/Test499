@@ -49,13 +49,24 @@ router.get("/SRhomepage", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/SRaddnewrequest", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("SRaddnewrequest", {
-      user: req.user,
-    });
-  } else {
-    res.redirect("/userLogin");
+router.get("/SRaddnewrequest", authController.srREq, (req, res) => {
+  if (!req.edu) {
+    if(!req.gen){
+      if(req.user){
+        res.render("SRhomepage", {
+          user: req.user,
+        });
+      }
+      else {
+        res.redirect("/userLogin");
+      }
+    }
+  }
+  else{
+    return res.status(200).render("SRaddnewrequest",{
+      edu:req.edu,
+      gen:req.gen
+    })
   }
 });
 router.get("/SRI_Req", authController.SRIRequsets, (req, res) => {
@@ -252,6 +263,36 @@ router.get("/cgmReq", authController.cgmRequsets, (req, res) => {
     }
   }
 });
+router.get("/cgmFind", authController.cgmfinds, (req, res) => {
+  if (req.request) {
+    return res.status(200).render("cgmFind", {
+      request: req.request,
+    });
+  }
+  if(req.uesr){
+    res.render("cgmHP", {
+      uesr: req.uesr,
+      message:"there are no requests to Find"
+    });
+  }
+  else {
+    res.redirect("/userLogin");
+  }
+});
+router.get("/cgmFinded", authController.isLoggedIn, (req, res) => {
+  if(req.request){
+    
+    res.render("cgmFinded", {
+      request: req.request,
+    });
+  }
+  else{
+    res.render("cgmHP", {
+      message: "didn't find",
+    });
+  }
+  res.redirect("/userLogin");
+});
 router.get("/cgmU", authController.isLoggedIn, (req, res) => {
   if (req.user) {
     res.render("cgmU", {
@@ -304,12 +345,19 @@ router.get("/rdCOMM", authController.isLoggedIn, (req, res) => {
     res.redirect("/userLogin");
   }
 });
-router.get("/rdFind", authController.isLoggedIn, (req, res) => {
-  if (req.user) {
-    res.render("rdFind", {
-      user: req.user,
+router.get("/rdFind", authController.rdfinds, (req, res) => {
+  if (req.request) {
+    return res.status(200).render("rdFind", {
+      request: req.request,
     });
-  } else {
+  }
+  if(req.uesr){
+    res.render("rdHP", {
+      uesr: req.uesr,
+      message:"there are no requests to Find"
+    });
+  }
+  else {
     res.redirect("/userLogin");
   }
 });
@@ -329,9 +377,32 @@ router.get("/rdFinded", authController.isLoggedIn, (req, res) => {
 });
 router.get("/rdRequests", authController.rdRequests, (req, res) => {
   if (req.request) {
-    res.render("rdRequests", {
-      request: req.request,
-    });
+    if(req.edu){
+      if(req.gen){
+        res.render("rdRequests", {
+          edu:req.edu,
+          gen:req.gen,
+          request: req.request,
+        });
+      }
+      else{
+        res.render("rdRequests", {
+        edu:req.edu,
+        request: req.request,
+        })
+      }
+    }
+    else if(req.gen){
+      res.render("rdRequests", {
+        gen:req.gen,
+        request: req.request,
+        })
+    }else{
+      res.render("rdRequests", {
+        request: req.request,
+        })
+    }
+    
   } else {
     if (req.user) {
       res.render("rdHP", {

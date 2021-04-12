@@ -116,3 +116,11 @@ nav li a:hover {
     background-color: rgba(128, 128, 128, 0.363);
    
 }
+
+.usrname {
+    list-style: none;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: whitesmoke;
+  }

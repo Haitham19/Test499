@@ -76,6 +76,10 @@
                         <option value="earlyChildhood">Early childhood</option>
                         <option value="specialEducation">Special education</option>
                         <option value="educationalLeadership">Curriculums</option>
+                        <option value="Supervision">Supervision</option>
+                        <option value="Leadership">Leadership</option>
+                        <option value="Assessment">Assessment</option>
+                        <option value="Counseling">Counseling</option>
                      </select>
                   </div>
 
@@ -111,26 +115,18 @@
                   <div class="form-group">
                      <span class="anchor">Educational directorates</span><br>
                      <ul class="items">
-                        {{!-- <input type="checkbox" onClick="toggle(this)" /> Toggle All<br /> --}}
-                        <input type="checkbox" name="edu" id="educationalDirectorates" value="GM-Office@riyadhedu.gov.sa"> Education Dept. Al-Riyadh<br />
-                        <input type="checkbox" name="edu" id="educationalDirectorates" value="jouf-edugm@moe.gov.sa"> Education Dept. Al-Jouf<br />
-                        <input type="checkbox" name="edu" id="educationalDirectorates" value="mithn-EduManag@moe.gov.sa"> Education Dept. Alhudud Ash Shamaliyah<br />
-                        <input type="checkbox" name="edu" id="educationalDirectorates" value="supportportal@quriatg.gov.sa"> Education Dept. Al-Qurayyat<br />
-                        <input type="checkbox" name="edu" id="educationalDirectorates" value="tabok-edugm@moe.gov.sa"> Education Dept. Tabuk<br />
-
+                         {{#each edu}}
+                        <input type="checkbox" name="edu" id="educationalDirectorates" value="{{this.email}}"> {{this.name}}<br />
+                        {{/each}}
                      </ul>
                   </div>
                   <br>
                   <div class="form-group">
                      <span class="anchor">General Department</span><br>
                      <ul class="items">
-                        {{!-- <input type="checkbox" onClick="toggle(this)" /> Toggle All<br /> --}}
-                        <input type="checkbox" name="gen" id="generalDepartments" value="generalDepartmentForStudiesAndResearch@gmail.com"> General department for studies and research<br />
-                        <input type="checkbox" name="gen" id="generalDepartments" value="generalViceMinistryForGiftedStudents@gmail.com"> General vice ministry for gifted students<br />
-                        <input type="checkbox" name="gen" id="generalDepartments" value="generalDepartmentforCustodianOfTheTwoHolyMosquesScholarshipProgram@gmail.com"> General department for custodian of the two holy mosques scholarship program<br />
-                        <input type="checkbox" name="gen" id="generalDepartments" value="generalDepartmentOfUniversityEducation@gmail.com"> General department of university education<br />
-                        <input type="checkbox" name="gen" id="generalDepartments" value="generalDepartmentOfStudentCounseling@gmail.com"> General department of student counseling<br />
-
+                        {{#each gen}}
+                        <input type="checkbox" name="gen" id="generalDepartments" value="{{this.email}}"> {{this.name}}<br />
+                        {{/each}}
                      </ul>
                   </div>
                   {{!--

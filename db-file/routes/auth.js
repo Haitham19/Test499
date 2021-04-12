@@ -71,5 +71,6 @@ router.post('/RDres', authController.RDres);
 router.post('/RDread', authController.RDread);
 
 router.get('/Dreq', authController.Dreq);
-router.post('/find',authController.find);
+router.post('/rdfind',authController.rdfind);
+router.post('/cgmfind',authController.cgmfind);
 module.exports = router;
