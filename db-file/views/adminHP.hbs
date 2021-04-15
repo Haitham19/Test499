@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="/SRhomepagestyle.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        
 
         <!-- Tab Icon-->
         <link rel="shortcut icon" href="/favicon.ico">
@@ -29,36 +29,18 @@
         <h2>C R E P</h2>
         <ul>
             <li><a href="/adminHP">Home</a></li>
+            <li><a href="/adminReg">Add new user</a></li>
+            <li><a href="/adminU">Update user</a></li>
+            <li><a href="/adminD">Delete user</a></li>
             <li><a href="/auth/logout">Log Out</a></li>
         </ul>
     </nav>
 
 
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Menu
-        </button>
-        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-            <li class="dropdown-submenu">
-                <a class="dropdown-item" tabindex="-1" href="#">Edit users</a>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item"><a tabindex="-1" href="/adminReg">Add new user</a></li>
-                    <li class="dropdown-item"><a tabindex="-1" href="/adminU">Update user</a></li>
-                    <li class="dropdown-item"><a tabindex="-1" href="/adminD">Delete user</a></li>
-                </ul>
-            </li>
-        <li class="dropdown"><a href="#">Database</a></li>
-        <li class="dropdown"><a href="#">Update admin</a></li>
-        </ul>
-    </div>
-
-    </div>
-
     <div class="container mt-5">
         <div class="jumbotron">
-            <h1 class="display-5">Welcome {{user.email}},</h1>
-            <p class="lead">This the Admin's homepage here you can Add/Delete/Update users and see the database.</p>
+            <h1 class="display-5">Welcome Admin,</h1>
+            <p class="lead">This the Admin's homepage here you can Add/Delete/Update users.</p>
 
         </div>
     </div>

@@ -314,19 +314,27 @@ exports.userLogin = async (req, res) => {
 //this section is for Sign up 
 exports.researcherSignup = (req, res) => {
    const { name, email, college, deptName, mobNum, country, level, university, password, passwordConfirm } = req.body;
-
+   var nm = name.replace(/\s/g, '');
+   var arr=nm.split('');
+   for(var i=0;i<arr.length;i++){
+      if(isFinite(arr[i])){
+         return res.render('userLogin', {
+            message: 'please check your inpot'
+         })
+      }
+   }
    db.query('SELECT email FROM users WHERE email = ?', [email], async (error, results) => {
       if (error) {
          console.log(error)
       }
 
       if (results.length > 0) {
-         return res.render('researcherSignup', {
+         return res.render('userLogin', {
             message: 'The email is already in use'
          })
       }
       else if (password !== passwordConfirm) {
-         return res.render('researcherSignup', {
+         return res.render('userLogin', {
             message: 'password do not match'
          })
       }
@@ -334,8 +342,8 @@ exports.researcherSignup = (req, res) => {
       let hashedPassword = await bcrypt.hash(password, 8);
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
-            return res.render('researcherSignup', {
-               message: 'The mobile number is already in use'
+            return res.render('userLogin', {
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -344,7 +352,7 @@ exports.researcherSignup = (req, res) => {
                   console.log(error);
                }
                else {
-                  return res.render('researcherSignup', {
+                  return res.render('userLogin', {
                      message: 'Student Researcher Registered'
                   });
                }
@@ -379,7 +387,7 @@ exports.OrgResSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('researcherSignup', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -420,7 +428,7 @@ exports.researcherOutSideSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('researcherSignup', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -472,7 +480,7 @@ exports.advisorSignup = (req, res) => {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
                   return res.render('adminHP', {
-                     message: 'The mobile number is already in use'
+                     message: 'An error occured'
                   })
                }
                db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -525,7 +533,7 @@ exports.deanSignup = (req, res) => {
             db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
                if (erro) {
                   return res.render('adminHP', {
-                     message: 'The mobile number is already in use'
+                     message: 'An error occured'
                   })
                }
                db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -569,7 +577,7 @@ exports.deputySignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -610,7 +618,7 @@ exports.missionSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -651,7 +659,7 @@ exports.CGMSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -689,7 +697,7 @@ exports.generalSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -727,7 +735,7 @@ exports.educSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -768,7 +776,7 @@ exports.RDSignup = (req, res) => {
       db.query('INSERT INTO users SET ?', { email: email, mobNum: mobNum, password: hashedPassword }, (erro, result) => {
          if (erro) {
             return res.render('adminHP', {
-               message: 'The mobile number is already in use'
+               message: 'An error occured'
             })
          }
          db.query('SELECT * FROM users WHERE email=?', [email], (error, resul) => {
@@ -824,8 +832,8 @@ exports.SRaddnewrequest = async (req, res) => {
                   }
                   if(gen){
                      for (var j = 0; j < gen.length; j++) {
-                        db.query("SELECT * FROM general WHERE email=?",[gen[j]],(ere,rer)=>{
-                           db.query("INSERT INTO req_g SET ?", [{ reqID: sr[0].reqID, email: rer[0].email ,name:rer[0].name}], (er, re) => {
+                        db.query("SELECT * FROM general WHERE email=?",[gen[j]],(ere,rew)=>{
+                           db.query("INSERT INTO req_g SET ?", [{ reqID: sr[0].reqID, email: rew[0].email ,name:rew[0].name}], (er, re) => {
                               if (er) {
                                  console.log(er);
                               }
@@ -841,7 +849,8 @@ exports.SRaddnewrequest = async (req, res) => {
                   }
                   else {
                      return res.render('SRhomepage', {
-                        message: 'Request is submitted'
+                        message: 'Request is submitted',
+                        user:results
                      })
                   }
                })
@@ -1957,7 +1966,7 @@ exports.deputyApp = async (req, res) => {
 exports.cgmApp = async (req, res) => {
    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
    db.query("SELECT * FROM sr_request WHERE next=?", [decoded.email], (erro, resu) => {
-      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 5}, decoded.email, resu[0].reqID], (error, result) => {
+      db.query("UPDATE sr_request SET ? WHERE next=? AND reqID=?", [{ status: 5,reason:''}, decoded.email, resu[0].reqID], (error, result) => {
          if (error) {
             return res.render("cgmHP", {
                message: "something went wrong"
@@ -2218,7 +2227,7 @@ exports.SRIupdateinfo = async (req, res) => {
    db.query('UPDATE users SET ? WHERE email=?', [{ email: email, password: hashedPassword, mobNum: mobNum }, decoded.email], async (erro, resu) => {
       if (erro) {
          return res.render('SRhomepage', {
-            message: 'The mobile number is already in use or mobile number is used'
+            message: 'An error occured or mobile number is used'
          })
       }
       else {
@@ -2254,7 +2263,7 @@ exports.orgUpdateinfo = async (req, res) => {
       if (erro) {
          return res.render("orgHP", {
             message:
-               "The mobile number is already in use or mobile number is used",
+               "An error occured or mobile number is used",
          });
       }
       else {
